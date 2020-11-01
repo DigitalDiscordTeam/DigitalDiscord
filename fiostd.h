@@ -1,12 +1,6 @@
 ﻿#ifndef FIOSTD_H
 #define FIOSTD_H
 
-#include <string>
-#include <iostream>
-#include <assert.h>
-#include <fstream>
-#include <vector>
-#include <map>
 
 namespace filem {
 	std::map<std::ifstream*, std::string> stream_table;

@@ -1,12 +1,28 @@
 #ifndef INTERNAL_F_SYS_H
 #define INTERNAL_F_SYS_H
 
-#include "fiostd.h"
 #include "InternalErrors.h"
+
+#include <string>
+#include <iostream>
+#include <assert.h>
+#include <fstream>
+#include <vector>
+#include <map>
 
 namespace InternalFsys { //Fsys = File system
 
 	std::map<std::string, std::string> MyMapStor;
+
+	std::streamsize get_flength(std::ifstream& file) {
+		assert(file.is_open());
+		std::streampos temp_1 = file.tellg();
+		file.seekg(0, std::fstream::end);
+		std::streampos temp_2 = file.tellg();
+		file.seekg(temp_1, std::fstream::beg);
+
+		return temp_2;
+	}
 
 	std::string retMap(std::string value) {
 		if (MyMapStor[value] == "") {
@@ -22,7 +38,7 @@ namespace InternalFsys { //Fsys = File system
 		std::ifstream ifile;
 		ifile.open(path, std::ios::binary);
 
-		std::streamsize len = filem::get_flength(ifile);
+		std::streamsize len = get_flength(ifile);
 		char* dummy = new char[len + 1];
 
 		if (dummy != nullptr || strlen(dummy) == 0) {
@@ -79,17 +95,17 @@ namespace InternalFsys { //Fsys = File system
 		ifile.open(path, std::ios::binary);
 
 		//read
-		char* dummy = new char[filem::get_flength(ifile) + 1];
+		char* dummy = new char[get_flength(ifile) + 1];
 		if (dummy == nullptr) {
 			throw ReadFileError;
 		}
-		ifile.read(dummy, filem::get_flength(ifile));
+		ifile.read(dummy, get_flength(ifile));
 		if (dummy == nullptr) {
 			throw ReadFileError;
 		}
 		dummy += '\0';
 		std::string re;
-		re.assign(dummy, filem::get_flength(ifile) + 1);
+		re.assign(dummy, get_flength(ifile) + 1);
 		delete[] dummy;
 		dummy = nullptr;
 
