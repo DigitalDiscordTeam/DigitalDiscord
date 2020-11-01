@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include "setup.h"
 
 class Stor {
 private:
