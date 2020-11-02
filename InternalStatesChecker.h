@@ -20,20 +20,6 @@ namespace InternalStatCheck {
 		return InternalFsys::read("Username", "test.txt");
 	}
 
-	bool fileExitCheck(const std::string path) {
-		std::ifstream tmp_file;
-		tmp_file.open(path, std::ios::in);
-		if (tmp_file.is_open()) {
-			tmp_file.close();
-			return true;
-		}
-		else {
-			tmp_file.close();
-			return false;
-		}
-		return false;
-	}
-
 }
 
 #endif

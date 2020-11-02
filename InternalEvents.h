@@ -2,6 +2,7 @@
 #define INTERNAL_EVENTS_H
 
 #include "InternalFsys.h"
+#include "InternalErrorLogger.h"
 #include <time.h>
 
 namespace Event {
@@ -44,8 +45,17 @@ namespace Event {
 			return "CheckCorruption";
 		}
 
-		static void trigger() {
-			
+		static std::vector<std::string> trigger() {
+			std::vector<std::string> vec = InternalErrLog::LogMain.Err_type;
+			std::vector<std::string> vecend;
+
+			for (size_t i = 0; i < vec.size(); ++i) {
+				if (vec[i] == "ReadFileError" || vec[i] == "DirMakeError") {
+					vecend.push_back(vec[i]);
+				}
+			}
+
+			return vecend;
 		}
 
 	}CheckCorruption;

@@ -4,6 +4,8 @@
 #include "InternalEvents.h"
 #include "InternalEventHandler.h"
 
+#include <experimental/filesystem>
+
 using InternalErrLog::LogMain;
 
 int main() {
@@ -11,7 +13,7 @@ int main() {
 	LogMain.append(time(NULL), "TestErr2");
 
 	LogMain.printErr();
-	std::cout << Setup::getcurretUsername_s() << "\n";
+	std::cout << Setup::getSysUsername_s() << "\n";
 	InternalEventHandler::trigger(Event::Spam);
 	InternalEventHandler::trigger(Event::Spam);
 	system("pause");

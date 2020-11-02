@@ -1,6 +1,7 @@
 #ifndef INTERNAL_F_SYS_H
 #define INTERNAL_F_SYS_H
 
+#include "InternalDef.h"
 #include "InternalErrors.h"
 
 #include <string>
@@ -9,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <experimental/filesystem>
 
 namespace InternalFsys { //Fsys = File system
 
@@ -31,6 +33,10 @@ namespace InternalFsys { //Fsys = File system
 		else {
 			return MyMapStor[value];
 		}
+	}
+
+	bool fileExitCheck(const std::string path) {
+		return std::experimental::filesystem::exists(path);
 	}
 
 	std::string read(std::string value, std::string path) {
