@@ -17,6 +17,7 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <cstring>
 #endif 
 
 namespace Setup {
@@ -64,7 +65,7 @@ namespace Setup {
 
 		if (std::experimental::filesystem::exists(path)) {
 
-			if (!std::experimental::filesystem::create_directory(path)) {
+			if (std::experimental::filesystem::create_directory(path)) {
 				throw DirMakeError;
 			}
 		}
@@ -80,13 +81,14 @@ namespace Setup {
 
 #endif //USE_WIN_
 
-#ifdef USE_LINUX_
+#ifdef USE_WIN_
 	std::string getSysUsername_s() {
 		return (std::string)getenv("USERNAME");
 	}
 
 	std::wstring getSysUsername_w() {
-		std::string tmp = (std::string)getenv("USERNAME");
+		std::string tmp; 
+		tmp.assign(getenv("USERNAME"), strlen(getenv("USERNAME")));
 
 		std::wstring ret(tmp.begin(), tmp.end());
 
@@ -100,7 +102,7 @@ namespace Setup {
 
 		if (std::experimental::filesystem::exists(path)) {
 
-			if (!std::experimental::filesystem::create_directory(path)) {
+			if (std::experimental::filesystem::create_directory(path)) {
 				throw DirMakeError;
 			}
 		}
