@@ -60,7 +60,7 @@ namespace Setup {
 		Setup::pathtoDir_w = path;
 		Setup::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\%APPDATA%\\DigitalDiscord";
 	}
-}
+
 
 #endif //USE_WIN_
 
@@ -89,7 +89,7 @@ namespace Setup {
 	}
 
 #endif //USE_LINUX_
-
+}
 
 
 #endif
