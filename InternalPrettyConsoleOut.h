@@ -1,6 +1,8 @@
 #ifndef INTERNAL_PRETTY_CONSOLE_OUT_H
 #define INTERNAL_PRETTY_CONSOLE_OUT_H
 
+#include "InternalDef.h"
+
 #include <iostream>
 #include <string>
 #include <stdio.h>
@@ -47,7 +49,19 @@ namespace InternalPCO { //PCO = pretty console out
 		void setSleeptime(int newsleeptime) {
 			sleeptime = newsleeptime;
 		}
-	};
+	}slowPrint;
+
+	void loadingScreen(size_t lenght, bool cls = false) {
+		if (cls) {
+#ifdef USE_WIN_
+			system("cls");
+#endif
+#ifdef  USE_LINUX_
+			system("clear");
+#endif 
+
+		}
+	}
 
 }
 

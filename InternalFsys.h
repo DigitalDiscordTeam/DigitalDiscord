@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <cstring>
 #include <experimental/filesystem>
 
 namespace InternalFsys { //Fsys = File system
