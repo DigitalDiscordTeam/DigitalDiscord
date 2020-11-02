@@ -56,11 +56,13 @@ namespace InternalPCO { //PCO = pretty console out
 #ifdef USE_WIN_
 			system("cls");
 #endif
-#ifdef  USE_LINUX_
+#ifdef USE_LINUX_
 			system("clear");
 #endif 
 
 		}
+
+
 	}
 
 }

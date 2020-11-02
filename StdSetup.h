@@ -73,6 +73,8 @@ namespace Setup {
 		Setup::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\%APPDATA%\\DigitalDiscord";
 
 		dirPathExits = true;
+
+		
 	}
 
 
@@ -84,7 +86,11 @@ namespace Setup {
 	}
 
 	std::wstring getSysUsername_w() {
-		return (std::wstring)getenv("USERNAME");
+		std::string tmp = (std::string)getenv("USERNAME");
+
+		std::wstring ret(tmp.begin(), tmp.end());
+
+		return ret;
 	}
 
 	void createFiles() {
@@ -99,7 +105,7 @@ namespace Setup {
 			}
 		}
 		Setup::pathtoDir_w = path;
-		Setup::pathtoDir = "~/.config/DigitalDiscord"
+		Setup::pathtoDir = "~/.config/DigitalDiscord";
 	}
 
 #endif //USE_LINUX_
