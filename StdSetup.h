@@ -1,9 +1,9 @@
 #ifndef STD_SETUP_H
 #define STD_SETUP_H
 
+#include "InternalDef.h"
 #include "InternalErrors.h"
 #include "InternalFsys.h"
-#include "InternalDef.h"
 
 #ifdef USE_WIN_
 #include <sys\stat.h>
@@ -16,13 +16,14 @@
 #ifdef USE_LINUX_
 #include <iostream>
 #include <string>
-#include <lmcons.h>
 #include <stdlib.h>
 #endif 
 
 namespace Setup {
+	bool dirPathExits = false;
 	std::string pathtoDir = "";
 	std::wstring pathtoDir_w = L"";
+
 #ifdef USE_WIN_
 
 	std::string getSysUsername_s() {
@@ -43,6 +44,17 @@ namespace Setup {
 		return username;
 	}
 
+	void checkIfPaths() {
+		if (std::experimental::filesystem::exists(L"C:\\Users\\" + getSysUsername_w() + L"\\%APPDATA%\\DigitalDiscord")) {
+			dirPathExits = true;
+			pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\%APPDATA%\\DigitalDiscord";
+			pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\%APPDATA%\\DigitalDiscord";
+		}
+		else {
+			dirPathExits = false;
+		}
+	}
+
 	void createFiles() {
 
 		std::wstring path;
@@ -59,6 +71,8 @@ namespace Setup {
 
 		Setup::pathtoDir_w = path;
 		Setup::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\%APPDATA%\\DigitalDiscord";
+
+		dirPathExits = true;
 	}
 
 
