@@ -81,7 +81,7 @@ namespace Setup {
 
 #endif //USE_WIN_
 
-#ifdef USE_WIN_
+#ifdef USE_LINUX_
 	std::string getSysUsername_s() {
 		return (std::string)getenv("USERNAME");
 	}
