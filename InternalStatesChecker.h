@@ -1,24 +1,32 @@
 #ifndef INTERNAL_STATES_CHECKER_H
 #define INTERNAL_STATES_CHECKER_H
 
+#include "InternalDef.h"
+#include "StdSetup.h"
 #include "InternalErrors.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
 
-#include <lmcons.h>
-#include <Windows.h>
-
 namespace InternalStatCheck {
 	std::string getfUsername() {
 		try {
-			std::string ret = InternalFsys::retMap("Username");
-			return ret;
+			return InternalFsys::retMap("Username");
 		}
-		catch (MapIsNotStoragingErrorc& err) {
+		catch (...) {
+			throw MapIsNotStoragingError;
 			InternalErrLog::LogMain.append(time(NULL), "MapIsNotStoragingError");
 		}
-		return InternalFsys::read("Username", "test.txt");
+		if (!Setup::dirPathExits) {
+			Setup::checkIfPaths();
+		}
+		if (!Setup::dirPathExits) {
+			InternalErrLog::LogMain.append(time(NULL), "DirMakeError");
+			throw DirMakeError;
+		}
+		return InternalFsys::read("Username", Setup::pathtoDir + "\\test.txt\\"); //TODO: Linux stuff
 	}
+
+	
 
 }
 

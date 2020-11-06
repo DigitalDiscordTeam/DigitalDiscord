@@ -1,64 +1,31 @@
 #ifndef INTERNAL_EVENTS_H
 #define INTERNAL_EVENTS_H
 
+#include "InternalDef.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
 #include <time.h>
 
 namespace Event {
-	class Testc {
+	typedef struct Events Events;
+	struct Events {
 	public:
-		static const char* what() {
-			return "Test";
+		bool is = false;
+		std::string id = "0000"; // 4 chars only!
+		std::string name = name;
+
+		Events(std::string name, std::string id) {
+			this->name = name;
+			this->id = id;
 		}
 
-		static void trigger() {
-			std::cout << "Test passed!\n";	
+		void operator=(Events& _event) {
+			this->name = _event.name;
+			this->is = false;
 		}
+	};
 
-	}Test;
-
-	class Spamc {
-	public:
-		static const char* what() {
-			return "A function to spam random things";
-		}
-
-		static void trigger() {
-			srand(time(NULL));
-			char assc[21] = { 'a','?','#','G','f',';','_','^','2','%',']','\\','=','ä','Ä','r','g','S','*','~','Ö' };
-			for (int i = 0; i < sizeof(assc) * 3; ++i) {
-				std::cout << assc[rand() % (sizeof(assc))];
-				if (rand() % 12 == 5) {
-					std::cout << "\n";
-				}
-			}
-			std::cout << "\n";
-			
-		}
-
-	}Spam;
-
-	class CheckCorruptionc {
-	public:
-		static const char* what() {
-			return "CheckCorruption";
-		}
-
-		static std::vector<std::string> trigger() {
-			std::vector<std::string> vec = InternalErrLog::LogMain.Err_type;
-			std::vector<std::string> vecend;
-
-			for (size_t i = 0; i < vec.size(); ++i) {
-				if (vec[i] == "ReadFileError" || vec[i] == "DirMakeError") {
-					vecend.push_back(vec[i]);
-				}
-			}
-
-			return vecend;
-		}
-
-	}CheckCorruption;
+	Events FirstRun("FirstRun","1000");
 }
 
 #endif

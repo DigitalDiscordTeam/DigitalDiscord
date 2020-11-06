@@ -9,7 +9,7 @@
 #include <Windows.h>
 
 namespace InternalPCO { //PCO = pretty console out
-	class slowPrintc {
+	class SlowPrintc {
 	private:
 		int sleeptime = 0;
 	public:
@@ -26,7 +26,7 @@ namespace InternalPCO { //PCO = pretty console out
 			}
 		}
 		void operator<<(int inp) {
-			for (size_t i = 0; i < inp; ++i) {
+			for (long i = 0; i < inp; ++i) {
 				std::cout << ((const char*)inp)[i];
 				Sleep(sleeptime);
 			}
@@ -36,7 +36,7 @@ namespace InternalPCO { //PCO = pretty console out
 			Sleep(sleeptime);
 		}
 		void operator<<(long long inp) {
-			for (size_t i = 0; i < inp; ++i) {
+			for (long i = 0; i < inp; ++i) {
 				std::cout << ((const char*)inp)[i];
 				Sleep(sleeptime);
 			}
@@ -51,19 +51,75 @@ namespace InternalPCO { //PCO = pretty console out
 		}
 	}slowPrint;
 
-	void loadingScreen(size_t lenght, bool cls = false) {
-		if (cls) {
-#ifdef USE_WIN_
-			system("cls");
-#endif
-#ifdef USE_LINUX_
-			system("clear");
-#endif 
+	class LoadingScreen {
+	private:
+		long tmp_len = 0;
+	public:
+		long length = 0;
+		bool clear = false;
+		int clearWaitTime = 0;
 
+		char logo = '#';
+
+		LoadingScreen(long length, int clearWaitTime, bool clear, char logo) {
+			this->length = length;
+			this->clear = clear;
+			this->clearWaitTime = clearWaitTime;
+			this->logo = logo;
 		}
 
+		bool next() {
+			tmp_len += 1;
+			std::cout << "\r[";
+			for (long i = 0; i < length; ++i) {
+				if (i > tmp_len) {
+					std::cout << " ";
+				}
+				else {
+					std::cout << logo;
+				}
+			}
+			std::cout << "]";
 
-	}
+			if (tmp_len == length) {
+				length = 0;
+				tmp_len = 0;
+
+				if (clear) {
+					Sleep(clearWaitTime); // TODO: Linux compatibility and such stuff
+					system("cls");
+				}
+				return true;
+			}
+
+			return false;
+		}
+	}loadingScreen(10,0,false,'#');
+
+	class VisualCounter {
+		long tmp_len = 0;
+	public:
+		long hight = 0;
+		std::string node = "";
+
+		VisualCounter(long hight, std::string additionalNode) {
+			this->hight = hight;
+			this->node = additionalNode;
+		}
+
+		bool next() {
+			tmp_len += 1;
+			std::cout << "\r" << tmp_len << "/" << hight << "  " << node;
+
+			if (tmp_len >= hight) {
+				std::cout << "\n";
+				hight = 0;
+				tmp_len = 0;
+				return true;
+			}
+			return false;
+		}
+	}visualCounter(10,"");
 
 }
 

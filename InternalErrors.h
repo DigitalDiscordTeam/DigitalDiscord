@@ -44,12 +44,20 @@ class EventTriggerErrorc : public std::exception
 	}
 } EventTriggerError;
 
-class EventToggleErrorc : public std::exception 
+class ResetFilesErrorc : public std::exception
 {
-	public: virtual const char* what() const throw()
-	{
-		return "The Programm coudn't toggle the using of events!";
-	}
-}EventToggleError;
+public: virtual const char* what() const throw()
+{
+	return "The Programm coudn't open the files, maybe they are not existing?";
+}
+}ResetFilesError;
+
+class MapIsAlreadyStoragingErrorc : public std::exception
+{
+public: virtual const char* what() const throw()
+{
+	return "The map storage the requested item already!";
+}
+}MapIsAlreadyStoragingError;
 
 #endif

@@ -4,6 +4,8 @@
 #include "InternalDef.h"
 #include "InternalErrors.h"
 #include "InternalFsys.h"
+#include "InternalErrorLogger.h"
+#include "InternalEventMap.h"
 
 #ifdef USE_WIN_
 #include <sys\stat.h>
@@ -25,6 +27,21 @@ namespace Setup {
 	std::string pathtoDir = "";
 	std::wstring pathtoDir_w = L"";
 
+	std::wstring string2wsstring(const std::string& str){
+		using convert_typeX = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+		return converterX.from_bytes(str);
+	}
+
+	std::string wstring2string(const std::wstring& wstr)
+	{
+		using convert_typeX = std::codecvt_utf8<wchar_t>;
+		std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+		return converterX.to_bytes(wstr);
+	}
+
 #ifdef USE_WIN_
 
 	std::string getSysUsername_s() {
@@ -33,7 +50,7 @@ namespace Setup {
 		GetUserName((TCHAR*)username, &size);
 
 		std::wstring tmp = username;
-		std::string ret(tmp.begin(), tmp.end());
+		std::string ret = Setup::wstring2string(tmp);
 		return ret;
 	}
 
@@ -46,10 +63,10 @@ namespace Setup {
 	}
 
 	void checkIfPaths() {
-		if (std::experimental::filesystem::exists(L"C:\\Users\\" + getSysUsername_w() + L"\\%APPDATA%\\DigitalDiscord")) {
+		if (std::experimental::filesystem::exists(L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\")) {
 			dirPathExits = true;
-			pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\%APPDATA%\\DigitalDiscord";
-			pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\%APPDATA%\\DigitalDiscord";
+			pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\";
+			pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
 		}
 		else {
 			dirPathExits = false;
@@ -61,21 +78,20 @@ namespace Setup {
 		std::wstring path;
 		path += L"C:\\Users\\";
 		path += getSysUsername_w();
-		path += L"\\%APPDATA%\\DigitalDiscord";
+		path += L"\\AppData\\LocalLow\\DigitalDiscord\\";
 
-		if (std::experimental::filesystem::exists(path)) {
+		if (!std::experimental::filesystem::exists(path)) {
 
-			if (std::experimental::filesystem::create_directory(path)) {
+			if (!std::experimental::filesystem::create_directory(path)) {
 				throw DirMakeError;
 			}
 		}
 
 		Setup::pathtoDir_w = path;
-		Setup::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\%APPDATA%\\DigitalDiscord";
+		Setup::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
 
 		dirPathExits = true;
 
-		
 	}
 
 
@@ -98,7 +114,7 @@ namespace Setup {
 	void createFiles() {
 
 		std::wstring path;
-		path += L"~/.config/DigitalDiscord";
+		path += L"~/.config/DigitalDiscord/";
 
 		if (std::experimental::filesystem::exists(path)) {
 
@@ -107,10 +123,28 @@ namespace Setup {
 			}
 		}
 		Setup::pathtoDir_w = path;
-		Setup::pathtoDir = "~/.config/DigitalDiscord";
+		Setup::pathtoDir = "~/.config/DigitalDiscord/";
 	}
 
 #endif //USE_LINUX_
+	
+	void resetFiles(bool createAsNew = false) {
+		if (pathtoDir == "") {
+			InternalErrLog::LogMain.append(time(NULL), "ResetFilesError");
+			throw ResetFilesError;
+		}
+		else {
+			std::ofstream ofile;
+
+			InternalEventMap::update();
+			if (InternalEventMap::get(Event::FirstRun)) {
+				ofile.open(pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//usermanipulateable
+
+				ofile.write(((std::string)"Username = " + getSysUsername_s().c_str() + "\n").c_str(), 13 + getSysUsername_s().length());
+			}
+		}
+	}
+
 }
 
 
