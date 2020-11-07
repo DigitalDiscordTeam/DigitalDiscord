@@ -46,6 +46,14 @@ namespace InternalPCO { //PCO = pretty console out
 			this->sleeptime = time;
 		}
 
+		void operator++() {
+			this->sleeptime += 1;
+		}
+
+		void operator--() {
+			this->sleeptime -= 1;
+		}
+
 		void setSleeptime(int newsleeptime) {
 			sleeptime = newsleeptime;
 		}
@@ -68,7 +76,7 @@ namespace InternalPCO { //PCO = pretty console out
 			this->logo = logo;
 		}
 
-		bool next() {
+		bool next(std::string message = "") {
 			tmp_len += 1;
 			std::cout << "\r[";
 			for (long i = 0; i < length; ++i) {
@@ -79,7 +87,7 @@ namespace InternalPCO { //PCO = pretty console out
 					std::cout << logo;
 				}
 			}
-			std::cout << "]";
+			std::cout << "] " << message << "                      "; //to clear all rest of the last message
 
 			if (tmp_len == length) {
 				length = 0;
@@ -100,16 +108,14 @@ namespace InternalPCO { //PCO = pretty console out
 		long tmp_len = 0;
 	public:
 		long hight = 0;
-		std::string node = "";
 
-		VisualCounter(long hight, std::string additionalNode) {
+		VisualCounter(long hight) {
 			this->hight = hight;
-			this->node = additionalNode;
 		}
 
-		bool next() {
+		bool next(std::string message = "") {
 			tmp_len += 1;
-			std::cout << "\r" << tmp_len << "/" << hight << "  " << node;
+			std::cout << "\r" << tmp_len << "/" << hight  << "  " << message;
 
 			if (tmp_len >= hight) {
 				std::cout << "\n";
@@ -119,7 +125,67 @@ namespace InternalPCO { //PCO = pretty console out
 			}
 			return false;
 		}
-	}visualCounter(10,"");
+	};
+
+	typedef class VisualTimer VisualTimer;
+	class VisualTimer {
+	private:
+		long tmp_long = 0;
+	public:
+		long time = 0;
+		float delay = 0;
+
+		VisualTimer(long time, float delay) { //delay in seconds
+			this->time = time;
+			this->delay = 100*delay;
+		}
+
+		void operator=(VisualTimer& timer) {
+			this->delay = timer.delay;
+			this->time = timer.time;
+			this->tmp_long = 0;
+		}
+
+		void operator+=(VisualTimer& timer) {
+			this->delay += timer.delay;
+			this->time += timer.time;
+			this->tmp_long = 0;
+		}
+
+		void operator++() {
+			time += 1;
+		}
+		void operator--() {
+			time -= 1;
+		}
+
+		void start() {
+			tmp_long = 0;
+			for (; tmp_long < time + 1; ++tmp_long) {
+				//std::cout << time << " " << tmp_long << " " << (time - tmp_long) / 100 << "\n";
+				std::cout << "\rT - " << (time - tmp_long) << " ";
+				Sleep(delay);
+			}
+			std::cout << "\n";
+		}
+
+		bool is_end() {
+			return tmp_long == time ? true : false;
+		}
+
+		void reset() {
+			tmp_long = 0;
+		}
+	};
+
+	void corruptedLine(long length) {
+		for (long i = 0; i < length; ++i) {
+			srand(time(NULL) + i);
+			std::cout << ((char)(rand() - i / 5));
+		}
+	}
+
+
 
 }
 
