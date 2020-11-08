@@ -4,6 +4,7 @@
 #include <time.h>
 #include <vector>
 #include <string>
+#include <iostream>
 
 #include "InternalErrors.h"
 
@@ -27,6 +28,8 @@ namespace InternalErrLog {
 					ret_vec.push_back(Err_time[i]);
 				}
 			}
+
+			return ret_vec;
 		}
 
 		std::vector<std::string> get(int time) {
@@ -37,6 +40,8 @@ namespace InternalErrLog {
 					ret_vec.push_back(Err_type[i]);
 				}
 			}
+
+			return ret_vec;
 		}
 
 		void printErr() {

@@ -60,4 +60,28 @@ public: virtual const char* what() const throw()
 }
 }MapIsAlreadyStoragingError;
 
+class InternalEventVecIsAlreadyStoragingErrorc : public std::exception
+{
+public: virtual const char* what() const throw()
+{
+	return "The vector is already storaging the requested item!";
+}
+}InternalEventVecIsAlreadyStoragingError;
+
+class InternalEventVecIsNotStoragingErrorc : public std::exception
+{
+public: virtual const char* what() const throw()
+{
+	return "The vector is not storaging the requested item!";
+}
+}InternalEventVecIsNotStoragingError;
+
+class FileIsAlreadyExistingErrorc : public std::exception
+{
+public: virtual const char* what() const throw()
+{
+	return "You want to re-create an existing file!";
+}
+}FileIsAlreadyExistingError;
+
 #endif

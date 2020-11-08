@@ -14,6 +14,17 @@ namespace Ikarus {
 	void boot() {
 		ConOut::IkarusSP.setSleeptime(1000);
 	}
+
+	/*
+	template <typename T>
+	bool ikarusRemember(T value) {
+		if (T == int) {
+			for (size_t i = 0; i < IkarusMemory.get((int)1).size(); ++i) {
+
+			}
+		}
+	}
+	*/
 }
 
 #endif

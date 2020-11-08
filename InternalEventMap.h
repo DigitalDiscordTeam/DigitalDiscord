@@ -3,13 +3,15 @@
 
 #include <map>
 #include "InternalDef.h"
+#include "StdSetup.h"
+#include "InternalFsys.h"
 #include "InternalErrorLogger.h"
 #include "InternalEvents.h"
 
 namespace InternalEventMap {
 	std::map<std::string, int> EventMap;
 	
-	void set(Event::Events& _event, bool setstate = true) {
+	void set(Events::Event& _event, bool setstate = true) {
 		if (EventMap[_event.id] == 0 && !setstate) {
 			InternalErrLog::LogMain.append(time(NULL), "MapIsAlreadyStoragingError");
 			throw MapIsAlreadyStoragingError;
@@ -26,7 +28,7 @@ namespace InternalEventMap {
 		}
 	}
 
-	bool get(Event::Events _event) {
+	bool get(Events::Event _event) {
 		if (EventMap[_event.id] == 0) {
 			return false;
 		}
@@ -36,7 +38,16 @@ namespace InternalEventMap {
 	}
 
 	void update() {
-		//search in a file to find the event triggers
+		std::vector<std::string> vec = InternalFsys::readEventFile(Setup::pathtoDir + "DD_Eve.txt"); //DigitalDiscord Events .txt
+		EventMap.clear();
+
+		std::string name = "";
+
+		for (size_t i = 0; i < vec.size(); ++i) {
+			name = Events::translate(vec[i], Events::translateType::ID);
+			set(Events::compact(name,vec[i]));
+			name = "";
+		}
 	}
 
 }

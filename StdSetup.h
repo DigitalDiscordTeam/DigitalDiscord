@@ -5,7 +5,7 @@
 #include "InternalErrors.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
-#include "InternalEventMap.h"
+//#include "InternalEventMap.h"
 
 #ifdef USE_WIN_
 #include <sys\stat.h>
@@ -128,6 +128,7 @@ namespace Setup {
 
 #endif //USE_LINUX_
 	
+	/* ---------------------------- comment because we have to fix the include loop ---------------------------
 	void resetFiles(bool createAsNew = false) {
 		if (pathtoDir == "") {
 			InternalErrLog::LogMain.append(time(NULL), "ResetFilesError");
@@ -137,13 +138,14 @@ namespace Setup {
 			std::ofstream ofile;
 
 			InternalEventMap::update();
-			if (InternalEventMap::get(Event::FirstRun)) {
+			if (InternalEventMap::get(Events::FirstRun)) {
 				ofile.open(pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//usermanipulateable
 
 				ofile.write(((std::string)"Username = " + getSysUsername_s().c_str() + "\n").c_str(), 13 + getSysUsername_s().length());
 			}
 		}
 	}
+	*/
 
 }
 

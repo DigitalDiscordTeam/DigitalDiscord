@@ -2,7 +2,7 @@
 #define INTERNAL_F_SYS_H
 
 #include "InternalDef.h"
-#include "InternalErrors.h"
+#include "InternalErrorLogger.h"
 
 #include <string>
 #include <iostream>
@@ -48,11 +48,11 @@ namespace InternalFsys { //Fsys = File system
 		std::streamsize len = get_flength(ifile);
 		char* dummy = new char[len + 1];
 
-		if (dummy != nullptr || strlen(dummy) == 0) {
+		if (dummy == nullptr) {
 			throw ReadFileError;
 		}
 		ifile.read(dummy, len);
-		if (dummy != nullptr || strlen(dummy) == 0) {
+		if (dummy == nullptr || strlen(dummy) == 0) {
 			throw ReadFileError;
 		}
 		dummy += '\0';
@@ -166,6 +166,64 @@ namespace InternalFsys { //Fsys = File system
 
 		return true;
 	}
+
+	bool makeFile(std::string name, std::string path, std::string message = "") {
+		if (std::experimental::filesystem::exists(path + name)) {
+			InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");
+			throw FileIsAlreadyExistingError;
+		}
+
+		else {
+			std::ofstream ofile;
+			ofile.open(path + name);
+			ofile << message;
+			ofile.close();
+
+		}
+	}
+
+	std::vector<std::string> readEventFile(std::string path) {
+		std::ifstream ifile;
+		ifile.open(path, std::ios::binary);
+
+		std::streamsize len = get_flength(ifile);
+		char* dummy = new char[len + 1];
+
+		if (dummy == nullptr || len == 0) {
+			throw ReadFileError;
+		}
+		ifile.read(dummy, len);
+		if (dummy == nullptr || strlen(dummy) == 0) {
+			throw ReadFileError;
+		}
+		dummy += '\0';
+		std::string re;
+		re.assign(dummy, len + 1);
+
+		delete[] dummy;
+		dummy = nullptr;
+
+		std::vector<std::string> vec;
+		std::string tmp;
+
+		for (size_t i = 0; i < re.length() - 1; ++i) {
+			if (re[i] == '\n' || re[i] == '\0') {
+				vec.push_back(tmp);
+				tmp = "";
+			}
+			else if (re[i] != '\r') {
+				tmp += re[i];
+			}
+		}
+		if (tmp != "") {
+			vec.push_back(tmp);
+			tmp = "";
+		}
+
+		return vec;
+	}
+
+
 
 }
 

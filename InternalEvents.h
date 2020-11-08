@@ -4,29 +4,48 @@
 #include "InternalDef.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
-#include <time.h>
 
-namespace Event {
-	typedef struct Events Events;
-	struct Events {
+namespace Events {
+	std::map<std::string, std::string> EventIdMap; // name : id
+	std::map<std::string, std::string> EventNameMap; // id : name
+
+
+	class Event {
 	public:
 		bool is = false;
 		std::string id = "0000"; // 4 chars only!
-		std::string name = name;
+		std::string name = "";
 
-		Events(std::string name, std::string id) {
+		Event(std::string name, std::string id) {
 			this->name = name;
 			this->id = id;
+			EventIdMap[name] = id;
+			EventNameMap[id] = name;
 		}
 
-		void operator=(Events& _event) {
-			this->name = _event.name;
-			this->is = false;
+		~Event() {
+			EventIdMap.erase(name);
+			EventNameMap.erase(id);
 		}
 	};
 
-	Events FirstRun("FirstRun","1000");
+	Event FirstRun("FirstRun","1000");
 
+
+	enum class translateType  {ID,NAME};
+	std::string translate(std::string value,translateType type) {
+		if (type == translateType::ID) {
+			return EventIdMap[value];
+		}
+		else {
+			return EventNameMap[value];
+		}
+	}
+
+	Event& compact(std::string name, std::string id) {
+		Event ret(name, id);
+		return ret;
+	}
 }
 
 #endif
