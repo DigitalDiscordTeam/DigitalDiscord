@@ -3,7 +3,7 @@
 
 #include <map>
 #include "InternalDef.h"
-#include "StdSetup.h"
+#include "InternalSys.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
 #include "InternalEvents.h"
@@ -47,6 +47,15 @@ namespace InternalEventMap {
 			name = Events::translate(vec[i], Events::translateType::ID);
 			set(Events::compact(name,vec[i]));
 			name = "";
+		}
+	}
+
+	void updateEvent(Events::Event _event) {
+		if (EventMap[_event.id] == 1) {
+			_event.is = true;
+		}
+		else {
+			_event.is = false;
 		}
 	}
 

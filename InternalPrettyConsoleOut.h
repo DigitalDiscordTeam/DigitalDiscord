@@ -3,6 +3,7 @@
 
 #include "InternalDef.h"
 
+#include <time.h>
 #include <iostream>
 #include <string>
 #include <stdio.h>
@@ -102,7 +103,7 @@ namespace InternalPCO { //PCO = pretty console out
 
 			return false;
 		}
-	}loadingScreen(10,0,false,'#');
+	}loadingScreen(10, 0, false, '#');
 
 	class VisualCounter {
 		long tmp_len = 0;
@@ -115,7 +116,7 @@ namespace InternalPCO { //PCO = pretty console out
 
 		bool next(std::string message = "") {
 			tmp_len += 1;
-			std::cout << "\r" << tmp_len << "/" << hight  << "  " << message;
+			std::cout << "\r" << tmp_len << "/" << hight << "  " << message;
 
 			if (tmp_len >= hight) {
 				std::cout << "\n";
@@ -137,7 +138,7 @@ namespace InternalPCO { //PCO = pretty console out
 
 		VisualTimer(long time, float delay) { //delay in seconds
 			this->time = time;
-			this->delay = 100*delay;
+			this->delay = 100 * delay;
 		}
 
 		void operator=(VisualTimer& timer) {

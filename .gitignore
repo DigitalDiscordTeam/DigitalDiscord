@@ -19,3 +19,6 @@
 *.user
 *.idb
 *.enc
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+*.json

@@ -5,7 +5,6 @@
 #include "InternalErrors.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
-//#include "InternalEventMap.h"
 
 #ifdef USE_WIN_
 #include <sys\stat.h>
@@ -73,7 +72,7 @@ namespace Setup {
 		}
 	}
 
-	void createFiles() {
+	void createPath() {
 
 		std::wstring path;
 		path += L"C:\\Users\\";

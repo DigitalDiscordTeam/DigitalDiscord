@@ -9,7 +9,7 @@ namespace InternalUpdateSetup {
 	}
 
 	void Start() {
-		//read all in the map
+		
 	}
 }
 

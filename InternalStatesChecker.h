@@ -2,7 +2,7 @@
 #define INTERNAL_STATES_CHECKER_H
 
 #include "InternalDef.h"
-#include "StdSetup.h"
+#include "InternalSys.h"
 #include "InternalErrors.h"
 #include "InternalFsys.h"
 #include "InternalErrorLogger.h"
@@ -23,7 +23,7 @@ namespace InternalStatCheck {
 			InternalErrLog::LogMain.append(time(NULL), "DirMakeError");
 			throw DirMakeError;
 		}
-		return InternalFsys::read("Username", Setup::pathtoDir + "\\test.txt\\"); //TODO: Linux stuff
+		return InternalFsys::read("Username", Setup::pathtoDir + "test.txt");
 	}
 
 	

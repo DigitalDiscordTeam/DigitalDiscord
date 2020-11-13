@@ -15,11 +15,13 @@ namespace IkarusMemory {
 
 	template <typename T>
 	bool ikarusRemember(T value) {
-		if (T == int) {
-			for (size_t i = 0; i < IkarusMemory.get((int)1).size()) {
-
+		for (size_t i = 0; i < IkarusMemory.get((T)1).size(); ++i) {
+			if (IkarusMemory.getwa((T)1, i) == value) {
+				return true;
 			}
 		}
+		return false;
+	
 	}
 
 	bool ikarusRemember(bool map, Events::Event Event) {

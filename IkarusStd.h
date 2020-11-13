@@ -5,26 +5,17 @@
 #include "storage.h"
 #include "InternalEventMap.h"
 #include "IkarusCout.h"
+#include "IkarusMemory.h"
 
 namespace Ikarus {
-	Stor IkarusMemory;
-
 	namespace ConOut = IkarusCout;
+	namespace Memory = IkarusMemory;
 
 	void boot() {
 		ConOut::IkarusSP.setSleeptime(1000);
+		Memory::mapUpdate();
 	}
 
-	/*
-	template <typename T>
-	bool ikarusRemember(T value) {
-		if (T == int) {
-			for (size_t i = 0; i < IkarusMemory.get((int)1).size(); ++i) {
-
-			}
-		}
-	}
-	*/
 }
 
 #endif

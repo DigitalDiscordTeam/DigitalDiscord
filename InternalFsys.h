@@ -171,14 +171,16 @@ namespace InternalFsys { //Fsys = File system
 		if (std::experimental::filesystem::exists(path + name)) {
 			InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");
 			throw FileIsAlreadyExistingError;
+			return false;
 		}
 
 		else {
 			std::ofstream ofile;
-			ofile.open(path + name);
+			ofile.open(path + name, std::ios::trunc);
 			ofile << message;
 			ofile.close();
 
+			return true;
 		}
 	}
 
@@ -222,8 +224,6 @@ namespace InternalFsys { //Fsys = File system
 
 		return vec;
 	}
-
-
 
 }
 
