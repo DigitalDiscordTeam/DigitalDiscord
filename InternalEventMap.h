@@ -60,8 +60,8 @@ namespace InternalEventMap {
 		std::string name = "";
 
 		for (size_t i = 0; i < vec.size(); ++i) {
-			name = Events::translate(vec[i], Events::translateType::ID);
-			set(Events::compact(name,vec[i]));
+			name = Events::trans::ttypetovar(vec[i], Events::translateType::ID);
+			set(Events::trans::compact(name,vec[i]));
 			name = "";
 		}
 	}

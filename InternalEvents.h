@@ -56,28 +56,46 @@ namespace Events {
 
 	//Event FirstRun("FirstRun", "1000");
 
-	std::string translate(std::string value, translateType type) {
-		if (type == translateType::ID) {
-			return EventIdMap[value];
+	namespace trans {
+		std::string ttypetovar(std::string value, translateType type) {
+			if (type == translateType::ID) {
+				return EventIdMap[value];
+			}
+			else {
+				return EventNameMap[value];
+			}
 		}
-		else {
-			return EventNameMap[value];
+
+		std::string etypeToString(Events::eT type) {
+			switch (type) {
+			case eT::NOEVENT: 
+				return "NOEVENT";
+				break;
+			case eT::TRUEEVENT:
+				return "TRUEEVENT";
+				break;
+			case eT::UNKNOWN:
+				return "UNKNOWN";
+				break;
+			}
+			return "";
 		}
-	}
 
-	Event compact(std::string name, std::string id) {
-		Event ret;
-		ret.id = id;
-		ret.name = name;
-		return ret;
-	}
+		Event compact(std::string name, std::string id) {
+			Event ret;
+			ret.id = id;
+			ret.name = name;
+			return ret;
+		}
 
-	Event compact(const Event* _event) {
-		Event ret;
-		ret.id = _event->id;
-		ret.name = _event->name;
+		Event compact(const Event* _event) {
+			Event ret;
+			ret.id = _event->id;
+			ret.name = _event->name;
 
-		return ret;
+			return ret;
+		}
+
 	}
 }
 
@@ -132,7 +150,7 @@ Events::Event::Event(std::string name, std::string id) {
 	EventIdMap[name] = id;
 	EventNameMap[id] = name;
 
-	InternalEventVec::append(Events::compact(this->name,this->id));
+	InternalEventVec::append(Events::trans::compact(this->name,this->id));
 }
 
 Events::Event::~Event() {
