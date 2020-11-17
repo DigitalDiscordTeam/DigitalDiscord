@@ -84,4 +84,12 @@ public: virtual const char* what() const throw()
 }
 }FileIsAlreadyExistingError;
 
+class VecCantDeleteErrorc : public std::exception
+{
+public: virtual const char* what() const throw()
+{
+	return "The vector cant delete the requested item, it is mybe not storaging!";
+}
+}VecCantDeleteError;
+
 #endif

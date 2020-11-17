@@ -28,8 +28,24 @@ namespace InternalEventMap {
 		}
 	}
 
-	bool get(Events::Event _event) {
-		if (EventMap[_event.id] == 0) {
+	void set(const Events::Event _event, bool setstate = true) { //if you use Events::compact
+		assert(_event.state == Events::eventType::NOEVENT); //only true events!
+		if (EventMap[_event.id] == 0 && !setstate) {
+			InternalErrLog::LogMain.append(time(NULL), "MapIsAlreadyStoragingError");
+			throw MapIsAlreadyStoragingError;
+		}
+		else {
+			if (setstate) {
+				EventMap[_event.id] = 1; // 1 = true
+			}
+			else {
+				EventMap[_event.id] = 0; // 0 = false
+			}
+		}
+	}
+
+	bool get(std::string id) {
+		if (EventMap[id] == 0) {
 			return false;
 		}
 		else {
@@ -38,7 +54,7 @@ namespace InternalEventMap {
 	}
 
 	void update() {
-		std::vector<std::string> vec = InternalFsys::readEventFile(Setup::pathtoDir + "DD_Eve.txt"); //DigitalDiscord Events .txt
+		std::vector<std::string> vec = InternalFsys::FEvents::readEventFile(Setup::pathtoDir + "DD_Eve.txt"); //DigitalDiscord Events .txt
 		EventMap.clear();
 
 		std::string name = "";
@@ -50,7 +66,7 @@ namespace InternalEventMap {
 		}
 	}
 
-	void updateEvent(Events::Event _event) {
+	void updateEvent(Events::Event& _event) {
 		if (EventMap[_event.id] == 1) {
 			_event.is = true;
 		}

@@ -184,47 +184,88 @@ namespace InternalFsys { //Fsys = File system
 		}
 	}
 
-	std::vector<std::string> readEventFile(std::string path) {
-		std::ifstream ifile;
-		ifile.open(path, std::ios::binary);
+}
 
-		std::streamsize len = get_flength(ifile);
-		char* dummy = new char[len + 1];
+#include "InternalEvents.h"
 
-		if (dummy == nullptr || len == 0) {
-			throw ReadFileError;
-		}
-		ifile.read(dummy, len);
-		if (dummy == nullptr || strlen(dummy) == 0) {
-			throw ReadFileError;
-		}
-		dummy += '\0';
-		std::string re;
-		re.assign(dummy, len + 1);
+namespace InternalFsys {
+	namespace FEvents {
+		std::vector<std::string> readEventFile(std::string path) {
+			std::ifstream ifile;
+			ifile.open(path, std::ios::binary);
 
-		delete[] dummy;
-		dummy = nullptr;
+			std::streamsize len = get_flength(ifile);
+			char* dummy = new char[len + 1];
 
-		std::vector<std::string> vec;
-		std::string tmp;
+			if (dummy == nullptr || len == 0) {
+				throw ReadFileError;
+			}
+			ifile.read(dummy, len);
+			if (dummy == nullptr || strlen(dummy) == 0) {
+				throw ReadFileError;
+			}
+			dummy += '\0';
+			std::string re;
+			re.assign(dummy, len + 1);
 
-		for (size_t i = 0; i < re.length() - 1; ++i) {
-			if (re[i] == '\n' || re[i] == '\0') {
+			delete[] dummy;
+			dummy = nullptr;
+
+			std::vector<std::string> vec;
+			std::string tmp;
+
+			for (size_t i = 0; i < re.length() - 1; ++i) {
+				if (re[i] == '\n' || re[i] == '\0') {
+					vec.push_back(tmp);
+					tmp = "";
+				}
+				else if (re[i] != '\r') {
+					tmp += re[i];
+				}
+			}
+			if (tmp != "") {
 				vec.push_back(tmp);
 				tmp = "";
 			}
-			else if (re[i] != '\r') {
-				tmp += re[i];
+			ifile.close();
+			return vec;
+		}
+
+		void writeIdInEventFile(std::string path, const std::string id, std::vector<std::string> read = std::vector<std::string>()) { //you use read when you have already read the file before
+			if (read.empty()) {
+				read = readEventFile(path);
 			}
-		}
-		if (tmp != "") {
-			vec.push_back(tmp);
-			tmp = "";
+			read.push_back(id);
+
+			std::ofstream ofile;
+			ofile.open(path);
+			ofile.clear();
+			for (size_t i = 0; i < read.size(); ++i) {
+				ofile << read[i] << "\n";
+			}
+			ofile.close();
 		}
 
-		return vec;
+		void delIdInEventFile(std::string path, const std::string id) {
+			std::vector<std::string> read = readEventFile(path);
+
+			for (size_t i = 0; i < read.size(); ++i) {
+				if (read[i] == id) {
+					read.erase(read.begin() + i);
+
+					//write the whole file new...
+					std::ofstream ofile;
+					ofile.open(path, std::ios::trunc);
+					for (size_t i = 0; i < read.size(); ++i) {
+						ofile << read[i] << "\n";
+					}
+
+					return;
+				}
+			}
+			throw VecCantDeleteError;
+
+		}
 	}
-
 }
-
 #endif

@@ -42,7 +42,7 @@ namespace Cryp {
 		std::string data2 = search;
 		Cryp::caeser(data1);
 		Cryp::caeser(data2);
-		Cryp::caeser(data2);
+		Cryp::caeser(data2,true);
 		if (data1 == data2) {
 			return true;
 		}
