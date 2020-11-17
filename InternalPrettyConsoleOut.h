@@ -17,29 +17,29 @@ namespace InternalPCO { //PCO = pretty console out
 		void operator<<(const char* inp) {
 			for (size_t i = 0; i < strlen(inp); ++i) {
 				std::cout << inp[i];
-				Sleep(sleeptime);
+				mac::sleep(sleeptime);
 			}
 		}
 		void operator<<(std::string inp) {
 			for (size_t i = 0; i < inp.length(); ++i) {
 				std::cout << inp[i];
-				Sleep(sleeptime);
+				mac::sleep(sleeptime);
 			}
 		}
 		void operator<<(int inp) {
 			for (long i = 0; i < inp; ++i) {
 				std::cout << ((const char*)inp)[i];
-				Sleep(sleeptime);
+				mac::sleep(sleeptime);
 			}
 		}
 		void operator<<(char inp) {
 			std::cout << inp;
-			Sleep(sleeptime);
+			mac::sleep(sleeptime);
 		}
 		void operator<<(long long inp) {
 			for (long i = 0; i < inp; ++i) {
 				std::cout << ((const char*)inp)[i];
-				Sleep(sleeptime);
+				mac::sleep(sleeptime);
 			}
 		}
 
@@ -95,8 +95,8 @@ namespace InternalPCO { //PCO = pretty console out
 				tmp_len = 0;
 
 				if (clear) {
-					Sleep(clearWaitTime); // TODO: Linux compatibility and such stuff
-					system("cls");
+					mac::sleep(clearWaitTime); // TODO: Linux compatibility and such stuff
+					mac::clearScceen();
 				}
 				return true;
 			}
@@ -165,7 +165,7 @@ namespace InternalPCO { //PCO = pretty console out
 			for (; tmp_long < time + 1; ++tmp_long) {
 				//std::cout << time << " " << tmp_long << " " << (time - tmp_long) / 100 << "\n";
 				std::cout << "\rT - " << (time - tmp_long) << " ";
-				Sleep(delay);
+				mac::sleep(delay);
 			}
 			std::cout << "\n";
 		}

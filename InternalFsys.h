@@ -39,12 +39,17 @@ namespace InternalFsys { //Fsys = File system
 	bool fileExitCheck(const std::string path) {
 		return std::experimental::filesystem::exists(path);
 	}
+	bool is_empty(std::ifstream& pFile) {
+		return pFile.peek() == std::ifstream::traits_type::eof();
+	}
 
 	std::string read(std::string value, std::string path) {
 
 		std::ifstream ifile;
 		ifile.open(path, std::ios::binary);
-
+		if (InternalFsys::is_empty(ifile)) {
+			return "";
+		}
 		std::streamsize len = get_flength(ifile);
 		char* dummy = new char[len + 1];
 
@@ -88,8 +93,8 @@ namespace InternalFsys { //Fsys = File system
 	}
 
 	void delStor(std::string value) {
-		if (InternalFsys::MyMapStor[value] != "") {
-			InternalFsys::MyMapStor[value] = "";
+		if (MyMapStor[value] != "") {
+			MyMapStor[value] = "";
 		}
 		else {
 			throw MapIsNotStoragingError;
@@ -100,7 +105,6 @@ namespace InternalFsys { //Fsys = File system
 
 		std::ifstream ifile;
 		ifile.open(path, std::ios::binary);
-
 		//read
 		char* dummy = new char[get_flength(ifile) + 1];
 		if (dummy == nullptr) {
@@ -139,7 +143,7 @@ namespace InternalFsys { //Fsys = File system
 			
 			if (vec[i] == override_ && i % 3 == 0) {
 				vec[i] = newvalue;
-				InternalFsys::MyMapStor[override_] = newvalue;
+				MyMapStor[override_] = newvalue;
 			}
 		}
 		
@@ -184,6 +188,57 @@ namespace InternalFsys { //Fsys = File system
 		}
 	}
 
+	std::vector<std::string> splitTokens(const std::string splitKey, const std::string string) {
+		/* usage:
+			---  splitTokens("key|key2|key3|...",string);
+
+			--- This function split the the string into tokens by the given keys
+		*/
+		
+		if (string == "") {
+			return std::vector<std::string>();
+		}
+
+		std::vector<char> keys;
+		if (splitKey.length() != 0) {
+			std::string splitKey2 = (splitKey[splitKey.length()] == '|' ? splitKey:(splitKey + "|"));
+			int check = 0;
+			for (size_t i = 0; i < splitKey2.length(); ++i) {
+				check += 1;
+				if (splitKey2[i] == '|') {
+					keys.push_back(splitKey2[i - 1]);
+					check = 0;
+				}
+				if (check % 2 == 0 && check != 0) {
+					throw InvaildInput;
+				}
+			}
+		}
+		else { //if there is only one token in the given key
+			keys.push_back(splitKey[0]);
+		}
+
+		std::vector<std::string> retVec;
+		std::string tmp;
+		bool tmp_bool = true;
+		for (size_t i = 0; i < string.length(); ++i) {
+			tmp_bool = true;
+			for (size_t j = 0; j < keys.size(); ++j) {
+				if (string[i] == keys[j]) {
+					retVec.push_back(tmp);
+					tmp = "";
+					tmp_bool = false;
+					break;
+				}
+			}
+			if (tmp_bool) {
+				tmp += string[i];
+			}
+		}
+		retVec.push_back(tmp);
+		return retVec;
+	}
+
 }
 
 #include "InternalEvents.h"
@@ -193,9 +248,11 @@ namespace InternalFsys {
 		std::vector<std::string> readEventFile(std::string path) {
 			std::ifstream ifile;
 			ifile.open(path, std::ios::binary);
-
+			if (InternalFsys::is_empty(ifile)) {
+				return std::vector<std::string>();
+			}
 			std::streamsize len = get_flength(ifile);
-			char* dummy = new char[len + 1];
+			char* dummy = new char[len];
 
 			if (dummy == nullptr || len == 0) {
 				throw ReadFileError;
@@ -206,7 +263,7 @@ namespace InternalFsys {
 			}
 			dummy += '\0';
 			std::string re;
-			re.assign(dummy, len + 1);
+			re.assign(dummy, len);
 
 			delete[] dummy;
 			dummy = nullptr;

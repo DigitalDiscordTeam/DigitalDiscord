@@ -92,4 +92,12 @@ public: virtual const char* what() const throw()
 }
 }VecCantDeleteError;
 
+class InvaildInputc : public std::exception
+{
+public: virtual const char* what() const throw()
+{
+	return "Your paramether was incorrect!";
+}
+}InvaildInput;
+
 #endif

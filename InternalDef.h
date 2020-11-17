@@ -14,4 +14,32 @@
 #define USE_LINUX_
 #endif
 
+namespace mac {}
+
+#ifdef USE_WIN_
+#include <windows.h>
+namespace mac {
+    void sleep(unsigned milliseconds)
+    {
+        Sleep(milliseconds);
+    }
+
+    void clearScceen() {
+        system("cls");
+    }
+}
+#else //USE_LINUX_
+#include <unistd.h>
+namespace mac {
+    void sleep(unsigned milliseconds)
+    {
+        usleep(milliseconds * 1000); // takes microseconds
+    }
+
+    void clearScceen() {
+        system("clear");
+    }
+}
+#endif
+
 #endif
