@@ -110,6 +110,17 @@ namespace Setup {
 		return ret;
 	}
 
+	void checkIfPaths() {
+		if (std::experimental::filesystem::exists(L"~/.config/DigitalDiscord/")) {
+			dirPathExits = true;
+			pathtoDir_w = L"~/.config/DigitalDiscord/";
+			pathtoDir = "~/.config/DigitalDiscord/";
+		}
+		else {
+			dirPathExits = false;
+		}
+	}
+
 	void createFiles() {
 
 		std::wstring path;
@@ -127,7 +138,7 @@ namespace Setup {
 
 #endif //USE_LINUX_
 	
-	/* ---------------------------- comment because we have to fix the include loop ---------------------------
+	
 	void resetFiles(bool createAsNew = false) {
 		if (pathtoDir == "") {
 			InternalErrLog::LogMain.append(time(NULL), "ResetFilesError");
@@ -137,16 +148,16 @@ namespace Setup {
 			std::ofstream ofile;
 
 			InternalEventMap::update();
-			if (InternalEventMap::get(Events::FirstRun)) {
+			if (InternalEventMap::get(Events::FirstRun.id)) {
 				ofile.open(pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//usermanipulateable
 
 				ofile.write(((std::string)"Username = " + getSysUsername_s().c_str() + "\n").c_str(), 13 + getSysUsername_s().length());
 			}
 		}
 	}
-	*/
+	
 
-}
+} //namespace InternalFSys
 
 
 #endif

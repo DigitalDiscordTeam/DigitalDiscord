@@ -7,7 +7,6 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-#include <Windows.h>
 
 namespace InternalPCO { //PCO = pretty console out
 	class SlowPrintc {
@@ -185,8 +184,6 @@ namespace InternalPCO { //PCO = pretty console out
 			std::cout << ((char)(rand() - i / 5));
 		}
 	}
-
-
 
 }
 

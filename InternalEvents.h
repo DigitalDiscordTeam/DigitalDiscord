@@ -54,7 +54,7 @@ namespace Events {
 		}
 	};
 
-	//Event FirstRun("FirstRun", "1000");
+	Event FirstRun("FirstRun", "1000");
 
 	namespace trans {
 		std::string ttypetovar(std::string value, translateType type) {
