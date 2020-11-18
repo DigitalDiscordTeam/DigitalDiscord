@@ -149,9 +149,9 @@ namespace Setup {
 
 			InternalEventMap::update();
 			if (InternalEventMap::get(Events::FirstRun.id)) {
-				ofile.open(pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//usermanipulateable
+				ofile.open(pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//user-manipulateable
 
-				ofile.write(((std::string)"Username = " + getSysUsername_s().c_str() + "\n").c_str(), 13 + getSysUsername_s().length());
+				ofile.write(((std::string)"Username = " + getSysUsername_s() + "\n").c_str(), 13 + getSysUsername_s().length());
 			}
 		}
 	}
