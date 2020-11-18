@@ -32,6 +32,8 @@ namespace Events {
 			state = eT::NOEVENT;
 		}
 
+		Event(Event&) = delete;
+
 		~Event();
 
 		bool operator==(Event& _event) {

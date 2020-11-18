@@ -8,11 +8,7 @@
 #include "InternalEventMap.h"
 #include "IkarusStd.h"
 #include "Cryp.h"
-#include "CommandFileClass.h"
 
 int main() {
-	CommandFile cF("test3.txt", "test3.txt");
-	cF.check();
-	cF.go();
 	system("pause");
 }
