@@ -1,12 +1,13 @@
 #ifndef INTERNAL_EVENT_MAP_H
 #define INTERNAL_EVENT_MAP_H
 
-#include <map>
 #include "InternalDef.h"
-#include "InternalSys.h"
-#include "InternalFsys.h"
+//#include "InternalSys.h"
 #include "InternalErrorLogger.h"
 #include "InternalEvents.h"
+
+#include <map>
+#include <assert.h>
 
 namespace InternalEventMap {
 	std::map<std::string, int> EventMap;
@@ -50,19 +51,6 @@ namespace InternalEventMap {
 		}
 		else {
 			return true;
-		}
-	}
-
-	void update() {
-		std::vector<std::string> vec = InternalFsys::FEvents::readEventFile(Setup::pathtoDir + "DD_Eve.txt"); //DigitalDiscord Events .txt
-		EventMap.clear();
-
-		std::string name = "";
-
-		for (size_t i = 0; i < vec.size(); ++i) {
-			name = Events::trans::ttypetovar(vec[i], Events::translateType::ID);
-			set(Events::trans::compact(name,vec[i]));
-			name = "";
 		}
 	}
 

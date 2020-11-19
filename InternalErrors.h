@@ -68,13 +68,13 @@ public: virtual const char* what() const throw()
 }
 }InternalEventVecIsAlreadyStoragingError;
 
-class InternalEventVecIsNotStoragingErrorc : public std::exception
+class VecIsNotStoragingErrorc : public std::exception
 {
 public: virtual const char* what() const throw()
 {
 	return "The vector is not storaging the requested item!";
 }
-}InternalEventVecIsNotStoragingError;
+}VecIsNotStoragingError;
 
 class FileIsAlreadyExistingErrorc : public std::exception
 {

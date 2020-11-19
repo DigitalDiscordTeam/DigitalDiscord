@@ -3,14 +3,17 @@
 
 #include "InternalDef.h"
 #include "InternalErrors.h"
-#include "InternalFsys.h"
+//#include "InternalFsys.h"
 #include "InternalErrorLogger.h"
+
+#include <experimental/filesystem>
 
 #ifdef USE_WIN_
 #include <sys\stat.h>
 #include <string>
 #include <Windows.h>
 #include <lmcons.h>
+#include <stdlib.h>
 #include <stdlib.h>
 #endif
 
@@ -26,15 +29,14 @@ namespace Setup {
 	std::string pathtoDir = "";
 	std::wstring pathtoDir_w = L"";
 
-	std::wstring string2wsstring(const std::string& str){
+	std::wstring string2wsstring(const std::string& str) {
 		using convert_typeX = std::codecvt_utf8<wchar_t>;
 		std::wstring_convert<convert_typeX, wchar_t> converterX;
 
 		return converterX.from_bytes(str);
 	}
 
-	std::string wstring2string(const std::wstring& wstr)
-	{
+	std::string wstring2string(const std::wstring& wstr) {
 		using convert_typeX = std::codecvt_utf8<wchar_t>;
 		std::wstring_convert<convert_typeX, wchar_t> converterX;
 
@@ -138,23 +140,6 @@ namespace Setup {
 
 #endif //USE_LINUX_
 	
-	
-	void resetFiles(bool createAsNew = false) {
-		if (pathtoDir == "") {
-			InternalErrLog::LogMain.append(time(NULL), "ResetFilesError");
-			throw ResetFilesError;
-		}
-		else {
-			std::ofstream ofile;
-
-			InternalEventMap::update();
-			if (InternalEventMap::get(Events::FirstRun.id)) {
-				ofile.open(pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//user-manipulateable
-
-				ofile.write(((std::string)"Username = " + getSysUsername_s() + "\n").c_str(), 13 + getSysUsername_s().length());
-			}
-		}
-	}
 	
 
 } //namespace InternalFSys

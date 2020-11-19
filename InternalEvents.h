@@ -32,7 +32,7 @@ namespace Events {
 			state = eT::NOEVENT;
 		}
 
-		Event(Event&) = delete;
+		//Event(Event&) = delete;
 
 		~Event();
 

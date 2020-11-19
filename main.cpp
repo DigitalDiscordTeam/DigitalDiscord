@@ -8,7 +8,10 @@
 #include "InternalEventMap.h"
 #include "IkarusStd.h"
 #include "Cryp.h"
+#include "Game.h"
 
 int main() {
+	Game::start(true);
+	InternalFsys::makeFile("test.txt", Setup::pathtoDir ,"get rick rolled lol\nlol2");
 	system("pause");
 }

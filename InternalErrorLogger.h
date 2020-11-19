@@ -1,6 +1,8 @@
 #ifndef INTERNAL_ERROR_LOGGER_H
 #define INTERNAL_ERROR_LOGGER_H
 
+#include "InternalDef.h"
+
 #include <time.h>
 #include <vector>
 #include <string>

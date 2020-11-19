@@ -3,6 +3,8 @@
 
 #include "InternalDef.h"
 #include "InternalErrorLogger.h"
+#include "InternalEventMap.h"
+#include "InternalSys.h"
 
 #include <string>
 #include <iostream>
@@ -12,6 +14,11 @@
 #include <map>
 #include <cstring>
 #include <experimental/filesystem>
+#include <codecvt>
+
+namespace InternalEventMap {
+	void update();
+}
 
 namespace InternalFsys { //Fsys = File system
 
@@ -239,6 +246,23 @@ namespace InternalFsys { //Fsys = File system
 		return retVec;
 	}
 
+	void resetFiles(bool createAsNew = false) {
+		if (Setup::pathtoDir == "") {
+			InternalErrLog::LogMain.append(time(NULL), "ResetFilesError");
+			throw ResetFilesError;
+		}
+		else {
+			std::ofstream ofile;
+
+			InternalEventMap::update();
+			if (InternalEventMap::get(Events::FirstRun.id)) {
+				ofile.open(Setup::pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//user-manipulateable
+
+				ofile.write(((std::string)"Username = " + Setup::getSysUsername_s() + "\n").c_str(), 13 + Setup::getSysUsername_s().length());
+			}
+		}
+	}
+
 }
 
 #include "InternalEvents.h"
@@ -322,6 +346,21 @@ namespace InternalFsys {
 			}
 			throw VecCantDeleteError;
 
+		}
+	}
+}
+
+namespace InternalEventMap {
+	void update() {
+		std::vector<std::string> vec = InternalFsys::FEvents::readEventFile(Setup::pathtoDir + "DD_Eve.txt"); //DigitalDiscord Events .txt
+		EventMap.clear();
+
+		std::string name = "";
+
+		for (size_t i = 0; i < vec.size(); ++i) {
+			name = Events::trans::ttypetovar(vec[i], Events::translateType::ID);
+			set(Events::trans::compact(name, vec[i]));
+			name = "";
 		}
 	}
 }
