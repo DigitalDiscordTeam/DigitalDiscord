@@ -138,6 +138,15 @@ namespace InternalEventVec {
 		}
 		throw VecCantDeleteError;
 	}
+
+	size_t getIndex(std::string id) {
+		for (size_t i = 0; i < eventVec.size(); ++i) {
+			if (eventVec[i].id == id) {
+				return i;
+			}
+		}
+		return -1;
+	}
 }
 
 Events::Event::Event(std::string name, std::string id) {

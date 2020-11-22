@@ -64,7 +64,7 @@ namespace Setup {
 	}
 
 	void checkIfPaths() {
-		if (std::experimental::filesystem::exists(L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\")) {
+		if (fs::exists(L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\")) {
 			dirPathExits = true;
 			pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\";
 			pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
@@ -81,9 +81,9 @@ namespace Setup {
 		path += getSysUsername_w();
 		path += L"\\AppData\\LocalLow\\DigitalDiscord\\";
 
-		if (!std::experimental::filesystem::exists(path)) {
+		if (!fs::exists(path)) {
 
-			if (!std::experimental::filesystem::create_directory(path)) {
+			if (!fs::create_directory(path)) {
 				throw DirMakeError;
 			}
 		}
@@ -113,7 +113,7 @@ namespace Setup {
 	}
 
 	void checkIfPaths() {
-		if (std::experimental::filesystem::exists(L"~/.config/DigitalDiscord/")) {
+		if (fs::exists(L"~/.config/DigitalDiscord/")) {
 			dirPathExits = true;
 			pathtoDir_w = L"~/.config/DigitalDiscord/";
 			pathtoDir = "~/.config/DigitalDiscord/";
@@ -128,9 +128,9 @@ namespace Setup {
 		std::wstring path;
 		path += L"~/.config/DigitalDiscord/";
 
-		if (std::experimental::filesystem::exists(path)) {
+		if (fs::exists(path)) {
 
-			if (std::experimental::filesystem::create_directory(path)) {
+			if (fs::create_directory(path)) {
 				throw DirMakeError;
 			}
 		}

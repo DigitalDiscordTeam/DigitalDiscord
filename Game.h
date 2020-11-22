@@ -30,7 +30,7 @@ namespace Game {
 			}
 
 			screen.next("Look if all sys-Files are here...."); //step 2
-			if (!std::experimental::filesystem::exists(Setup::pathtoDir + "DD_Cryp.txt")) {
+			if (!fs::exists(Setup::pathtoDir + "DD_Cryp.txt")) {
 				InternalFsys::makeFile(Setup::pathtoDir + "DD_Eve.txt", "");
 			}
 			

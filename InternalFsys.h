@@ -44,7 +44,7 @@ namespace InternalFsys { //Fsys = File system
 	}
 
 	bool fileExitCheck(const std::string path) {
-		return std::experimental::filesystem::exists(path);
+		return fs::exists(path);
 	}
 	bool is_empty(std::ifstream& pFile) {
 		return pFile.peek() == std::ifstream::traits_type::eof();
@@ -58,7 +58,7 @@ namespace InternalFsys { //Fsys = File system
 			return "";
 		}
 		std::streamsize len = get_flength(ifile);
-		char* dummy = new char[len + 1];
+		char* dummy = new char[len];
 
 		if (dummy == nullptr) {
 			throw ReadFileError;
@@ -67,9 +67,8 @@ namespace InternalFsys { //Fsys = File system
 		if (dummy == nullptr || strlen(dummy) == 0) {
 			throw ReadFileError;
 		}
-		dummy += '\0';
 		std::string re;
-		re.assign(dummy, len + 1);
+		re.assign(dummy, len);
 
 		delete[] dummy;
 		dummy = nullptr;
@@ -179,7 +178,7 @@ namespace InternalFsys { //Fsys = File system
 	}
 
 	bool makeFile(std::string name, std::string path, std::string message = "") {
-		if (std::experimental::filesystem::exists(path + name)) {
+		if (fs::exists(path + name)) {
 			InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");
 			throw FileIsAlreadyExistingError;
 			return false;
@@ -263,6 +262,32 @@ namespace InternalFsys { //Fsys = File system
 		}
 	}
 
+	std::string readNormal(std::string path) {
+
+		std::ifstream ifile;
+		ifile.open(path, std::ios::binary);
+		if (InternalFsys::is_empty(ifile)) {
+			return "";
+		}
+		std::streamsize len = get_flength(ifile);
+		char* dummy = new char[len];
+
+		if (dummy == nullptr) {
+			throw ReadFileError;
+		}
+		ifile.read(dummy, len);
+		if (dummy == nullptr || strlen(dummy) == 0) {
+			throw ReadFileError;
+		}
+		//dummy += '\0';
+		std::string re;
+		re.assign(dummy, len);
+
+		delete[] dummy;
+		dummy = nullptr;
+
+		return re;
+	}
 }
 
 #include "InternalEvents.h"

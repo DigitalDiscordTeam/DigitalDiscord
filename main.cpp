@@ -1,17 +1,14 @@
 ﻿#include "InternalDef.h"
-#include "InternalStatesChecker.h"
-#include "InternalFsys.h"
-#include "InternalSys.h"
-#include "InternalErrorLogger.h"
-#include "InternalEvents.h"
-#include "InternalPrettyConsoleOut.h"
-#include "InternalEventMap.h"
-#include "IkarusStd.h"
-#include "Cryp.h"
-#include "Game.h"
+#include "CommandFile.h"
+
 
 int main() {
-	Game::start(true);
-	InternalFsys::makeFile("test.txt", Setup::pathtoDir ,"get rick rolled lol\nlol2");
+	Events::Event tmpEvent("tmpEvent", "tmpE");
+	//InternalFsys::FEvents::writeIdInEventFile("test2.txt", tmpEvent.id);
+	Setup::checkIfPaths();
+	//std::cout << InternalFsys::readNormal("test.txt") << "\n";
+	CommandFile cF("test3.txt", "test3.txt");
+	
+	cF.run();
 	system("pause");
 }

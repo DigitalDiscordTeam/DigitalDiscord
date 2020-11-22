@@ -12,17 +12,19 @@
 #include <vector>
 
 namespace InternalFileVec {
-	std::vector<std::pair<std::string, std::string>> fileVec; // path : filename
-	
-	void update(const std::string path) {
+	std::vector<std::pair<filesystemPath, std::string>> fileVec; // path : filename
+	filesystemPath lastPath;
+
+	void update(const filesystemPath path) {
+		lastPath = path;
 		std::string ret;
-		for (const auto& entry : std::experimental::filesystem::directory_iterator(path))
-			fileVec.push_back(std::pair<std::string,std::string>(Setup::wstring2string(entry.path()), Setup::wstring2string(entry.path().filename())));
+		for (const auto& entry : fs::directory_iterator(path))
+			fileVec.push_back(std::pair<fs::v1::path,std::string>(Setup::wstring2string(entry.path()), Setup::wstring2string(entry.path().filename())));
 	}
 
 	enum class getType { PATHTYPE, FILENAMETYPE };
 	using gT = getType;
-	std::string get(std::string value, gT type) {
+	filesystemPath get(std::string value, gT type) {
 		if (type == gT::FILENAMETYPE) {
 			for (size_t i = 0; i < fileVec.size(); ++i) {
 				if (fileVec[i].second == value) {
@@ -40,7 +42,7 @@ namespace InternalFileVec {
 		throw VecIsNotStoragingError;
 	}
 
-	std::string get(size_t index, gT type) {
+	filesystemPath get(size_t index, gT type) {
 		if (type == gT::PATHTYPE) {
 			return fileVec[index].first;
 		}
