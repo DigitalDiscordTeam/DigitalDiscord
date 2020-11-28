@@ -13,9 +13,11 @@
 #include <lmcons.h>
 #include <stdlib.h>
 #include <stdlib.h>
+#include <codecvt>
 #endif
 
 #ifdef USE_LINUX_
+#include <codecvt>
 #include <iostream>
 #include <string>
 #include <stdlib.h>
