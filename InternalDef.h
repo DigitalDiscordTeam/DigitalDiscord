@@ -4,9 +4,9 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <filesystem>
+#include <experimental/filesystem>
 
-//check witch OS
+//check what OS
 #if defined(_WIN32)
 #define OS "WINDOWS"
 #define USE_WIN_
@@ -17,8 +17,9 @@
 #define USE_LINUX_
 #endif
 
-namespace fs = std::filesystem;
-using filesystemPath = fs::path;
+//make fs to std::experimental::filesystem
+namespace fs = std::experimental::filesystem;
+using filesystemPath = fs::v1::path;
 
 
 namespace mac {}
@@ -35,26 +36,16 @@ namespace mac {
         system("cls");
     }
 }
-#elif USE_LINUX_
+#else //USE_LINUX_
 #include <unistd.h>
 namespace mac {
-    void sleep(unsigned milliseconds) {
+    void sleep(unsigned milliseconds)
+    {
         usleep(milliseconds * 1000); // takes microseconds
     }
 
     void clearScceen() {
         system("clear");
-    }
-}
-#else // USE_UNKNOWN_
-namespace mac {
-    void sleep(unsigned milliseconds)
-    {
-        ;
-    }
-
-    void clearScceen() {
-        ;
     }
 }
 #endif
@@ -64,11 +55,6 @@ namespace mac {
 //defs for tools
 #define DEBUG_START_ if(MY_DEBUG == 1) {
 #define DEBUG_END_ }
-#define MTRY_BEGIN try {
-#define MCATCH(what) } catch(what) {
-#define MCATCH_ALL } catch(...) {
-#define MCATCH_END }
-#define INFINITY_LOOP 1
 
 //functions
 #if MY_DEBUG == 1

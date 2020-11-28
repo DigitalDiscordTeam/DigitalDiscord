@@ -195,9 +195,9 @@ private:
 				if (tpath == "std") {
 					tpath = Setup::pathtoDir;
 				}
-				filesystemPath lp = InternalFileVec::lastPath;
+				fs::v1::path lp = InternalFileVec::lastPath;
 				InternalFileVec::update(tpath);
-				filesystemPath tmp_path;
+				fs::v1::path tmp_path;
 				size_t len;
 				for (size_t j = 0; j < InternalFileVec::fileVec.size(); ++j) {
 					if (searchName == "") {
@@ -230,7 +230,7 @@ private:
 						}
 					}
 					else { //searchKey != ""
-						filesystemPath tfilename;
+						fs::v1::path tfilename;
 						try {
 							tfilename = InternalFileVec::get(j, InternalFileVec::gT::FILENAMETYPE);
 							if (tfilename == searchName) { //found

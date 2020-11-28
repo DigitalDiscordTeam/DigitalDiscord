@@ -1,5 +1,5 @@
 
-*.suo
+.vs/Gamehax0r/v16/.suo
 *.db
 *.db-shm
 *.opendb
