@@ -184,7 +184,11 @@ namespace InternalPCO { //PCO = pretty console out
 			std::cout << ((char)(rand() - i / 5));
 		}
 	}
-
+	void debugOut(std::string string) {
+		DEBUG_START_
+			std::cout << "[DEBUG]: " << string << "\n";
+		DEBUG_END_
+	}
 }
 
 #endif
