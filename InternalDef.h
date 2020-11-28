@@ -37,7 +37,7 @@ namespace mac {
         system("cls");
     }
 }
-#elif USE_LINUX_
+#elif defined(USE_LINUX_)
 #include <unistd.h>
 namespace mac {
     void sleep(unsigned milliseconds) {
