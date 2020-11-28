@@ -6,7 +6,6 @@
 #include "InternalSys.h"
 #include "InternalErrors.h"
 
-#include <experimental/filesystem>
 #include <stdlib.h>
 #include <string>
 #include <vector>
@@ -19,7 +18,7 @@ namespace InternalFileVec {
 		lastPath = path;
 		std::string ret;
 		for (const auto& entry : fs::directory_iterator(path))
-			fileVec.push_back(std::pair<fs::v1::path,std::string>(Setup::wstring2string(entry.path()), Setup::wstring2string(entry.path().filename())));
+			fileVec.push_back(std::pair<filesystemPath,std::string>(Setup::wstring2string(entry.path()), Setup::wstring2string(entry.path().filename())));
 	}
 
 	enum class getType { PATHTYPE, FILENAMETYPE };

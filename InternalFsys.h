@@ -13,7 +13,6 @@
 #include <vector>
 #include <map>
 #include <cstring>
-#include <experimental/filesystem>
 #include <codecvt>
 
 namespace InternalEventMap {
@@ -255,7 +254,7 @@ namespace InternalFsys { //Fsys = File system
 
 			InternalEventMap::update();
 			if (InternalEventMap::get(Events::FirstRun.id)) {
-				ofile.open(Setup::pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc | std::ios::beg);		//user-manipulateable
+				ofile.open(Setup::pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc);		//user-manipulateable
 
 				ofile.write(((std::string)"Username = " + Setup::getSysUsername_s() + "\n").c_str(), 13 + Setup::getSysUsername_s().length());
 			}

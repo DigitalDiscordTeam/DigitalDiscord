@@ -6,8 +6,6 @@
 //#include "InternalFsys.h"
 #include "InternalErrorLogger.h"
 
-#include <experimental/filesystem>
-
 #ifdef USE_WIN_
 #include <sys\stat.h>
 #include <string>
@@ -50,7 +48,7 @@ namespace Setup {
 		DWORD size = UNLEN + 1;
 		GetUserName((TCHAR*)username, &size);
 
-		std::wstring tmp = username;
+		std::wstring tmp(username,UNLEN + 1);
 		std::string ret = Setup::wstring2string(tmp);
 		return ret;
 	}
@@ -59,8 +57,8 @@ namespace Setup {
 		TCHAR username[UNLEN + 1];
 		DWORD size = UNLEN + 1;
 		GetUserName((TCHAR*)username, &size);
-
-		return username;
+		std::wstring tmp(username,UNLEN + 1);
+		return tmp;
 	}
 
 	void checkIfPaths() {
