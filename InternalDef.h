@@ -7,6 +7,7 @@
 #define UNICODE
 
 #include <filesystem>
+#include <iostream>
 
 //check witch OS
 #if defined(_WIN32)
@@ -23,7 +24,14 @@ namespace fs = std::filesystem;
 using filesystemPath = fs::path;
 
 
-namespace mac {}
+namespace mac {
+    void pause() {
+        std::cout << "Please press any button...";
+        if(!getchar() == '\n') {
+            std::cout << "\n";
+        }
+    }
+}
 
 #ifdef USE_WIN_
 #include <windows.h>

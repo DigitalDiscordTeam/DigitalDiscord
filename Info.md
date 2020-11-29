@@ -11,7 +11,7 @@ C:\Users\Username\Appdata\LocalLow\DigitalDiscord\ (Windows)
 #infomation for users
 This is still in progress and not even early access! The developers are still workin on it so just look what will come up :D
 
--what is planed?
+#what is planed?
 It is going to be a console game on Windows and Linux.
 The point of this game is that it shouldn't feel like a game, more like a real-adventure with the ghoul to save your pc and help a lost man.
 But let us start from the beginning. When you starte the game, a console will show up, a short loading screen and an AI called "Ikarus" will say hello.
