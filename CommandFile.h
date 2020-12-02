@@ -51,56 +51,61 @@ private:
 		bool trunc = false;
 		std::string varkey = "";
 		for (size_t i = 1; i < read.size(); ++i) {
-			if (read[i][0] == '-') { //command
-				if (read[i] == "-as") {
-					if (read.size() < i+1) { //too few arguments
-						return "";
+			try {
+				if (read[i][0] == '-') { //command
+					if (read[i] == "-as") {
+						if (read.size() < i+1) { //too few arguments
+							return "";
+						}
+						else if ((read[i+1] == "fvar" || read[i+1] == "findvariable") && (read[i+2][0] != '-' || read[i+2][0] != '*')) {
+							asFvar = true;
+							varkey = read[i + 2];
+							i += 2;
+						}
+						else if (read[i + 1] == "fval" || read[i+1] == "findvariable") {
+							return "";
+						}
+						else {
+							return "";
+						}
 					}
-					else if ((read[i+1] == "fvar" || read[i+1] == "findvariable") && (read[i+2][0] != '-' || read[i+2][0] != '*')) {
-						asFvar = true;
-						varkey = read[i + 2];
-						i += 2;
-					}
-					else if (read[i + 1] == "fval" || read[i+1] == "findvariable") {
-						return "";
-					}
-					else {
-						return "";
+					else if (read[i] == "-del") {
+						trunc = true;
 					}
 				}
-				else if (read[i] == "-del") {
-					trunc = true;
-				}
-			}
-			else if (read[i][0] == '*') { //filename
-				read[i].erase(read[i].begin()); //remove the *
+				else if (read[i][0] == '*') { //filename
+					read[i].erase(read[i].begin()); //remove the *
 
-				assert(Setup::dirPathExits);
+					assert(Setup::dirPathExits);
 
-				if (asFvar) {
+					if (asFvar) {
+						if (trunc) {
+							std::string ret = InternalFsys::read(varkey, Setup::pathtoDir + read[i]);
+							std::ofstream ofile;
+							ofile.open(read[i], std::ios::trunc);
+							ofile.close();
+							std::cout << ret;
+							return true;
+						}
+						else {
+							std::cout << InternalFsys::read(varkey,Setup::pathtoDir + read[i]);
+							return true;
+						}
+					}
 					if (trunc) {
-						std::string ret = InternalFsys::read(varkey, Setup::pathtoDir + read[i]);
+						std::string ret = InternalFsys::readNormal(Setup::pathtoDir + read[i]);
 						std::ofstream ofile;
-						ofile.open(read[i], std::ios::trunc);
+						ofile.open(Setup::pathtoDir + read[i], std::ios::trunc);
 						ofile.close();
 						std::cout << ret;
 						return true;
 					}
-					else {
-						std::cout << InternalFsys::read(varkey,Setup::pathtoDir + read[i]);
-						return true;
-					}
-				}
-				if (trunc) {
-					std::string ret = InternalFsys::readNormal(Setup::pathtoDir + read[i]);
-					std::ofstream ofile;
-					ofile.open(Setup::pathtoDir + read[i], std::ios::trunc);
-					ofile.close();
-					std::cout << ret;
+					std::cout << InternalFsys::read(varkey, Setup::pathtoDir + read[i]);
 					return true;
 				}
-				std::cout << InternalFsys::read(varkey, Setup::pathtoDir + read[i]);
-				return true;
+			}
+			catch(...) {
+
 			}
 		}
 		return false; //no filename given
@@ -225,7 +230,7 @@ private:
 								std::cout << "\n";
 							}
 						}
-						catch (fs::filesystem_error& err) {
+						catch (...) {
 
 						}
 					}
@@ -258,13 +263,15 @@ private:
 								}
 							}
 						}
-						catch (fs::filesystem_error& err) {
+						catch (...) {
 
 						}
 					}
 				}
-
+				try {
 				InternalFileVec::update(lp);
+				}
+				catch(...) {}
 				return true;
 			}
 		}
@@ -314,9 +321,8 @@ public:
 		cclose();
 		copen();
 		check();
-		bool ret = go();
-		cclose();
-		return ret;
+		cclose(); 
+		return go();
 	}
 };
 

@@ -37,8 +37,6 @@ namespace Game {
 			screen.next("Check if all files are here...");
 
 			InternalFileVec::update(Setup::pathtoDir);
-
-
 		}
 	}
 }

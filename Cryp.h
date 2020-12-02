@@ -37,7 +37,7 @@ namespace Cryp {
 		}
 	}
 
-	bool caeserif(const std::string& data, const std::string search) {
+	bool caeserif(const std::string data, const std::string search) {
 		std::string data1 = data;
 		std::string data2 = search;
 		Cryp::caeser(data1);
