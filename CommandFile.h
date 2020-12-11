@@ -13,8 +13,6 @@
 #include <iostream>
 #include <fstream>
 
-using tokenType = std::vector<std::string>;
-
 #define isEght(tokens) if(((tokenType)tokens).size() < 2) {return false;}
 
 class CommandFile {
@@ -76,7 +74,7 @@ private:
 				else if (read[i][0] == '*') { //filename
 					read[i].erase(read[i].begin()); //remove the *
 
-					assert(Setup::dirPathExits);
+					//assert(Setup::dirPathExits);
 
 					if (asFvar) {
 						if (trunc) {
@@ -269,7 +267,7 @@ private:
 					}
 				}
 				try {
-				InternalFileVec::update(lp);
+					InternalFileVec::update(lp);
 				}
 				catch(...) {}
 				return true;

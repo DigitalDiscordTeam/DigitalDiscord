@@ -9,13 +9,9 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <assert.h>
 
 namespace Memory {
-	std::vector<char> normalLetters;
-
-	void normalVecInit() {
-		//rewite pls
-	}
 
 	class Data {
 	public:
@@ -24,6 +20,7 @@ namespace Memory {
 		std::map<std::string,int> compreMap; //temp, counts how often an pair was found
 		std::vector<char> split;
 		std::map<std::string, std::string> decodeMap; //after:before
+		std::map<std::string,std::string> decodeMap2; //before:after
 
 		Data(std::string data) {
 			this->data = data;
@@ -40,10 +37,12 @@ namespace Memory {
 		}
 
 		void initSplit() {
+			split.clear();
 			for (size_t i = 0; i < data.size(); ++i) {
 				split.push_back(data[i]);
 			}
 		}
+
 	};
 
 	void searchPairs(Data& data) {
@@ -68,6 +67,7 @@ namespace Memory {
 		data.crypCount += 1;
 		searchPairs(data);
 		data.decodeMap.clear();
+		data.decodeMap2.clear();
 		std::string tmpString = "";
 		int tmpRand = 0;
 		for (size_t i = 0; i < data.split.size(); ++i) { //works with the data.compreMap 
@@ -90,18 +90,22 @@ namespace Memory {
 					std::cout << "[DEBUG] compre found, (i:" << i << "); data:" << (std::string(1,data.split[i]) + (std::string(1, data.split[i+1]))) << "\n";
 				DEBUG_END_
 				while (INFINITY_LOOP) {
-					srand(time(NULL));
+					srand(time(NULL) + (rand() % time(NULL)));
 					tmpRand = ((rand() % 255) + 126); //only special keys
+					if(InternalLib::isIn(static_cast<char>(tmpRand),data.split)) {
+						continue;
+					}
 					DEBUG_START_
 						std::cout << "tmpRand:" << tmpRand << "\n";
 					DEBUG_END_
-					if (data.decodeMap.count(std::string(1,static_cast<char>(tmpRand))) != 0) { //this key is already in the map
+					if (data.decodeMap2[std::string(1,static_cast<char>(tmpRand))] != "") { //this key is already in the map
 						DEBUG_START_
 							std::cout << "[DEBUG] compre, key is the the map, key:" << static_cast<char>(tmpRand) << "\n";
 						DEBUG_END_
 						continue;
 					}
 					data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] = std::string(1,static_cast<char>(tmpRand));
+					data.decodeMap2[std::string(1,static_cast<char>(tmpRand))] = (std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])));
 					DEBUG_START_
 						std::cout << "[DEBUG] compre, key:" << static_cast<char>(tmpRand) << " map: " << data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] << "\n";
 					DEBUG_END_
@@ -118,29 +122,55 @@ namespace Memory {
 		}
 		data.data = endData;
 		endData = "";
+		EXIT_WITH(0);
 		return;
 	}
 
 	void recompre(Data& data) {
-		assert(data.data == "" || !data.decodeMap.empty());
+		ERROR_IF(data.data == "");
+		int rounds = 0;
+		char tmpChar = ' ';
+		char tmpChar2 = ' ';
 		data.initSplit();
 
 		for (size_t i = 0; i < data.split.size(); ++i) {
-			if (data.decodeMap.count(std::string(1, data.split[i])) != 0) { //a thing to encryp has been founded
-				if (i + 2 < data.split.size()) {
-					data.split.insert(data.split.begin() + i, data.decodeMap[std::string(1, data.split[i])][0]);
+			DEBUG_START_
+				std::cout << "[DEBUG] loop (recompre) i:" << i << " | thing:" << data.split[i] << " | map:" << data.decodeMap[(std::string(1,data.split[i]))] << " | map2:" << data.decodeMap2[std::string(1,data.split[i])] << " | len of both: " << data.decodeMap2[std::string(1,data.split[i])].length() + data.decodeMap[std::string(1,data.split[i])].length() << "\n";
+			DEBUG_END_
+			ERROR_IF(data.decodeMap2[std::string(1,data.split[i])] == "");
+			if (data.decodeMap2[std::string(1,data.split[i])] != "") { //a thing to encryp has been found
+				ERROR_IF(data.decodeMap2[std::string(1,data.split[i])] == "");
+				DEBUG_MESSAGE("found (recompre) i:" << i << " | thing:" << data.split[i] << " | map:" << data.decodeMap[std::string(1, data.split[i])] << " | map2:" << data.decodeMap2[std::string(1,data.split[i])] << " | len of both: " << data.decodeMap2[std::string(1,data.split[i])].length() + data.decodeMap[std::string(1,data.split[i])].length() <<"\n");
+				if (i + 1 <= data.split.size()) {
+					DEBUG_MESSAGE("(recompre) i + 1 <= data.split.size()!\n");
+					tmpChar = data.split[i]; 
+					DEBUG_MESSAGE("tmpChar:" << tmpChar)
+					data.split[i] = data.decodeMap2[std::string(1, tmpChar)][0];
 					++i;
-					data.split.insert(data.split.begin() + i, data.decodeMap[std::string(1, data.split[i])][1]);
+					char tmp = data.decodeMap2[std::string(1, tmpChar)][1];
+					data.split.insert(data.split.begin() + i, tmp);
+					DEBUG_MESSAGE("instered \"" << data.split[i] << "\"; at:" << i)
 					++i;
 				}
 				else {
-					data.split.push_back(data.decodeMap[std::string(1, data.split[i])][0]);
-					data.split.push_back(data.decodeMap[std::string(1, data.split[i])][0]);
+					DEBUG_MESSAGE(" (recompre) i + 1 > data.split.size()!\n");
+					tmpChar = data.split[i+1];
+					data.split[i] = data.decodeMap2[std::string(1, data.split[i])][0];
+					data.split.push_back(data.decodeMap2[std::string(1, tmpChar)][0]);
 					i = data.split.size(); //end
 				}
+				tmpChar = ' ';
+				tmpChar2 = ' ';
+			}
+			if(!i < data.split.size() && !rounds == 3) {
+				DEBUG_MESSAGE("startet second time to loop...")
+				++rounds;
+				i = 0;
+				continue;
 			}
 		}
 		data.decodeMap.clear();
+		data.decodeMap2.clear();
 		data.crypCount -= 1;
 		data.compreMap.clear();
 		
@@ -148,8 +178,21 @@ namespace Memory {
 		for (size_t i = 0; i < data.split.size(); ++i) {
 			endData += data.split[i];
 		}
+		data.data = "";
 		data.data = endData;
 		return;
+	}
+
+	void factCheck(Data& data) {
+		for(size_t i = 0; i < data.data.size(); ++i) {
+			std::cout << "data[" << i << "]: " << data.data[i] << "\n";
+		}
+		std::cout << "splitInit:" << !data.split.empty() << "\n";
+
+		for(size_t i = 0; i < data.data.size(); ++i) {
+			std::cout << "map1[" << data.data[i] << "]: " << data.decodeMap[std::string(1,data.data[i])] << "\n";
+			std::cout << "map2[" << data.data[i] << "]: " << data.decodeMap2[std::string(1,data.data[i])] << "\n";
+		}
 	}
 }
 

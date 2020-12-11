@@ -3,91 +3,141 @@
 
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
-class Stor {
-private:
+#include "InternalErrorLogger.h"
 
-	class newint {
-	public:
-		newint(int value);
-
-		int value = 0;
-	};
-	class newfloat {
-	public:
-		newfloat(float value);
-
-		float value = 0;
-	};
-	class newdouble {
-	public:
-		newdouble(double value);
-
-		double value = 0;
-	};
-	class newccharp { //const char*
-	public:
-		newccharp(const char* value);
-
-		const char* value = "0";
-	};
-	class newchar {
-	public:
-		newchar(char value);
-
-		char value = '0';
-	};
-	class newbool {
-	public:
-		newbool(bool value);
-
-		bool value = false;
+namespace StorageSys {
+	class c_VOID {
+		//void
 	};
 
-	std::vector<newint*> new_int_vec;
-	std::vector<newfloat*> new_float_vec;
-	std::vector<newdouble*> new_double_vec;
-	std::vector <newccharp*> new_ccharp_vec;
-	std::vector <newchar*> new_char_vec;
-	std::vector <newbool*> new_bool_vec;
+	template<typename T>
+	class SimpleStorage {
+	public:
+		std::vector<T> interVec;
 
-public:
-	typedef std::vector<newint*>::size_type int_index;
-	typedef std::vector<newfloat*>::size_type float_index;
-	typedef std::vector<newdouble*>::size_type double_index;
-	typedef std::vector<newccharp*>::size_type ccp_index;
-	typedef std::vector<newchar*>::size_type char_index;
-	typedef std::vector<newbool*>::size_type bool_index;
+		SimpleStorage(const std::vector<T>& vec) {
+			interVec = vec;
+		}
 
-	~Stor();
+		SimpleStorage() {} //nothing
 
-	int_index append(int value);
-	float_index append(float value);
-	double_index append(double value);
-	ccp_index append(const char* value);
-	char_index append(char value);
-	bool_index append(bool value);
+		size_t find(T value) const;
+		T getType() const;
+		void clear();
 
-	std::vector<newint*> get(int i);
-	std::vector<newfloat*> get(float i);
-	std::vector<newdouble*> get(double i);
-	std::vector <newccharp*> get(const char* i);
-	std::vector <newchar*> get(char i);
-	std::vector <newbool*> get(bool i);
+		void operator=(const SimpleStorage<T>&);
+		void operator=(const std::vector<T>&);
+		operator bool();
+		bool operator==(const SimpleStorage<T>&);
 
-	bool del(const char* todel);
-	bool del(const char* todel, size_t index);
-	bool clear(const char* toclear, bool boolean, size_t count_to_clear = NULL);
-	int clear(const char* toclear, size_t count_to_clear = NULL);
+	private:
 
-	int getwa(int x, int_index index);
-	float getwa(float x, float_index index);
-	double getwa(double x, double_index index);
-	const char* getwa(const char* x, ccp_index index);
-	char getwa(char x, char_index index);
-	bool getwa(bool x, bool_index index);
+	};
 
-	bool empty(std::string what);
-};
+	enum class MultiStorageType {
+		STOR1,
+		STOR2,
+		STOR3,
+		STOR4,
+		STOR5
+	};
+	using MST = MultiStorageType;
+
+	template<
+			typename Type1,
+			typename Type2 = c_VOID, //I used here c_VOID instead of void because
+			typename Type3 = c_VOID, //you cant make an vector with void.
+			typename Type4 = c_VOID, //But c_VOID is the same as void
+			typename Type5 = c_VOID
+	>
+	class MultiStorage {
+	public:
+		SimpleStorage<Type1> stor1;
+		SimpleStorage<Type2> stor2;
+		SimpleStorage<Type3> stor3;
+		SimpleStorage<Type4> stor4;
+		SimpleStorage<Type5> stor5;
+
+		bool empty(MST type) const;
+		bool allSize() const;
+	};
+}
+
+
+
+//defs - SimpleStorage
+template<typename T>
+size_t StorageSys::SimpleStorage<T>::find(T value) const {
+	for(size_t i = 0; i < interVec.size(); ++i) {
+		if(interVec[i] == value) {
+			return i;
+		}
+	}
+	InternalErrLog::LogMain.append(time(NULL),"VecIsNotStoragingError");
+	throw VecIsNotStoragingError;
+	return 0;
+}
+
+template<typename T>
+T StorageSys::SimpleStorage<T>::getType() const {
+	return dynamic_cast<T>(1);
+}
+
+template<typename T>
+void StorageSys::SimpleStorage<T>::clear() {
+	interVec.clear();
+}
+
+template<typename T>
+StorageSys::SimpleStorage<T>::operator bool() {
+	return interVec.empty();
+}
+
+template<typename T>
+void StorageSys::SimpleStorage<T>::operator=(const SimpleStorage<T>& stor) {
+	this->interVec = stor.interVec;
+}
+
+template<typename T>
+void StorageSys::SimpleStorage<T>::operator=(const std::vector<T>& vec) {
+	this->interVec = vec;
+}
+
+
+
+//defs - SimpleStorage
+template<typename T1, typename T2, typename T3, typename T4, typename T5>
+bool StorageSys::MultiStorage<T1,T2,T3,T4,T5>::empty(MST type) const {
+	if(type == MST::STOR1) {
+		return stor1.empty();
+	}
+	else if(type == MST::STOR2) {
+		return stor2.empty();
+	}
+	else if(type == MST::STOR3) {
+		return stor3.empty();
+	}
+	else if(type == MST::STOR4) {
+		return stor4.empty();
+	}
+	else if(type == MST::STOR5) {
+		return stor5.empty();
+	}
+	else {
+		return true;
+	}
+}
+
+template<typename T1, typename T2, typename T3, typename T4, typename T5>
+bool StorageSys::MultiStorage<T1,T2,T3,T4,T5>::allSize() const {
+	return 
+	stor1.interVec.size() + 
+	stor2.interVec.size() + 
+	stor3.interVec.size() + 
+	stor4.interVec.size() + 
+	stor5.interVec.size();
+}
 
 #endif

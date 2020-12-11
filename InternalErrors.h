@@ -36,14 +36,6 @@ class DirMakeErrorc : public std::exception
 	}
 } DirMakeError;
 
-class EventTriggerErrorc : public std::exception
-{
-	public: virtual const char* what() const throw()
-	{
-		return "The programm couldn't trigger the requested Event. Are you sure that you have triggert the right event?";
-	}
-} EventTriggerError;
-
 class ResetFilesErrorc : public std::exception
 {
 public: virtual const char* what() const throw()
@@ -92,12 +84,12 @@ public: virtual const char* what() const throw()
 }
 }VecCantDeleteError;
 
-class InvaildInputc : public std::exception
+class InvaildInputErrorc : public std::exception
 {
 public: virtual const char* what() const throw()
 {
 	return "Your paramether was incorrect!";
 }
-}InvaildInput;
+}InvaildInputError;
 
 #endif

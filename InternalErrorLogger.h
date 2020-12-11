@@ -2,13 +2,12 @@
 #define INTERNAL_ERROR_LOGGER_H
 
 #include "InternalDef.h"
+#include "InternalErrors.h"
 
 #include <time.h>
 #include <vector>
 #include <string>
 #include <iostream>
-
-#include "InternalErrors.h"
 
 namespace InternalErrLog {
 	
@@ -46,7 +45,7 @@ namespace InternalErrLog {
 			return ret_vec;
 		}
 
-		void printErr() {
+		void printErr() { //TODO: default error type stuff you know
 			for (size_t i = 0; i < Err_type.size(); ++i) {
 				std::cout << Err_type[i] << " : " << Err_time[i] << "\n";
 			}

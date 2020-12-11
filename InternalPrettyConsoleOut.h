@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
+#include <functional>
 
 namespace InternalPCO { //PCO = pretty console out
 	class SlowPrintc {
@@ -95,7 +96,7 @@ namespace InternalPCO { //PCO = pretty console out
 
 				if (clear) {
 					mac::sleep(clearWaitTime); // TODO: Linux compatibility and such stuff
-					mac::clearScceen();
+					mac::clearScreen();
 				}
 				return true;
 			}
@@ -184,11 +185,67 @@ namespace InternalPCO { //PCO = pretty console out
 			std::cout << ((char)(rand() - i / 5));
 		}
 	}
-	void debugOut(std::string string) {
-		DEBUG_START_
-			std::cout << "[DEBUG]: " << string << "\n";
-		DEBUG_END_
-	}
+
+	class HubChoice {
+	public:
+		void (*func)(void);
+		std::string id;
+		std::string name;
+
+		HubChoice(void (*func)(void),std::string name, std::string id) {
+			this->id = id;
+			this->name = name;
+			this->func = func;
+		}
+
+		void run() {
+			func();
+		}
+	};
+
+	class Hub {
+	public:
+		InternalPCO::SlowPrintc printer;
+		bool hiding = true;
+		std::vector<HubChoice> choices;
+		std::string layout; //comming soon
+		std::string name;
+
+		Hub(std::string name, std::vector<HubChoice> choices, std::string customLayout = "STD") {
+			printer = 500;
+			this->name = name;
+			layout = customLayout;
+			this->choices = choices;
+		}
+
+		void show() {
+			hiding = false;
+			mac::clearScreen();
+
+			if(layout == "STD") {
+				std::cout << "-------------# Wellcome to " << name << " #-------------\n";
+				
+				for(size_t i = 0; i < choices.size(); ++i) {
+					std::cout << "        " << i+1 << ".)  " << choices[i].name << "\n";
+				}
+
+				std::cout << "\n\n"
+						  << "Your choice:";
+				std::string inp;
+				std::getline(std::cin,inp);
+				mac::sleep(100);
+				mac::clearScreen();
+				try {
+					choices[std::stoi(inp)-1].run();
+				}
+				catch(...) {
+					show();
+				}
+				hiding = true;
+						  
+			}
+		}
+	};
 }
 
 #endif

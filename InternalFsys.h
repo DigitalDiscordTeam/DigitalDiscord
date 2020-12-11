@@ -5,6 +5,7 @@
 #include "InternalErrorLogger.h"
 #include "InternalEventMap.h"
 #include "InternalSys.h"
+#include "InternalLib.h"
 
 #include <string>
 #include <iostream>
@@ -106,76 +107,6 @@ namespace InternalFsys { //Fsys = File system
 		}
 	}
 
-	bool write(std::string path, std::string override_, std::string newvalue, std::string fname) {
-
-		std::ifstream ifile;
-		ifile.open(path, std::ios::binary);
-		//read
-		char* dummy = new char[get_flength(ifile) + 1];
-		if (dummy == nullptr) {
-			throw ReadFileError;
-		}
-		ifile.read(dummy, get_flength(ifile));
-		if (dummy == nullptr) {
-			throw ReadFileError;
-		}
-		dummy += '\0';
-		std::string re;
-		re.assign(dummy, get_flength(ifile) + 1);
-		delete[] dummy;
-		dummy = nullptr;
-
-		//manage stuff
-
-		std::vector<std::string> vec;
-		std::string tmp1;
-
-		for (size_t i = 0; i < re.length(); ++i) {
-			if (re[i] == ' ' || re[i] == '\n' || re[i] == '\0') {
-				vec.push_back(tmp1);
-				tmp1 = "";
-			}
-			else if (re[i] != '\r') {
-				tmp1 += re[i];
-			}
-		}
-		tmp1 = "";
-
-		//sort
-		std::string tmp2 = "";
-		for (size_t i = 0; i < vec.size(); ++i) {
-			tmp2 += re[i];
-			
-			if (vec[i] == override_ && i % 3 == 0) {
-				vec[i] = newvalue;
-				MyMapStor[override_] = newvalue;
-			}
-		}
-		
-		std::string endStr;
-		for (size_t i = 0; i < vec.size(); ++i) {
-			endStr += vec[i];
-			if (i - 2 % 3 == 0 && i != 0) {
-				std::cout << "append, i:" << i << ",veci:" << vec[i] << "\n";
-				endStr += "\n";
-			}
-			else {
-				endStr += " ";
-			}
-		}
-		assert(endStr != "");
-		endStr += "\0";
-
-
-		//write
-		std::ofstream ofile;
-		ofile.open(fname, std::ios::trunc);
-		ofile.write(endStr.c_str(), endStr.length());
-		ofile.close();
-
-		return true;
-	}
-
 	bool makeFile(std::string name, std::string path, std::string message = "") {
 		if (fs::exists(path + name)) {
 			InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");
@@ -215,7 +146,7 @@ namespace InternalFsys { //Fsys = File system
 					check = 0;
 				}
 				if (check % 2 == 0 && check != 0) {
-					throw InvaildInput;
+					throw InvaildInputError;
 				}
 			}
 		}
@@ -286,6 +217,31 @@ namespace InternalFsys { //Fsys = File system
 		dummy = nullptr;
 
 		return re;
+	}
+
+	void write(std::string path, std::string key, std::string newValue) {
+		std::string read = InternalFsys::readNormal(path);
+
+		tokenType readSplit = InternalFsys::splitTokens(" |\n|",read);
+		size_t index = InternalLib::searchForVal_i(readSplit,key);
+		DEBUG_MESSAGE("index: " << index << ";");
+		DEBUG_START_
+			for(size_t i = 0; i < readSplit.size(); ++i) {
+				DEBUG_MESSAGE("loop," << i << "; index: " << readSplit[i]);
+			}
+		DEBUG_END_
+		readSplit[index] = newValue;
+
+		std::ofstream ofile;
+		ofile.open(path, std::ios::trunc);
+
+		for(size_t i = 0; i < readSplit.size(); ++i) {
+			ofile << readSplit[i];
+
+			ofile << " ";
+
+		}
+		ofile.close();
 	}
 }
 

@@ -21,13 +21,13 @@ namespace Events {
 	public:
 		eT state = eT::UNKNOWN;
 		bool is = false;
-		std::string id = ""; // 4 chars only!
+		std::string id = ""; // 8 chars only!
 		std::string name = "";
 
 		Event(std::string name, std::string id);
 
 		Event() { //to avoid stack overflows during Events::compact
-			id = "----";
+			id = "--------";
 			name = "noEvent";
 			state = eT::NOEVENT;
 		}
@@ -56,7 +56,7 @@ namespace Events {
 		}
 	};
 
-	Event FirstRun("FirstRun", "1000");
+	Event FirstRun("FirstRun", "10000000");
 
 	namespace trans {
 		std::string ttypetovar(std::string value, translateType type) {
@@ -151,7 +151,7 @@ namespace InternalEventVec {
 
 Events::Event::Event(std::string name, std::string id) {
 	//checks id
-	while(id.length() > 4) {
+	while(id.length() > 8) {
 		id.erase(id.end());
 	}
 
@@ -166,9 +166,6 @@ Events::Event::Event(std::string name, std::string id) {
 
 Events::Event::~Event() {
 	if (this->getState() == Events::eventType::TRUEEVENT) {
-		if (this->id == "----") {
-			throw VecCantDeleteError;
-		}
 
 		EventIdMap.erase(this->name);
 		EventNameMap.erase(this->id);

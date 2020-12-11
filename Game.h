@@ -1,5 +1,5 @@
-#ifndef INTRO_H
-#define INTRO_H
+#ifndef GAME_H
+#define GAME_H
 
 #include "InternalDef.h"
 #include "InternalPrettyConsoleOut.h"
@@ -7,7 +7,7 @@
 #include "InternalSys.h"
 #include "InternalFsys.h"
 #include "InternalEventMap.h"
-#include "IkarusStd.h"
+#include "Chars.h"
 #include "InternalFileVec.h"
 
 
@@ -16,7 +16,7 @@ namespace Game {
 		Setup::checkIfPaths();
 		InternalEventMap::update();
 
-		Ikarus::Memory::mapUpdate();
+		Chars::Special::Ikarus::Memory::mapUpdate();
 	}
 
 	void start(bool showcase = false) {

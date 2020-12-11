@@ -1,12 +1,17 @@
-﻿#include "InternalSys.h"
-#include "InternalLib.h"
-#include "InternalFsys.h"
-#include "Game.h"
-#include "CommandFile.h"
+﻿#include "InternalDef.h"
+#include "Memory.h"
+#include "InternalPrettyConsoleOut.h"
 
-int main(int argc, char* argv[]) {
-	CommandFile cF(argv[0], argv[1]);
+int main(/*int argc, char* argv[]*/) {
+	InternalPCO::HubChoice myCH1([](void) {
+		std::cout << "success!!!\n";
+	},"myCH1","100x010001x01001001000");
+	InternalPCO::HubChoice myCH2([](void) {
+		std::cout << "success2!!!\n";
+	},"myCH2","100x010001x01001001000");
 
-	cF.run();
-	return 0;
+	InternalPCO::Hub OwnHub("OwnHub",{myCH1,myCH2});
+
+	OwnHub.show();
+
 }
