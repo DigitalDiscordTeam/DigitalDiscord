@@ -5,91 +5,58 @@
 
 class ValueNotFoundErrorc : public std::exception
 {
-	public: virtual const char* what() const throw()
-	{
-		return "The value is not in the file/input/...!";
-	}
+	public: virtual const char* what() const throw();
 	
 } ValueNotFoundError;
 
 class MapIsNotStoragingErrorc : public std::exception
 {
-	public: virtual const char* what() const throw()
-	{
-		return "The used std::map hasn't the requested item!";
-	}
+	public: virtual const char* what() const throw();
 } MapIsNotStoragingError;
 
 class ReadFileErrorc : public std::exception
 {
-	public: virtual const char* what() const throw()
-	{
-		return "The programm couldn't read the file, maybe it's not open?";
-	}
+	public: virtual const char* what() const throw();
 } ReadFileError;
 	
 class DirMakeErrorc : public std::exception
 {
-	public: virtual const char* what() const throw()
-	{
-		return "The programm couldn't make the requested diktionarys. Maybe they are already there?";
-	}
+	public: virtual const char* what() const throw();
 } DirMakeError;
 
 class ResetFilesErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "The Programm coudn't open the files, maybe they are not existing?";
-}
+	public: virtual const char* what() const throw();
 }ResetFilesError;
 
 class MapIsAlreadyStoragingErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "The map storage the requested item already!";
-}
+	public: virtual const char* what() const throw();
 }MapIsAlreadyStoragingError;
 
 class InternalEventVecIsAlreadyStoragingErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "The vector is already storaging the requested item!";
-}
+	public: virtual const char* what() const throw();
 }InternalEventVecIsAlreadyStoragingError;
 
 class VecIsNotStoragingErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "The vector is not storaging the requested item!";
-}
+	public: virtual const char* what() const throw();
 }VecIsNotStoragingError;
 
 class FileIsAlreadyExistingErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "You want to re-create an existing file!";
-}
+	public: virtual const char* what() const throw();
 }FileIsAlreadyExistingError;
 
 class VecCantDeleteErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "The vector cant delete the requested item, it is mybe not storaging!";
-}
+	public: virtual const char* what() const throw();
 }VecCantDeleteError;
 
 class InvaildInputErrorc : public std::exception
 {
-public: virtual const char* what() const throw()
-{
-	return "Your paramether was incorrect!";
-}
+	public: virtual const char* what() const throw();
 }InvaildInputError;
 
 #endif

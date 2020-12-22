@@ -26,77 +26,31 @@ namespace Events {
 
 		Event(std::string name, std::string id);
 
-		Event() { //to avoid stack overflows during Events::compact
-			id = "--------";
-			name = "noEvent";
-			state = eT::NOEVENT;
-		}
+		Event();
 
 		//Event(Event&) = delete;
 
 		~Event();
 
-		bool operator==(Event& _event) {
-			if (_event.id == this->id) {
-				return true;
-			}
-			return false;
-		}
+		bool operator==(Event& _event);
 
-		bool operator!=(Event& _event) {
-			return _event.id != this->id ? true : false;
-		}
+		bool operator!=(Event& _event);
 
-		operator bool() {
-			return is;
-		}
+		operator bool();
 
-		eventType getState() {
-			return state;
-		}
+		eventType getState();
 	};
 
 	Event FirstRun("FirstRun", "10000000");
 
 	namespace trans {
-		std::string ttypetovar(std::string value, translateType type) {
-			if (type == translateType::ID) {
-				return EventIdMap[value];
-			}
-			else {
-				return EventNameMap[value];
-			}
-		}
+		std::string ttypetovar(std::string value, translateType type);
 
-		std::string etypeToString(Events::eT type) {
-			switch (type) {
-			case eT::NOEVENT: 
-				return "NOEVENT";
-				break;
-			case eT::TRUEEVENT:
-				return "TRUEEVENT";
-				break;
-			case eT::UNKNOWN:
-				return "UNKNOWN";
-				break;
-			}
-			return "";
-		}
+		std::string etypeToString(Events::eT type);
 
-		Event compact(std::string name, std::string id) {
-			Event ret;
-			ret.id = id;
-			ret.name = name;
-			return ret;
-		}
+		Event compact(std::string name, std::string id);
 
-		Event compact(const Event* _event) {
-			Event ret;
-			ret.id = _event->id;
-			ret.name = _event->name;
-
-			return ret;
-		}
+		Event compact(const Event* _event);
 
 	}
 }
@@ -104,76 +58,17 @@ namespace Events {
 namespace InternalEventVec {
 	std::vector<Events::Event> eventVec;
 
-	bool isIn(const std::string id) {
-		for (size_t i = 0; i < eventVec.size(); ++i) {
-			if (eventVec[i].id == id) {
-				return true;
-			}
-		}
-		return false;
-	}
+	bool isIn(const std::string id);
 
-	void append(Events::Event& Event) {
-		eventVec.push_back(Event);
-	}
-	void append(const Events::Event Event) { //if you use std::compact
-		eventVec.push_back(Event);
-	}
+	void append(Events::Event& Event);
 
-	void del(Events::Event Event) {
-		for (size_t i = 0; i < eventVec.size(); ++i) {
-			if (eventVec[i].id == Event.id) {
-				eventVec.erase(eventVec.begin() + i);
-			}
-		}
-		throw VecCantDeleteError;
-	}
+	void append(const Events::Event Event);
 
-	void del(std::string id) {
-		for (size_t i = 0; i < eventVec.size(); ++i) {
-			if (eventVec[i].id == id) {
-				eventVec.erase(eventVec.begin() + i);
-				return;
-			}
-		}
-		throw VecCantDeleteError;
-	}
+	void del(const Events::Event& Event);
 
-	size_t getIndex(std::string id) {
-		for (size_t i = 0; i < eventVec.size(); ++i) {
-			if (eventVec[i].id == id) {
-				return i;
-			}
-		}
-		return -1;
-	}
-}
+	void del(std::string id);
 
-Events::Event::Event(std::string name, std::string id) {
-	//checks id
-	while(id.length() > 8) {
-		id.erase(id.end());
-	}
-
-	this->name = name;
-	this->id = id;
-	this->state = Events::eventType::TRUEEVENT;
-	EventIdMap[name] = id;
-	EventNameMap[id] = name;
-
-	InternalEventVec::append(Events::trans::compact(this->name,this->id));
-}
-
-Events::Event::~Event() {
-	if (this->getState() == Events::eventType::TRUEEVENT) {
-
-		EventIdMap.erase(this->name);
-		EventNameMap.erase(this->id);
-
-		if (!InternalEventVec::eventVec.empty()) {
-			InternalEventVec::del(this->id);
-		}
-	}
+	size_t getIndex(std::string id);
 }
 
 #endif

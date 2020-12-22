@@ -1,17 +1,13 @@
-﻿#include "InternalDef.h"
-#include "Memory.h"
+﻿#define DEBUG_LEVEL 0
+#include "InternalDef.h"
 #include "InternalPrettyConsoleOut.h"
+#include "InternalEvents.h"
+#include "InternalEventMap.h"
+#include "storage.h"
+#include "Game.h"
+
+//#include "ExternalPlugins.h"
 
 int main(/*int argc, char* argv[]*/) {
-	InternalPCO::HubChoice myCH1([](void) {
-		std::cout << "success!!!\n";
-	},"myCH1","100x010001x01001001000");
-	InternalPCO::HubChoice myCH2([](void) {
-		std::cout << "success2!!!\n";
-	},"myCH2","100x010001x01001001000");
-
-	InternalPCO::Hub OwnHub("OwnHub",{myCH1,myCH2});
-
-	OwnHub.show();
-
+	std::cout << System::getSysUsername_s() << "\n";
 }

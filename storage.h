@@ -5,9 +5,13 @@
 #include <vector>
 #include <stdlib.h>
 
+#include "InternalDef.h"
 #include "InternalErrorLogger.h"
+//#include <thread>
 
 namespace StorageSys {
+	//std::thread::id mainId;
+
 	class c_VOID {
 		//void
 	};
@@ -65,79 +69,26 @@ namespace StorageSys {
 	};
 }
 
+class switchManager;
 
+struct switchManagerStor {
+	size_t index = 0;
+	std::string name;
+	std::string id;
+	bool ZERO = false;
+	bool in = false;
 
-//defs - SimpleStorage
-template<typename T>
-size_t StorageSys::SimpleStorage<T>::find(T value) const {
-	for(size_t i = 0; i < interVec.size(); ++i) {
-		if(interVec[i] == value) {
-			return i;
-		}
-	}
-	InternalErrLog::LogMain.append(time(NULL),"VecIsNotStoragingError");
-	throw VecIsNotStoragingError;
-	return 0;
-}
+	std::vector <switchManager*> inList;
+	~switchManagerStor();
+};
 
-template<typename T>
-T StorageSys::SimpleStorage<T>::getType() const {
-	return dynamic_cast<T>(1);
-}
+class switchManager {
+	std::vector<switchManagerStor> interVec;
+public:
+	void append(switchManagerStor& stor);
 
-template<typename T>
-void StorageSys::SimpleStorage<T>::clear() {
-	interVec.clear();
-}
-
-template<typename T>
-StorageSys::SimpleStorage<T>::operator bool() {
-	return interVec.empty();
-}
-
-template<typename T>
-void StorageSys::SimpleStorage<T>::operator=(const SimpleStorage<T>& stor) {
-	this->interVec = stor.interVec;
-}
-
-template<typename T>
-void StorageSys::SimpleStorage<T>::operator=(const std::vector<T>& vec) {
-	this->interVec = vec;
-}
-
-
-
-//defs - SimpleStorage
-template<typename T1, typename T2, typename T3, typename T4, typename T5>
-bool StorageSys::MultiStorage<T1,T2,T3,T4,T5>::empty(MST type) const {
-	if(type == MST::STOR1) {
-		return stor1.empty();
-	}
-	else if(type == MST::STOR2) {
-		return stor2.empty();
-	}
-	else if(type == MST::STOR3) {
-		return stor3.empty();
-	}
-	else if(type == MST::STOR4) {
-		return stor4.empty();
-	}
-	else if(type == MST::STOR5) {
-		return stor5.empty();
-	}
-	else {
-		return true;
-	}
-}
-
-template<typename T1, typename T2, typename T3, typename T4, typename T5>
-bool StorageSys::MultiStorage<T1,T2,T3,T4,T5>::allSize() const {
-	return 
-	stor1.interVec.size() + 
-	stor2.interVec.size() + 
-	stor3.interVec.size() + 
-	stor4.interVec.size() + 
-	stor5.interVec.size();
-}
+	void del(switchManagerStor& stor);
+	void del(switchManagerStor* stor);
+}mainSwitchManager;
 
 #endif

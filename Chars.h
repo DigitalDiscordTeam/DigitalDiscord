@@ -3,9 +3,7 @@
 //game-characters
 
 #include "InternalFsys.h"
-#include "InternalPrettyConsoleOut.h"
 #include "Memory.h"
-#include "InternalLib.h"
 #include "storage.h"
 
 #include <iostream>
@@ -30,24 +28,11 @@ namespace Chars {
         InternalPCO::SlowPrintc rand_SP;
     }
     namespace Sayas{
-        void sys(std::string message, std::string ext = "") {
-            std::cout << "[SYSTEM] "; std::cout.flush();
-            Custom::sys_SP << message;
-            std::cout << ext; //print something without slowPrint (for example: \n)
-        }
-        void ikarus(std::string message, std::string ext = "") {
-            std::cout << "[Ikarus] "; std::cout.flush();
-		    Custom::ikarus_SP << message;
-            std::cout << ext;
-        }
-        void random(std::string message, long length, std::string ext = "") {
-            std::cout << "[";
-            InternalPCO::corruptedLine(length);
-            std::cout << "] ";
-            Custom::rand_SP << message;
-            std::cout << ext;
+        void sys(std::string message, std::string ext = "");
 
-        }
+        void ikarus(std::string message, std::string ext = "");
+
+        void random(std::string message, long length, std::string ext = "");
     }
 
     namespace Special {
@@ -57,32 +42,26 @@ namespace Chars {
                 std::map<std::string, int> IkarusOwnMap; //Ikarus is a name so you write it big
                 StorageSys::MultiStorage<int,char,std::string,float,uint32_t> IkarusStor;
 
-                bool IkarusRememberMap(Events::Event Event) {
-                    return IkarusOwnMap[Event.id] == 0 ? false : true;
-                }
+                bool IkarusRememberMap(Events::Event Event);
 
-                void mapUpdate() {
-                    IkarusOwnMap = InternalEventMap::EventMap;
-                }
+                void mapUpdate();
             }
 
             namespace Do {
-                auto say = Sayas::ikarus; //sorry, bu i cant add the default value for ext here...
-
-
+                auto say = Sayas::ikarus; //sorry, but i cant add the default value for ext here...
             }
         }
 
         namespace Player2 {
             //later ;)
         }
+
+        namespace sys {
+
+        }
     }
 
-    void init(int customTime = globalInitSleeptime) {
-        Custom::ikarus_SP = customTime;
-        Custom::ikarus_SP = customTime;
-        Custom::rand_SP = customTime;
-    }
+    void init(int customTime = globalInitSleeptime);
 }
 
 #endif

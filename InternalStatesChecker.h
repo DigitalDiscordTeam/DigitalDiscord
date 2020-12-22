@@ -8,6 +8,7 @@
 #include "InternalErrorLogger.h"
 
 namespace InternalStatCheck {
+	/*
 	std::string getfUsername() {
 		try {
 			return InternalFsys::retMap("Username");
@@ -16,15 +17,18 @@ namespace InternalStatCheck {
 			throw MapIsNotStoragingError;
 			InternalErrLog::LogMain.append(time(NULL), "MapIsNotStoragingError");
 		}
-		if (!Setup::dirPathExits) {
-			Setup::checkIfPaths();
+		if (!System::dirPathExits) {
+			System::checkIfPaths();
 		}
-		if (!Setup::dirPathExits) {
+		if (!System::dirPathExits) {
 			InternalErrLog::LogMain.append(time(NULL), "DirMakeError");
 			throw DirMakeError;
 		}
-		return InternalFsys::read("Username", Setup::pathtoDir + "test.txt");
+		return InternalFsys::read("Username", System::pathtoDir + "test.txt");
 	}
+	*/
+
+//working on....
 
 	
 
