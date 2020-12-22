@@ -3,7 +3,7 @@
 void InternalEventMap::set(Events::Event& _event, bool setstate) {
 	if (EventMap[_event.id] == 0 && !setstate) {
 		InternalErrLog::LogMain.append(time(NULL), "MapIsAlreadyStoragingError");
-		throw MapIsAlreadyStoragingError;
+		throw MapIsAlreadyStoragingError{};
 	}
 	else {
 		if (setstate) {
@@ -21,7 +21,7 @@ void InternalEventMap::set(const Events::Event _event, bool conpact, bool setsta
 	assert(_event.state == Events::eventType::NOEVENT); //only true events!
 	if (EventMap[_event.id] == 0 && !setstate) {
 		InternalErrLog::LogMain.append(time(NULL), "MapIsAlreadyStoragingError");
-		throw MapIsAlreadyStoragingError;
+		throw MapIsAlreadyStoragingError{};
 	}
 	else {
 		if (setstate) {

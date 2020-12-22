@@ -10,4 +10,5 @@
 
 int main(/*int argc, char* argv[]*/) {
 	std::cout << System::getSysUsername_s() << "\n";
+	throw ValueNotFoundError{};
 }

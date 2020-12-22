@@ -31,7 +31,7 @@ size_t InternalLib::searchForVal_i(tokenType str, std::string key) { //return th
 			return i+2;
 		}
 	}
-	throw ValueNotFoundError;
+	throw ValueNotFoundError{};
 	return -1;
 }
 
@@ -41,6 +41,6 @@ std::string InternalLib::searchForVal(tokenType str, std::string key) {
 			return str[i+2];
 		}
 	}
-	throw ValueNotFoundError;
+	throw ValueNotFoundError{};
 	return "";
 }

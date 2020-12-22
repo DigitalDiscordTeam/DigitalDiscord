@@ -22,7 +22,7 @@ filesystemPath InternalFileVec::get(std::string value, gT type) {
 			}
 		}
 	}
-	throw VecIsNotStoragingError;
+	throw VecIsNotStoragingError{};
 }
 
 filesystemPath InternalFileVec::get(size_t index, gT type) {

@@ -55,7 +55,7 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		if (!fs::exists(path)) {
 
 			if (!fs::create_directory(path)) {
-				throw DirMakeError;
+				throw DirMakeError{};
 			}
 		}
 
@@ -102,7 +102,7 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		if (fs::exists(path)) {
 
 			if (fs::create_directory(path)) {
-				throw DirMakeError;
+				throw DirMakeError{};
 			}
 		}
 		System::pathtoDir_w = path;

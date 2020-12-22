@@ -9,7 +9,7 @@ size_t StorageSys::SimpleStorage<T>::find(T value) const {
 		}
 	}
 	InternalErrLog::LogMain.append(time(NULL),"VecIsNotStoragingError");
-	throw VecIsNotStoragingError;
+	throw VecIsNotStoragingError{};
 	return 0;
 }
 

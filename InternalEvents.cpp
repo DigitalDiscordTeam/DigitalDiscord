@@ -92,7 +92,7 @@ void InternalEventVec::del(const Events::Event& Event) {
 			eventVec.erase(eventVec.begin() + i);
 		}
 	}
-	throw VecCantDeleteError;
+	throw VecCantDeleteError{};
 }
 
 void InternalEventVec::del(std::string id) {
@@ -102,7 +102,7 @@ void InternalEventVec::del(std::string id) {
 			return;
 		}
 	}
-	throw VecCantDeleteError;
+	throw VecCantDeleteError{};
 }
 
 size_t InternalEventVec::getIndex(std::string id) {

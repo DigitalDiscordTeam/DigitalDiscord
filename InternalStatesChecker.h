@@ -14,7 +14,7 @@ namespace InternalStatCheck {
 			return InternalFsys::retMap("Username");
 		}
 		catch (...) {
-			throw MapIsNotStoragingError;
+			throw MapIsNotStoragingError{};
 			InternalErrLog::LogMain.append(time(NULL), "MapIsNotStoragingError");
 		}
 		if (!System::dirPathExits) {
@@ -22,7 +22,7 @@ namespace InternalStatCheck {
 		}
 		if (!System::dirPathExits) {
 			InternalErrLog::LogMain.append(time(NULL), "DirMakeError");
-			throw DirMakeError;
+			throw DirMakeError{};
 		}
 		return InternalFsys::read("Username", System::pathtoDir + "test.txt");
 	}

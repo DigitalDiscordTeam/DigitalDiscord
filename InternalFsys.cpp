@@ -12,7 +12,7 @@ std::streamsize InternalFsys::get_flength(std::ifstream& file) {
 
 std::string InternalFsys::retMap(std::string value) {
 	if (MyMapStor[value] == "") {
-		throw MapIsNotStoragingError;
+		throw MapIsNotStoragingError{};
 	}
 	else {
 		return MyMapStor[value];
@@ -75,7 +75,7 @@ std::string InternalFsys::read(std::string key, std::string path) {
 		counter += 1;
 	}
 
-	throw ValueNotFoundError; //the value is not in the file
+	throw ValueNotFoundError{}; //the value is not in the file
 }
 
 void InternalFsys::delStor(std::string value) {
@@ -83,7 +83,7 @@ void InternalFsys::delStor(std::string value) {
 		MyMapStor[value] = "";
 	}
 	else {
-		throw MapIsNotStoragingError;
+		throw MapIsNotStoragingError{};
 	}
 }
 
@@ -109,7 +109,7 @@ tokenType InternalFsys::splitTokens(const std::string splitKey, const std::strin
 				check = 0;
 			}
 			if (check % 2 == 0 && check != 0) {
-				throw InvaildInputError;
+				throw InvaildInputError{};
 			}
 		}
 	}
@@ -141,7 +141,7 @@ tokenType InternalFsys::splitTokens(const std::string splitKey, const std::strin
 void InternalFsys::resetFiles(bool createAsNew) {
 	if (System::pathtoDir == "") {
 		InternalErrLog::LogMain.append(time(NULL), "ResetFilesError");
-		throw ResetFilesError;
+		throw ResetFilesError{};
 	}
 	else {
 		std::ofstream ofile;
@@ -166,11 +166,11 @@ std::string InternalFsys::readNormal(std::string path) {
 	char* dummy = new char[len];
 
 	if (dummy == nullptr) {
-		throw ReadFileError;
+		throw ReadFileError{};
 	}
 	ifile.read(dummy, len);
 	if (dummy == nullptr || strlen(dummy) == 0) {
-		throw ReadFileError;
+		throw ReadFileError{};
 	}
 	//dummy += '\0';
 	std::string re;
@@ -261,13 +261,13 @@ void InternalFsys::FEvents::delIdInEventFile(std::string path, const std::string
 			return;
 		}
 	}
-	throw ValueNotFoundError;
+	throw ValueNotFoundError{};
 }
 
 bool InternalFsys::sys::makeFile(std::string name, std::string path, std::string message) {
 	if (fs::exists(path + name)) {
 		InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");
-		throw FileIsAlreadyExistingError;
+		throw FileIsAlreadyExistingError{};
 		return false;
 	}
 
@@ -283,7 +283,7 @@ bool InternalFsys::sys::makeFile(std::string name, std::string path, std::string
 
 void InternalFsys::sys::makeDir(std::string names) {
 	if(!fs::create_directory(System::pathtoDir + names)) {
-		throw DirMakeError;
+		throw DirMakeError{};
 	}	
 }
 
