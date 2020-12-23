@@ -53,6 +53,7 @@ namespace mac { //defs in mac.cpp
 #define MCATCH_END }
 #define MCATCH_AND_IGNORRE(code) try { code} catch(...) {;}
 #define INFINITY_LOOP 1
+#define MDEF inline
 
 //Debugging
 #if DEBUG_LEVEL == 1 //all

@@ -89,6 +89,6 @@ public:
 
 	void del(switchManagerStor& stor);
 	void del(switchManagerStor* stor);
-}mainSwitchManager;
+};
 
 #endif

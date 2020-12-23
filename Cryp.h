@@ -8,8 +8,8 @@
 
 namespace Cryp {
 
-	std::map<char, char> caeser1;
-	std::map<char, char> caeser2;
+	MDEF std::map<char, char> caeser1;
+	MDEF std::map<char, char> caeser2;
 
 	void fillMaps();
 

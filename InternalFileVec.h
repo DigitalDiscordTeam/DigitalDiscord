@@ -11,8 +11,8 @@
 #include <vector>
 
 namespace InternalFileVec {
-	std::vector<std::pair<filesystemPath, std::string>> fileVec; // path : filename
-	filesystemPath lastPath;
+	MDEF std::vector<std::pair<filesystemPath, std::string>> fileVec; // path : filename
+	MDEF filesystemPath lastPath;
 
 	void update(const filesystemPath path);
 

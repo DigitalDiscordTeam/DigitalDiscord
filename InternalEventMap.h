@@ -9,7 +9,7 @@
 #include <assert.h>
 
 namespace InternalEventMap {
-	std::map<std::string, int> EventMap;
+	MDEF std::map<std::string, int> EventMap;
 	
 	void set(Events::Event& _event, bool setstate = true);
 

@@ -9,9 +9,6 @@
 
 namespace InternalLib {
 	std::string sb(bool bool_);
-	
-	template<typename T>
-	bool isIn(T value, std::vector<T> vec, int ignore = -1);
 
 	bool between(float num, float min, float max);
 

@@ -22,7 +22,7 @@ namespace InternalEventMap {
 
 namespace InternalFsys { //Fsys = File system
 
-	std::map<std::string, std::string> MyMapStor;
+	MDEF std::map<std::string, std::string> MyMapStor;
 
 	std::streamsize get_flength(std::ifstream& file);
 

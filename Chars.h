@@ -2,6 +2,7 @@
 #define GAME_CHARS_H
 //game-characters
 
+#include "InternalDef.h"
 #include "InternalFsys.h"
 #include "Memory.h"
 #include "storage.h"
@@ -17,15 +18,15 @@ namespace Chars {
     /// - using namespace <namespace-part>
     ///
     /// why?
-    /// if you do this, you dont need to type very::long::shit::you::dont::need
+    /// if you do this, you wont need to type very::long::shit::you::dont::need
     ///
 
-    int globalInitSleeptime = 300;
+    MDEF int globalInitSleeptime = 300;
     
     namespace Custom {
-        InternalPCO::SlowPrintc ikarus_SP;
-        InternalPCO::SlowPrintc sys_SP;
-        InternalPCO::SlowPrintc rand_SP;
+        MDEF InternalPCO::SlowPrintc ikarus_SP;
+        MDEF InternalPCO::SlowPrintc sys_SP;
+        MDEF InternalPCO::SlowPrintc rand_SP;
     }
     namespace Sayas{
         void sys(std::string message, std::string ext = "");
@@ -39,8 +40,8 @@ namespace Chars {
         namespace Ikarus {
             namespace Memory {
                 
-                std::map<std::string, int> IkarusOwnMap; //Ikarus is a name so you write it big
-                StorageSys::MultiStorage<int,char,std::string,float,uint32_t> IkarusStor;
+                MDEF std::map<std::string, int> IkarusOwnMap; //Ikarus is a name so you write it big
+                MDEF StorageSys::MultiStorage<int,char,std::string,float,uint32_t> IkarusStor;
 
                 bool IkarusRememberMap(Events::Event Event);
 
@@ -48,7 +49,7 @@ namespace Chars {
             }
 
             namespace Do {
-                auto say = Sayas::ikarus; //sorry, but i cant add the default value for ext here...
+                void say(std::string message, std::string ext = "");
             }
         }
 

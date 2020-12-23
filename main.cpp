@@ -1,4 +1,5 @@
 ﻿#define DEBUG_LEVEL 0
+#include "InternalSys.h"
 #include "InternalDef.h"
 #include "InternalPrettyConsoleOut.h"
 #include "InternalEvents.h"
@@ -10,5 +11,5 @@
 
 int main(/*int argc, char* argv[]*/) {
 	std::cout << System::getSysUsername_s() << "\n";
-	throw ValueNotFoundError{};
+	//throw ValueNotFoundError{};
 }

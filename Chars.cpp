@@ -29,6 +29,10 @@ void Chars::Special::Ikarus::Memory::mapUpdate() {
     IkarusOwnMap = InternalEventMap::EventMap;
 }
 
+void Chars::Special::Ikarus::Do::say(std::string message, std::string ext) {
+    Chars::Sayas::ikarus(message,ext);
+}
+
 void Chars::init(int customTime) {
     Custom::ikarus_SP = customTime;
     Custom::ikarus_SP = customTime;

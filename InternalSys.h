@@ -22,9 +22,9 @@
 #endif 
 
 namespace System {
-	bool dirPathExits = false;
-	std::string pathtoDir = "";
-	std::wstring pathtoDir_w = L"";
+	MDEF bool dirPathExits;
+	MDEF std::string pathtoDir;
+	MDEF std::wstring pathtoDir_w;
 
 	std::wstring string2wsstring(const std::string& str);
 

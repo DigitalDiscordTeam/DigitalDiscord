@@ -34,7 +34,7 @@ namespace InternalPCO { //PCO = pretty console out
 
 		void setSleeptime(int newsleeptime);
 
-	}slowPrint;
+	};
 
 	class LoadingScreen {
 	private:
@@ -52,7 +52,7 @@ namespace InternalPCO { //PCO = pretty console out
 
 		void clear(bool cls);
 
-	}loadingScreen(10, 0, false, '#');
+	};
 
 	class VisualCounter {
 		long tmp_len = 0;

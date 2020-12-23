@@ -10,28 +10,29 @@
 #include <string>
 #include <map>
 #include <assert.h>
+#include <algorithm>
 
 namespace Memory {
 
 	class Data  {
 	public:
-	int crypCount = 0;
-	std::string data;
-	std::map<std::string,int> compreMap; //temp, counts how often an pair was found
-	std::vector<char> split;
-	std::map<std::string, std::string> decodeMap; //after:before
-	std::map<std::string,std::string> decodeMap2; //before:after
+		int crypCount = 0;
+		std::string data;
+		std::map<std::string,int> compreMap; //temp, counts how often an pair was found
+		std::vector<char> split;
+		std::map<std::string, std::string> decodeMap; //after:before
+		std::map<std::string,std::string> decodeMap2; //before:after
 
-	Data(std::string data);
+		Data(std::string data);
 
-	void operator=(Data data);
-	void operator=(std::string data);
+		void operator=(Data data);
+		void operator=(std::string data);
 
-	void operator=(const char* data);
+		void operator=(const char* data);
 
-	void initSplit();
+		void initSplit();
 
-};
+	};
 
 	void searchPairs(Data& data);
 

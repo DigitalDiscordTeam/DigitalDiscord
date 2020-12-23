@@ -9,8 +9,8 @@
 #include <map>
 
 namespace Events {
-	std::map<std::string, std::string> EventIdMap; // name : id
-	std::map<std::string, std::string> EventNameMap; // id : name
+	MDEF std::map<std::string, std::string> EventIdMap; // name : id
+	MDEF std::map<std::string, std::string> EventNameMap; // id : name
 
 	enum class eventType { TRUEEVENT, NOEVENT, UNKNOWN};
 	enum class translateType { ID, NAME };
@@ -41,7 +41,7 @@ namespace Events {
 		eventType getState();
 	};
 
-	Event FirstRun("FirstRun", "10000000");
+	MDEF Event FirstRun("FirstRun", "10000000");
 
 	namespace trans {
 		std::string ttypetovar(std::string value, translateType type);
@@ -56,7 +56,7 @@ namespace Events {
 }
 
 namespace InternalEventVec {
-	std::vector<Events::Event> eventVec;
+	MDEF std::vector<Events::Event> eventVec;
 
 	bool isIn(const std::string id);
 

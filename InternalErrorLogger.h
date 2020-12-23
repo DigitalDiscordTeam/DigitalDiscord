@@ -25,7 +25,7 @@ namespace InternalErrLog {
 		void printErr();
 	};
 
-	ErrLog LogMain;
+	MDEF ErrLog LogMain;
 }
 
 #endif

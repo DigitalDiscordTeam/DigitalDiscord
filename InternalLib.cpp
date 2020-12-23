@@ -4,23 +4,6 @@ std::string InternalLib::sb(bool bool_) { //string-bool
 	return bool_ ? "true" : "false";
 }
 
-template<typename T>
-bool InternalLib::isIn(T value, std::vector<T> vec, int ignore) {
-	for (size_t i = 0; i < vec.size(); ++i) {
-		if (ignore == -1) {
-			if (value == vec[i]) {
-				return true;
-			}
-		}
-		else {
-			if (i != ignore && value == vec[i]) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 bool InternalLib::between(float num, float min, float max) {
 	return (num > min && num < max);
 }

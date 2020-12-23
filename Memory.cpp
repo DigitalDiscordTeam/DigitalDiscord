@@ -65,7 +65,7 @@ void Memory::compre(Data& data) {
 			while (INFINITY_LOOP) {
 				srand(time(NULL) + (rand() % time(NULL)));
 				tmpRand = ((rand() % 255) + 126); //only special keys
-				if(InternalLib::isIn(static_cast<char>(tmpRand),data.split)) {
+				if(std::find(data.split.begin(),data.split.end(),static_cast<char>(tmpRand))==std::end(data.split)) {
 					continue;
 				}
 				DEBUG_START_
