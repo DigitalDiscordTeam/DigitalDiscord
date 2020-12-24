@@ -18,7 +18,7 @@ namespace InternalStatCheck {
 			InternalErrLog::LogMain.append(time(NULL), "MapIsNotStoragingError");
 		}
 		if (!System::dirPathExits) {
-			System::checkIfPaths();
+			System::doPaths();
 		}
 		if (!System::dirPathExits) {
 			InternalErrLog::LogMain.append(time(NULL), "DirMakeError");

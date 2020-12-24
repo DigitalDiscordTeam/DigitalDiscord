@@ -69,26 +69,29 @@ namespace StorageSys {
 	};
 }
 
-class switchManager;
+template<typename T>
+class smartStorage;
 
-struct switchManagerStor {
+template<typename T>
+struct smartStorageNode {
 	size_t index = 0;
 	std::string name;
 	std::string id;
 	bool ZERO = false;
-	bool in = false;
+	T in = false;
 
-	std::vector <switchManager*> inList;
-	~switchManagerStor();
+	std::vector <smartStorage<T>*> inList;
+	~smartStorageNode();
 };
 
-class switchManager {
+template<typename T>
+class smartStorage {
 	std::vector<switchManagerStor> interVec;
 public:
-	void append(switchManagerStor& stor);
+	void append(smartStorageNode<T>& stor);
 
-	void del(switchManagerStor& stor);
-	void del(switchManagerStor* stor);
+	void del(smartStorageNode<T>& stor);
+	void del(smartStorageNode<T>* stor);
 };
 
 #endif

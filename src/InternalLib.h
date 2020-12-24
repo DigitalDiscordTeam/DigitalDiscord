@@ -16,6 +16,15 @@ namespace InternalLib {
 
 	std::string searchForVal(tokenType str, std::string key);
 
+	namespace random {
+		int randomint();
+
+		template<typename T>
+		T randomChoice(T arr[]);
+
+		template<typename T>
+		T randomChoice(std::vector<T> arr);
+	}
 }
 namespace IL = InternalLib;
 

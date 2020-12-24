@@ -2,7 +2,7 @@
 
 void Game::update() {
 	using namespace Chars::Special;
-	System::checkIfPaths();
+	System::doPaths();
 	InternalEventMap::update();
 
 	Ikarus::Memory::mapUpdate();
@@ -13,7 +13,7 @@ void Game::update() {
 	}
 	*/
 
-	//ExternalPlugins::update();
+	ExternalPlugins::update();
 }
 
 void Game::start(bool showcase) {
@@ -21,7 +21,7 @@ void Game::start(bool showcase) {
 		InternalPCO::LoadingScreen screen(10, 10, true, '#');
 
 		screen.next("Check paths and gernerate them..."); //step 1
-		System::checkIfPaths();
+		System::doPaths();
 		if (!System::dirPathExits) {
 			System::createPath();
 		}
@@ -40,7 +40,7 @@ void Game::start(bool showcase) {
 		mac::sleep(500);
 
 		screen.next("Set up plugins...");
-		//ExternalPlugins::start();
+		ExternalPlugins::start();
 		mac::sleep(500);
 
 		screen.clear(false);

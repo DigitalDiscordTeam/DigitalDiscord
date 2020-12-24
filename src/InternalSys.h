@@ -38,6 +38,8 @@ namespace System {
 
 	void createPath();
 
+	void doPaths();
+
 } //namespace InternalFSys
 
 

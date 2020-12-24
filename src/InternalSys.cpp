@@ -63,7 +63,6 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		System::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
 
 		dirPathExits = true;
-
 	}
 
 
@@ -110,3 +109,10 @@ std::string System::wstring2string(const std::wstring& wstr) {
 	}
 
 #endif //USE_LINUX_
+
+void System::doPaths() {
+	checkIfPaths();
+	if(!dirPathExits) {
+		createPath();
+	}
+}

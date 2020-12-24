@@ -72,14 +72,10 @@ bool StorageSys::MultiStorage<T1,T2,T3,T4,T5>::allSize() const {
 	stor5.interVec.size();
 }
 
+template<typename T>
+void smartStorage<T>::append(smartStorageNode<T>& stor) {
 
-//defs switchManager
-void switchManager::append(switchManagerStor& stor) {
-	M_ASSERT(!stor.in);
-	if(stor.in) {
-		return;
-	}
-	stor.id = std::to_string(time(NULL) & rand());
+	stor.id = std::to_string(time(NULL) % rand());
 	stor.name = "Stor" + std::to_string(interVec.size());
 	for(size_t i = 0; i < interVec.size(); ++i) {
 		if(interVec[i].ZERO) {
@@ -89,37 +85,28 @@ void switchManager::append(switchManagerStor& stor) {
 			for(size_t j = 0; j < interVec.size(); ++j) {
 				interVec[j].index = j; //refresh index
 			}
+			break;
 		}
 	}
-	if(!stor.in) {
-		stor.index = interVec.size() +1;
-		interVec.push_back(stor);
-		stor.in = true;
-	}
+	
 	stor.inList.push_back(this);
 }
 
-void switchManager::del(switchManagerStor& stor) {
-	M_ASSERT(stor.in);
-	if(!stor.in) {
-		return;
-	}
+template<typename T>
+void smartStorage<T>::del(smartStorageNode<T>& stor) {
 	interVec[stor.index].ZERO = true;
-	stor.in = false;
 }
 
-void switchManager::del(switchManagerStor* stor) {
-	M_ASSERT(stor->in);
-	if(!stor->in) {
-		return;
-	}
+template<typename T>
+void smartStorage<T>::del(smartStorageNode<T>* stor) {
+
 	interVec[stor->index].ZERO = true;
-	stor->in = false;
 }
 
 
 //defs switchManagerStor
-switchManagerStor::~switchManagerStor() {
+template<typename T>
+smartStorageNode<T>::~smartStorageNode() {
 	for(size_t i = 0; i < inList.size(); ++i) {
 		inList[i]->del(this);
 	}

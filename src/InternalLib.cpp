@@ -27,3 +27,18 @@ std::string InternalLib::searchForVal(tokenType str, std::string key) {
 	throw ValueNotFoundError{};
 	return "";
 }
+
+int InternalLib::random::randomint() {
+	srand(time(NULL)%rand());
+	return rand();
+}
+
+template<typename T>
+T InternalLib::random::randomChoice(T arr[]) {
+	return arr[randomint()%sizeof(arr)];
+}
+
+template<typename T>
+T InternalLib::random::randomChoice(std::vector<T> arr) {
+	return arr[randomint()%arr.size()];
+}
