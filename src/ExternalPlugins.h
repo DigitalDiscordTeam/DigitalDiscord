@@ -9,17 +9,17 @@
 
 namespace ExternalPlugins {
 
-    MDEF void inline update() {
+    MDEF void update() {
         //add includes here
         #include "..\plugins\testPlugin.h"
     }
 
-    MDEF void inline start() {
+    MDEF void start() {
         //add includes here
         #include "..\plugins\testPlugin.h"
     }
 
-    MDEF void inline reset() {
+    MDEF void reset() {
         //add includes here
         #include "..\plugins\testPlugin.h"
     }

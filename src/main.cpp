@@ -10,5 +10,6 @@
 #include "ExternalPlugins.h"
 
 int main(/*int argc, char* argv[]*/) {
-	
+	Game::start(true);
+    system("pause");
 }

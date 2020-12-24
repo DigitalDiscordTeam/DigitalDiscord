@@ -86,7 +86,7 @@ struct smartStorageNode {
 
 template<typename T>
 class smartStorage {
-	std::vector<switchManagerStor> interVec;
+	std::vector<smartStorageNode<T>> interVec;
 public:
 	void append(smartStorageNode<T>& stor);
 
