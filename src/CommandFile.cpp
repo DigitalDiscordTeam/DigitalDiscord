@@ -1,26 +1,5 @@
 #include "CommandFile.h"
 
-bool CommandFile::comInfo(tokenType tokens) {
-	std::string tpath;
-	if (tokens.size() < 2) { //no arguments
-		std::cout << "---info---\nnone: 0\n";
-	}
-	else  {
-		tpath = tokens[1];
-		if (tpath == "std") {
-			tpath = System::pathtoDir + "DDcord_eve.txt";
-		}
-		tokenType tmpTokens = InternalFsys::FEvents::readEventFile(tpath);
-		for (size_t i = 0; i < tmpTokens.size(); ++i) {
-			if (InternalEventVec::isIn(tmpTokens[i])) {
-				std::cout << "Event:" << InternalEventVec::eventVec[InternalEventVec::getIndex(tmpTokens[i])].name << "\n";
-			}
-		}
-	}
-
-	return true; //this command always success because it need no arguments
-}
-
 bool CommandFile::comCat(tokenType tokens) {
 	isEght(tokens);
 	bool asFvar = false;
@@ -269,9 +248,6 @@ bool CommandFile::go() {
 	if (read[0] == "Cout") {
 		return comCout(read);
 	}
-	else if (read[0] == "info") {
-		return comInfo(read);
-	}
 	else if (read[0] == "Cat") {
 		return comCat(read);
 	}
@@ -286,17 +262,17 @@ bool CommandFile::go() {
 }
 
 void CommandFile::copen() {
-	file.close();
+	file.open(path);
 }
 
 void CommandFile::cclose() {
-	file.open(path);
+	file.close();
 }
 
 bool CommandFile::run() {
 	cclose();
 	copen();
 	check();
-	cclose(); 
+	cclose();
 	return go();
 }

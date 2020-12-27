@@ -3,7 +3,6 @@
 
 #include "InternalDef.h"
 #include "InternalErrorLogger.h"
-#include "InternalEventMap.h"
 #include "InternalSys.h"
 #include "InternalLib.h"
 
@@ -15,10 +14,6 @@
 #include <map>
 #include <cstring>
 #include <codecvt>
-
-namespace InternalEventMap {
-	void update();
-}
 
 namespace InternalFsys { //Fsys = File system
 
@@ -49,17 +44,7 @@ namespace InternalFsys { //Fsys = File system
 	void write(std::string path, std::string key, std::string newValue);
 }
 
-#include "InternalEvents.h"
-
 namespace InternalFsys {
-	namespace FEvents {
-		std::vector<std::string> readEventFile(std::string path);
-
-		void writeIdInEventFile(std::string path, const std::string id, std::vector<std::string> read = std::vector<std::string>());
-
-		void delIdInEventFile(std::string path, const std::string id);
-	}
-
 	namespace sys { 
 		bool makeFile(std::string name, std::string path, std::string message = "");
 

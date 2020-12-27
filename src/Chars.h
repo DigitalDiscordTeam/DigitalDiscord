@@ -39,13 +39,8 @@ namespace Chars {
     namespace Special {
         namespace Ikarus {
             namespace Memory {
-                
-                MDEF std::map<std::string, int> IkarusOwnMap; //Ikarus is a name so you write it big
                 MDEF StorageSys::MultiStorage<int,char,std::string,float,uint32_t> IkarusStor;
 
-                bool IkarusRememberMap(Events::Event Event);
-
-                void mapUpdate();
             }
 
             namespace Do {

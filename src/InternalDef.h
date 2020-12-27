@@ -41,7 +41,7 @@ namespace mac { //defs in mac.cpp
 }
 
 #ifndef DEBUG_LEVEL
-#define DEBUG_LEVEL 1
+#define DEBUG_LEVEL 0
 #endif
 
 //defs for tools
@@ -54,6 +54,7 @@ namespace mac { //defs in mac.cpp
 #define MCATCH_AND_IGNORRE(code) try { code} catch(...) {;}
 #define INFINITY_LOOP 1
 #define MDEF inline
+#define NONE false
 
 //Debugging
 #if DEBUG_LEVEL == 1 //all

@@ -8,67 +8,63 @@
 #include <vector>
 #include <map>
 
-namespace Events {
-	MDEF std::map<std::string, std::string> EventIdMap; // name : id
-	MDEF std::map<std::string, std::string> EventNameMap; // id : name
+struct funPoint {
+	void (*fun)();
+	std::string id;
+};
 
-	enum class eventType { TRUEEVENT, NOEVENT, UNKNOWN};
-	enum class translateType { ID, NAME };
-	using tT = translateType;
-	using eT = eventType;
+class Event {
+public:
+	std::vector<funPoint> funs;
 
-	class Event {
-	public:
-		eT state = eT::UNKNOWN;
-		bool is = false;
-		std::string id = ""; // 8 chars only!
-		std::string name = "";
+	MDEF virtual bool request() {return NONE;}
 
-		Event(std::string name, std::string id);
-
-		Event();
-
-		//Event(Event&) = delete;
-
-		~Event();
-
-		bool operator==(Event& _event);
-
-		bool operator!=(Event& _event);
-
-		operator bool();
-
-		eventType getState();
-	};
-
-	MDEF Event FirstRun("FirstRun", "10000000");
-
-	namespace trans {
-		std::string ttypetovar(std::string value, translateType type);
-
-		std::string etypeToString(Events::eT type);
-
-		Event compact(std::string name, std::string id);
-
-		Event compact(const Event* _event);
-
+	MDEF virtual void trigger() {
+		for(size_t i = 0; i < funs.size(); ++i) {
+			funs[i].fun();
+		}
 	}
-}
+};
 
-namespace InternalEventVec {
-	MDEF std::vector<Events::Event> eventVec;
+class EventHandler {
+public:
+	Event* eve;
+	funPoint onFun;
 
-	bool isIn(const std::string id);
+	EventHandler(Event& event) {
+		eve = &event;
+	}
+	EventHandler() {}
 
-	void append(Events::Event& Event);
+	~EventHandler() {
+        for(size_t i = 0; i < eve->funs.size(); ++i) {
+            if(eve->funs[i].id == this->onFun.id) {
+                eve->funs.erase(eve->funs.begin() + i);
+                break;
+            }
+        }
+        delete eve;
+        eve = nullptr;
+        onFun.fun = nullptr;
+    }
 
-	void append(const Events::Event Event);
+};
 
-	void del(const Events::Event& Event);
+class nothingEve
+	: public Event
+{
+public:
+	MDEF bool request() override {return true;}
 
-	void del(std::string id);
+	MDEF void trigger() override {
+		for(size_t i = 0; i < funs.size(); ++i) {
+			funs[i].fun();
+		}
+	}
+};
+MDEF nothingEve nothingEvent;
 
-	size_t getIndex(std::string id);
-}
+
+
 
 #endif

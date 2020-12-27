@@ -22,7 +22,6 @@ private:
 	std::ifstream file;
 	tokenType read;
 
-	bool comInfo(tokenType tokens);
 
 	bool comCat(tokenType tokens);
 

@@ -1,9 +1,9 @@
 #include "Game.h"
 
 void Game::update() {
+	ExternalPlugins::update();
 	using namespace Chars::Special;
 	System::doPaths();
-	InternalEventMap::update();
 
 	Ikarus::Memory::mapUpdate();
 	/*
@@ -12,8 +12,6 @@ void Game::update() {
 		DEBUG_WITH_FLUSH("update_wait with id:" << std::this_thread::get_id())
 	}
 	*/
-
-	ExternalPlugins::update();
 }
 
 void Game::start(bool showcase) {
@@ -34,7 +32,7 @@ void Game::start(bool showcase) {
 			}
 		}
 		mac::sleep(500);
-			
+		
 		screen.next("Check if all files are here...");
 		InternalFileVec::update(System::pathtoDir);
 		mac::sleep(500);
@@ -43,7 +41,9 @@ void Game::start(bool showcase) {
 		ExternalPlugins::start();
 		mac::sleep(500);
 
+		screen.next("run events...");
+		//TODO
+		mac::sleep(500);
 		screen.clear(false);
-
 	}
 }

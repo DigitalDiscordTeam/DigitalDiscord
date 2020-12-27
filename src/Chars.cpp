@@ -21,13 +21,6 @@ void Chars::Sayas::random(std::string message, long length, std::string ext) {
 
 }
 
-bool Chars::Special::Ikarus::Memory::IkarusRememberMap(Events::Event Event) {
-    return IkarusOwnMap[Event.id] == 0 ? false : true;
-}
-
-void Chars::Special::Ikarus::Memory::mapUpdate() {
-    IkarusOwnMap = InternalEventMap::EventMap;
-}
 
 void Chars::Special::Ikarus::Do::say(std::string message, std::string ext) {
     Chars::Sayas::ikarus(message,ext);

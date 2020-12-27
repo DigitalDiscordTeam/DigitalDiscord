@@ -67,31 +67,39 @@ namespace StorageSys {
 		bool empty(MST type) const;
 		bool allSize() const;
 	};
+
+	template<typename T>
+	class smartStorage;
+
+	template<typename T>
+	struct smartStorageNode {
+		size_t index = 0;
+		std::string name;
+		std::string id;
+		bool ZERO = false;
+		T in = false;
+
+		smartStorageNode() {}
+		smartStorageNode(std::string id,std::string name,T value) {
+			this->id = id;
+			this->name = name;
+			this->in = value;
+		}
+
+		std::vector <smartStorage<T>*> inList;
+		~smartStorageNode();
+	};
+
+	template<typename T>
+	class smartStorage {
+		std::vector<smartStorageNode<T>> interVec;
+	public:
+		smartStorage() {}
+		void append(smartStorageNode<T>& stor);
+
+		void del(smartStorageNode<T>& stor);
+		void del(smartStorageNode<T>* stor);
+	};
 }
-
-template<typename T>
-class smartStorage;
-
-template<typename T>
-struct smartStorageNode {
-	size_t index = 0;
-	std::string name;
-	std::string id;
-	bool ZERO = false;
-	T in = false;
-
-	std::vector <smartStorage<T>*> inList;
-	~smartStorageNode();
-};
-
-template<typename T>
-class smartStorage {
-	std::vector<smartStorageNode<T>> interVec;
-public:
-	void append(smartStorageNode<T>& stor);
-
-	void del(smartStorageNode<T>& stor);
-	void del(smartStorageNode<T>* stor);
-};
 
 #endif

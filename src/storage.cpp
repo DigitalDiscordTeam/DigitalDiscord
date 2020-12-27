@@ -73,7 +73,7 @@ bool StorageSys::MultiStorage<T1,T2,T3,T4,T5>::allSize() const {
 }
 
 template<typename T>
-void smartStorage<T>::append(smartStorageNode<T>& stor) {
+void StorageSys::smartStorage<T>::append(smartStorageNode<T>& stor) {
 
 	stor.id = std::to_string(time(NULL) % rand());
 	stor.name = "Stor" + std::to_string(interVec.size());
@@ -93,20 +93,18 @@ void smartStorage<T>::append(smartStorageNode<T>& stor) {
 }
 
 template<typename T>
-void smartStorage<T>::del(smartStorageNode<T>& stor) {
+void StorageSys::smartStorage<T>::del(smartStorageNode<T>& stor) {
 	interVec[stor.index].ZERO = true;
 }
 
 template<typename T>
-void smartStorage<T>::del(smartStorageNode<T>* stor) {
+void StorageSys::smartStorage<T>::del(smartStorageNode<T>* stor) {
 
 	interVec[stor->index].ZERO = true;
 }
 
-
-//defs switchManagerStor
 template<typename T>
-smartStorageNode<T>::~smartStorageNode() {
+StorageSys::smartStorageNode<T>::~smartStorageNode() {
 	for(size_t i = 0; i < inList.size(); ++i) {
 		inList[i]->del(this);
 	}

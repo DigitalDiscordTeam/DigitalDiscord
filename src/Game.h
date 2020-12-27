@@ -6,7 +6,6 @@
 #include "InternalErrors.h"
 #include "InternalSys.h"
 #include "InternalFsys.h" 
-#include "InternalEventMap.h"
 #include "Chars.h"
 #include "InternalFileVec.h"
 #include "ExternalPlugins.h"

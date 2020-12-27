@@ -144,14 +144,8 @@ void InternalFsys::resetFiles(bool createAsNew) {
 		throw ResetFilesError{};
 	}
 	else {
-		std::ofstream ofile;
-
-		InternalEventMap::update();
-		if (InternalEventMap::get(Events::FirstRun.id)) {
-			ofile.open(System::pathtoDir + "DDcord_GenerallDatas.txt", std::ios::trunc);		//user-manipulateable
-
-			ofile.write(((std::string)"Username = " + System::getSysUsername_s() + "\n").c_str(), 13 + System::getSysUsername_s().length());
-		}
+		
+		//soon
 	}
 }
 
@@ -207,63 +201,6 @@ void InternalFsys::write(std::string path, std::string key, std::string newValue
 	ofile.close();
 }
 
-std::vector<std::string> InternalFsys::FEvents::readEventFile(std::string path) {
-	std::string re = readNormal(path);
-
-	std::vector<std::string> vec;
-	std::string tmp;
-
-	for (size_t i = 0; i < re.length() - 1; ++i) {
-		if (re[i] == '\n' || re[i] == '\0') {
-			vec.push_back(tmp);
-			tmp = "";
-		}
-		else if (re[i] != '\r') {
-			tmp += re[i];
-		}
-	}
-	if (tmp != "") {
-		vec.push_back(tmp);
-		tmp = "";
-	}
-	return vec;
-}
-
-void InternalFsys::FEvents::writeIdInEventFile(std::string path, const std::string id, std::vector<std::string> read) { //you use read when you have already read the file before
-	if (read.empty()) {
-		read = readEventFile(path);
-	}
-	read.push_back(id);
-
-	std::ofstream ofile;
-	ofile.open(path);
-	ofile.clear();
-	for (size_t i = 0; i < read.size(); ++i) {
-		ofile << read[i] << "\n";
-	}
-	ofile.close();
-}
-
-void InternalFsys::FEvents::delIdInEventFile(std::string path, const std::string id) {
-	std::vector<std::string> read = readEventFile(path);
-
-	for (size_t i = 0; i < read.size(); ++i) {
-		if (read[i] == id) {
-			read.erase(read.begin() + i);
-
-			//write the whole file new...
-			std::ofstream ofile;
-			ofile.open(path, std::ios::trunc);
-			for (size_t i = 0; i < read.size(); ++i) {
-				ofile << read[i] << "\n";
-			}
-
-			return;
-		}
-	}
-	throw ValueNotFoundError{};
-}
-
 bool InternalFsys::sys::makeFile(std::string name, std::string path, std::string message) {
 	if (fs::exists(path + name)) {
 		InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");
@@ -287,15 +224,3 @@ void InternalFsys::sys::makeDir(std::string names) {
 	}	
 }
 
-void InternalEventMap::update() {
-	std::vector<std::string> vec = InternalFsys::FEvents::readEventFile(System::pathtoDir + "DD_Eve.txt"); //DigitalDiscord Events .txt
-	EventMap.clear();
-
-	std::string name = "";
-
-	for (size_t i = 0; i < vec.size(); ++i) {
-		name = Events::trans::ttypetovar(vec[i], Events::translateType::ID);
-		set(Events::trans::compact(name, vec[i]),true,true);
-		name = "";
-	}
-}
