@@ -42,7 +42,7 @@ void Memory::compre(Data& data) {
 	data.decodeMap.clear();
 	data.decodeMap2.clear();
 	std::string tmpString = "";
-	int tmpRand = 0;
+	char tmpChar = 0;
 	for (size_t i = 0; i < data.split.size(); ++i) { //works with the data.compreMap 
 		DEBUG_START_
 			if (i + 1 != data.split.size()) {
@@ -62,30 +62,46 @@ void Memory::compre(Data& data) {
 			DEBUG_START_
 				std::cout << "[DEBUG] compre found, (i:" << i << "); data:" << (std::string(1,data.split[i]) + (std::string(1, data.split[i+1]))) << "\n";
 			DEBUG_END_
-			while (INFINITY_LOOP) {
+			
+			
+			while(INFINITY_LOOP) {
 				srand(time(NULL) + (rand() % time(NULL)));
-				tmpRand = ((rand() % 255) + 126); //only special keys
-				if(std::find(data.split.begin(),data.split.end(),static_cast<char>(tmpRand))==std::end(data.split)) {
+				tmpChar = static_cast<char>(((rand() % 255) + 126)); //only special keys
+				if(tmpChar == ' ' || tmpChar == '\n' || tmpChar == '\r' || tmpChar == '\t' || tmpChar == '\b') {
 					continue;
 				}
+				if( [&]()->bool {
+					for(size_t i = 0; i < data.split.size(); ++i) {
+						if(data.split[i] == tmpChar) {
+							return true;
+						}
+					}
+					return false;
+				}()) {
+					continue;
+				}
+			
+			
 				DEBUG_START_
-					std::cout << "tmpRand:" << tmpRand << "\n";
+					std::cout << "tmpChar:" << tmpChar << "\n";
 				DEBUG_END_
-				if (data.decodeMap2[std::string(1,static_cast<char>(tmpRand))] != "") { //this key is already in the map
+				if (data.decodeMap2[std::string(1,tmpChar)] != "") { //this key is already in the map
 					DEBUG_START_
-						std::cout << "[DEBUG] compre, key is the the map, key:" << static_cast<char>(tmpRand) << "\n";
+						std::cout << "[DEBUG] compre, key is in the map, key:" << tmpChar << "\n";
 					DEBUG_END_
 					continue;
 				}
-				data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] = std::string(1,static_cast<char>(tmpRand));
-				data.decodeMap2[std::string(1,static_cast<char>(tmpRand))] = (std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])));
-				DEBUG_START_
-					std::cout << "[DEBUG] compre, key:" << static_cast<char>(tmpRand) << " map: " << data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] << "\n";
-				DEBUG_END_
 				break;
-		}
+			}
+		data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] = std::string(1,tmpChar);
+		data.decodeMap2[std::string(1,tmpChar)] = (std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])));
+		DEBUG_START_
+			std::cout << "[DEBUG] compre, key:" << tmpChar << " map: " << data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] << "\n";
+		DEBUG_END_
+			
+		
 		data.split.erase(data.split.begin() + i);
-		data.split[i] = static_cast<char>(tmpRand);
+		data.split[i] = tmpChar;
 		--i;
 	    }
     }

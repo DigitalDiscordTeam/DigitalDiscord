@@ -1,25 +1,19 @@
-﻿#define DEBUG_LEVEL 1
+﻿#define DEBUG_LEVEL 0
 #include "CommandFile.h"
 #include "Memory.h"
 #include "InternalPrettyConsoleOut.h"
 #include "InternalEvents.h"
 
-class onNothing
-    : public EventHandler
-{
-public:
-    onNothing(nothingEve& event) {
-        onFun.fun = []()->void {
-            std::cout << "handler is here lol\n";
-        };
-        eve = &event;
-        onFun.id = "onFun" + std::to_string(time(NULL)/(rand()%100)) + "id";
-        eve->funs.push_back(onFun);
-    }
-    
-};
-MDEF onNothing handler(nothingEvent);
 int main(/*int argc, char* argv[]*/) {
-    handler.eve->trigger();
+    Memory::Data myData("Hello, Worlld!");
+
+    while(INFINITY_LOOP) {
+        Memory::compre(myData);
+        std::cout << "c: " <<myData.data << "\n";
+        Memory::recompre(myData);
+        std::cout << "rc: " << myData.data << "\n";
+        mac::sleep(3000);
+    }
+
     
 }
