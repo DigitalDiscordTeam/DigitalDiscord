@@ -7,14 +7,13 @@
 
 #include "InternalDef.h"
 #include "InternalErrorLogger.h"
+#include "InternalLib.h"
 //#include <thread>
 
 namespace StorageSys {
 	//std::thread::id mainId;
-
-	class c_VOID {
-		//void
-	};
+	using InternalLib::c_VOID;
+	
 
 	template<typename T>
 	class SimpleStorage {
@@ -27,14 +26,40 @@ namespace StorageSys {
 
 		SimpleStorage() {} //nothing
 
-		size_t find(T value) const;
-		T getType() const;
-		void clear();
+		MDEF size_t find(T value) const {
+			for(size_t i = 0; i < interVec.size(); ++i) {
+				if(interVec[i] == value) {
+					return i;
+				}
+			}
+			InternalErrLog::LogMain.append(time(NULL),"VecIsNotStoragingError");
+			throw VecIsNotStoragingError{};
+			return 0;
+		}
 
-		void operator=(const SimpleStorage<T>&);
-		void operator=(const std::vector<T>&);
-		operator bool();
-		bool operator==(const SimpleStorage<T>&);
+		MDEF T getType() const {
+			return dynamic_cast<T>(1);
+		}
+
+		void clear() {
+			interVec.clear();
+		}
+
+		void operator=(const std::vector<T>& vec) {
+			this->interVec = vec;
+		}
+
+		void operator=(const SimpleStorage<T>& stor) {
+			this->interVec = stor.interVec;
+		}
+
+		operator bool() {
+			return interVec.empty();
+		}
+
+		bool operator==(const SimpleStorage<T>& stor) {
+			return stor.interVec == this->interVec;
+		}
 
 	private:
 
@@ -64,41 +89,136 @@ namespace StorageSys {
 		SimpleStorage<Type4> stor4;
 		SimpleStorage<Type5> stor5;
 
-		bool empty(MST type) const;
-		bool allSize() const;
+		MDEF bool empty(MST type) const {
+			if(type == MST::STOR1) {
+				return stor1.empty();
+			}
+			else if(type == MST::STOR2) {
+				return stor2.empty();
+			}
+			else if(type == MST::STOR3) {
+				return stor3.empty();
+			}
+			else if(type == MST::STOR4) {
+				return stor4.empty();
+			}
+			else if(type == MST::STOR5) {
+				return stor5.empty();
+			}
+			else {
+				return true;
+			}
+		}
+
+		bool allSize() const {
+			return 
+			stor1.interVec.size() + 
+			stor2.interVec.size() + 
+			stor3.interVec.size() + 
+			stor4.interVec.size() + 
+			stor5.interVec.size();
+		}
 	};
 
 	template<typename T>
-	class smartStorage;
+	class SmartStorage;
 
 	template<typename T>
-	struct smartStorageNode {
+	struct SmartStorageNode {
 		size_t index = 0;
 		std::string name;
 		std::string id;
 		bool ZERO = false;
-		T in = false;
+		T in;
 
-		smartStorageNode() {}
-		smartStorageNode(std::string id,std::string name,T value) {
-			this->id = id;
-			this->name = name;
+		SmartStorageNode() {}
+		SmartStorageNode(T value) {
 			this->in = value;
 		}
 
-		std::vector <smartStorage<T>*> inList;
-		~smartStorageNode();
+		std::vector <SmartStorage<T>*> inList;
+
+		~SmartStorageNode() {
+			for(size_t i = 0; i < inList.size(); ++i) {
+				inList[i]->del(this);
+			}
+		}
 	};
 
 	template<typename T>
-	class smartStorage {
-		std::vector<smartStorageNode<T>> interVec;
+	class SmartStorage {
+		std::vector<SmartStorageNode<T>> interVec;
 	public:
-		smartStorage() {}
-		void append(smartStorageNode<T>& stor);
+		SmartStorage() {}
 
-		void del(smartStorageNode<T>& stor);
-		void del(smartStorageNode<T>* stor);
+		void append(SmartStorageNode<T>& stor) {
+			stor.id = std::to_string(time(NULL) % rand());
+			stor.name = "Stor" + std::to_string(interVec.size());
+
+			if(interVec.empty()) {
+				interVec.push_back(stor);
+				stor.inList.push_back(this);
+				return;
+			}
+			for(size_t i = 0; i < interVec.size(); ++i) {
+				DEBUG_MESSAGE("for loop of StorageSys::SmartStorage::append, i:" << i << "ZERO:" << interVec[i].ZERO)
+				if(interVec[i].ZERO) {
+					interVec[i] = stor;
+					stor.index = i;
+					for(size_t j = 0; j < interVec.size(); ++j) {
+						interVec[j].index = j; //refresh index
+					}
+					break;
+				}
+				
+			}
+			if(stor.index == 0 && interVec[0].id != stor.id) {
+				interVec.push_back(stor);
+				stor.index = interVec.size()-1;
+			}
+			
+			stor.inList.push_back(this);
+		}
+
+		void del(SmartStorageNode<T>& stor) {
+			interVec[stor.index].ZERO = true;
+			stor.ZERO = true;
+		}
+
+		void del(SmartStorageNode<T>* stor) {
+			interVec[stor->index].ZERO = true;
+			stor->ZERO = true;
+		}
+	};
+
+	class LimitedStorage {
+		int val;
+	public:
+		int max;
+		int min;
+
+		int get() const { //a getter because you are not eable to modify val!
+			return val;
+		}
+
+		void operator=(int val) {
+			if(val >= min && val <= max) {
+				this->val = val;
+			}
+		}
+
+		bool operator==(int val) {
+			return (this->val == val);
+		}
+
+#undef max
+#undef min
+
+		LimitedStorage(int max, int min, int val) : max(max), min(min), val(val <= max && val >= min ? val:0) {
+			
+		}
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+#define min(a,b) (((a) < (b)) ? (a) : (b))
 	};
 }
 

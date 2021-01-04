@@ -5,6 +5,7 @@
 #include "InternalFsys.h"
 #include "InternalLib.h"
 #include "InternalSys.h"
+#include "InternalEvents.h"
 
 #include <time.h>
 #include <iostream>

@@ -3,68 +3,115 @@
 
 #include "InternalDef.h"
 #include "InternalErrorLogger.h"
+#include "InternalPrettyConsoleOut.h"
+#include "InternalLib.h"
 
 #include <string>
 #include <vector>
 #include <map>
 
-struct funPoint {
-	void (*fun)();
+namespace InternalPCO { //because InternalPrettyConsoleOut.h have to include this file, we have to do this workaround to use the stuff we need
+	class Hub;
+	class HubChoice;
+	class LoadingScreen;
+}
+
+using VOIDc = InternalLib::c_VOID;
+
+
+
+template<typename para = VOIDc,typename ret = VOIDc>
+struct FunPoint {
+	ret (*fun)(para);
 	std::string id;
+
+	MDEF void operator=(ret(*fun)(para)) {
+		this->fun = fun;
+		id = std::to_string(time(NULL)/(rand()%100)) + "||ID";
+	}
+	FunPoint(ret(*fun)(para)) {
+		this->fun = fun;
+		id = std::to_string(time(NULL)/(rand()%100)) + "||ID";
+	}
+
 };
 
+
+
+
+template<typename funType = FunPoint<>, typename para = VOIDc>
 class Event {
 public:
-	std::vector<funPoint> funs;
+	MDEF static std::vector<funType> funs;
 
-	MDEF virtual bool request() {return NONE;}
+	MDEF static bool request() {return NONE;}
 
-	MDEF virtual void trigger() {
+	MDEF static void trigger(para par = para{NULL}) {
 		for(size_t i = 0; i < funs.size(); ++i) {
-			funs[i].fun();
+			funs[i].fun(par);
 		}
 	}
 };
 
-class EventHandler {
-public:
-	Event* eve;
-	funPoint onFun;
 
-	EventHandler(Event& event) {
-		eve = &event;
-	}
-	EventHandler() {}
 
-	~EventHandler() {
-        for(size_t i = 0; i < eve->funs.size(); ++i) {
-            if(eve->funs[i].id == this->onFun.id) {
-                eve->funs.erase(eve->funs.begin() + i);
-                break;
-            }
-        }
-        delete eve;
-        eve = nullptr;
-        onFun.fun = nullptr;
-    }
-
-};
-
-class nothingEve
-	: public Event
+class NothingEvent
+	: public Event<>
 {
 public:
-	MDEF bool request() override {return true;}
-
-	MDEF void trigger() override {
-		for(size_t i = 0; i < funs.size(); ++i) {
-			funs[i].fun();
+	MDEF static bool request() {
+		if(false /*add your statement here*/ ) {
+			trigger(NULL);
+			return true;
 		}
+		return false;
 	}
 };
-MDEF nothingEve nothingEvent;
 
+class HubOpenEvent 
+	: public Event<FunPoint<InternalPCO::Hub*>,InternalPCO::Hub*>
+{
+public:
 
+};
+
+class HubChoiceChooseEvent
+	: public Event<FunPoint<InternalPCO::HubChoice*>,InternalPCO::HubChoice*>
+{
+public:
+
+};
+
+class HubChoiceFailEvent
+	: public Event<FunPoint<InternalPCO::Hub*>,InternalPCO::Hub*>
+{
+
+};
+
+class LoadingScreenUpdateEvent
+	: public Event<FunPoint<InternalPCO::LoadingScreen*>,InternalPCO::LoadingScreen*>
+{
+public:
+	
+};
+
+class GameStartEvent
+	: public Event<>
+{
+
+};
+
+class GameUpdateEvent
+	: public Event<>
+{
+
+};
+
+class GameExitEvent
+	: public Event<>
+{
+
+};
 
 
 #endif

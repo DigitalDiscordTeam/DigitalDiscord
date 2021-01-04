@@ -22,6 +22,7 @@
 #endif 
 
 namespace System {
+	MDEF bool firstTime;
 	MDEF bool dirPathExits;
 	MDEF std::string pathtoDir;
 	MDEF std::wstring pathtoDir_w;
@@ -38,7 +39,7 @@ namespace System {
 
 	void createPath();
 
-	void doPaths();
+	bool doPaths();
 
 } //namespace InternalFSys
 

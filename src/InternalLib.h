@@ -8,6 +8,19 @@
 #include <vector>
 
 namespace InternalLib {
+
+	
+	class c_VOID {
+		//void
+	public:
+
+		c_VOID() {}
+
+		c_VOID(int) {}
+
+
+	};
+	
 	std::string sb(bool bool_);
 
 	bool between(float num, float min, float max);
@@ -20,10 +33,14 @@ namespace InternalLib {
 		int randomint();
 
 		template<typename T>
-		T randomChoice(T arr[]);
+		MDEF T randomChoice(T arr[]) {
+			return arr[randomint()%sizeof(arr)];
+		}
 
 		template<typename T>
-		T randomChoice(std::vector<T> arr);
+		MDEF T randomChoice(std::vector<T> arr) {
+			return arr[randomint()%arr.size()];
+		}
 	}
 }
 namespace IL = InternalLib;

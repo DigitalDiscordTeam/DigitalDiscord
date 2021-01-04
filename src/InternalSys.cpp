@@ -52,15 +52,19 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		path += getSysUsername_w();
 		path += L"\\AppData\\LocalLow\\DigitalDiscord\\";
 
-		if (!fs::exists(path)) {
+		System::pathtoDir_w = path;
+		System::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
 
+		if (!fs::exists(path)) {
 			if (!fs::create_directory(path)) {
 				throw DirMakeError{};
 			}
+			for(size_t i = 0; i < mac::allStdDirs.size(); ++i) {
+				if(fs::create_directory(pathtoDir + mac::allStdDirs[i])) {
+					throw DirMakeError{};
+				}
+			}
 		}
-
-		System::pathtoDir_w = path;
-		System::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
 
 		dirPathExits = true;
 	}
@@ -93,26 +97,33 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		}
 	}
 
-	void System::createFiles() {
+	void System::createPath() {
 
 		std::wstring path;
 		path += L"~/.config/DigitalDiscord/";
 
-		if (fs::exists(path)) {
-
-			if (fs::create_directory(path)) {
-				throw DirMakeError{};
-			}
-		}
 		System::pathtoDir_w = path;
 		System::pathtoDir = "~/.config/DigitalDiscord/";
+
+		if (!fs::exists(path)) {
+			if (!fs::create_directory(path)) {
+				throw DirMakeError{};
+			}
+			for(size_t i = 0; i < mac::allStdDirs.size(); ++i) {
+				if(fs::create_directory(pathtoDir + mac::allStdDirs[i])) {
+					throw DirMakeError{};
+				}
+			}
+		}
 	}
 
 #endif //USE_LINUX_
 
-void System::doPaths() {
+bool System::doPaths() {
 	checkIfPaths();
 	if(!dirPathExits) {
 		createPath();
+		System::firstTime = true; //it might be the first time the programm run on the system
 	}
+	return firstTime;
 }

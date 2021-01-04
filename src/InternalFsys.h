@@ -5,6 +5,7 @@
 #include "InternalErrorLogger.h"
 #include "InternalSys.h"
 #include "InternalLib.h"
+#include "InternalFileVec.h"
 
 #include <string>
 #include <iostream>
@@ -50,6 +51,16 @@ namespace InternalFsys {
 
 		void makeDir(std::string names);
 	}
+
+	/*
+	namespace save {
+		void createSaveFile();
+
+		void createNewSaveFile();
+
+		void readSaveFile();
+	}
+	*/
 }
 
 #endif

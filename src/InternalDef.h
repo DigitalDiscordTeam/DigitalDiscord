@@ -13,11 +13,13 @@
 
 //check witch OS
 #if defined(_WIN32)
+#define ST "\\"
 #define OS "WINDOWS"
 #define USE_WIN_
 #endif
 
 #if defined(__linux__)
+#define ST "/"
 #define OS "LINUX"
 #define USE_LINUX_
 #endif
@@ -27,7 +29,7 @@ using filesystemPath = fs::path;
 using tokenType = std::vector<std::string>;
 
 namespace mac {
-    const std::vector<std::string> allStdFiles = {"DD_Cryp", "DD_Config", "DD_Eve" /* more are comming soon */};
+    const std::vector<std::string> allStdFiles = {"DD_Cryp.txt", "DD_Config.txt", "IkarusBuild.txt" /* more are comming soon */};
     const std::vector<std::string> allStdDirs = {"Plugins" /* more are comming soon */};
 }
 
@@ -55,6 +57,7 @@ namespace mac { //defs in mac.cpp
 #define INFINITY_LOOP 1
 #define MDEF inline
 #define NONE false
+
 
 //Debugging
 #if DEBUG_LEVEL == 1 //all

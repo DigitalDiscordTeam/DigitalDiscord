@@ -58,7 +58,12 @@ InternalPCO::LoadingScreen::LoadingScreen(long length, int clearWaitTime, bool c
 }
 
 bool InternalPCO::LoadingScreen::next(std::string message) {
+	LoadingScreenUpdateEvent::trigger(this);
 	tmp_len += 1;
+	std::cout << "\r";
+	for(size_t i = 0; i < length + 40; ++i) {
+		std::cout << " "; //clear line
+	}
 	std::cout << "\r[";
 	for (long i = 0; i < length; ++i) {
 		if (i > tmp_len) {
@@ -68,7 +73,7 @@ bool InternalPCO::LoadingScreen::next(std::string message) {
 			std::cout << logo;
 		}
 	}
-	std::cout << "] " << message << "                      "; //to clear all rest of the last message
+	std::cout << "] " << message;
 
 	if (tmp_len == length) {
 		length = 0;
@@ -180,6 +185,7 @@ InternalPCO::HubChoice::HubChoice(void (*func)(),std::string name, std::string i
 
 void InternalPCO::HubChoice::run() {
 	func();
+	HubChoiceChooseEvent::trigger(this);
 }
 
 
@@ -192,6 +198,7 @@ InternalPCO::Hub::Hub(std::string name, std::vector<HubChoice> choices, std::str
 void InternalPCO::Hub::show() {
 	hiding = false;
 	mac::clearScreen();
+	HubOpenEvent::trigger(this);
 
 	if(layout == "STD") {
 		std::cout << "-------------# Wellcome to " << name << " #-------------\n";		  
@@ -299,12 +306,14 @@ void InternalPCO::Hub::show() {
 		if(std::stoi(std::string(1,inp[0])) > choices.size()) {
 			ERROR_IF(true)
 			errorMessage("Invaild Input in " + name + "-Hub");
+			HubChoiceFailEvent::trigger(this);
 			show();
 		}
 		choices[std::stoi(inp)-1].run();
 	}
 	catch(...) {
 		errorMessage("Invaild Input in " + name + "-Hub");
+		HubChoiceFailEvent::trigger(this);
 		show();
 	}
 				

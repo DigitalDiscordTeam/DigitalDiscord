@@ -16,7 +16,7 @@ namespace ExternalPlugins {
 
     MDEF void start() {
         //add includes here
-        #include "..\plugins\testPlugin.h"
+        
     }
 
     MDEF void reset() {

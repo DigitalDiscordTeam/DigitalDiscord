@@ -9,6 +9,7 @@
 #include "Chars.h"
 #include "InternalFileVec.h"
 #include "ExternalPlugins.h"
+#include "InternalRoadVal.h"
 
 //#include <pthread.h>
 
@@ -16,6 +17,6 @@ namespace Game {
 	
 	void update();
 
-	void start(bool showcase = false);
+	void start(bool showcase = false, int sleepTime = 500);
 }
 #endif
