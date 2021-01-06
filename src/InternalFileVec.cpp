@@ -4,7 +4,7 @@ void InternalFileVec::update(const filesystemPath path) {
 	lastPath = path;
 	std::string ret;
 	for (const auto& entry : fs::directory_iterator(path))
-		fileVec.push_back(std::pair<filesystemPath,std::string>(System::wstring2string(entry.path()), System::wstring2string(entry.path().filename())));
+		fileVec.push_back(std::pair<filesystemPath,std::string>(entry.path().string(), entry.path().filename().string()));
 }
 
 filesystemPath InternalFileVec::get(std::string value, gT type) {

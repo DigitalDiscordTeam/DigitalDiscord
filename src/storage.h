@@ -8,10 +8,10 @@
 #include "InternalDef.h"
 #include "InternalErrorLogger.h"
 #include "InternalLib.h"
-//#include <thread>
+#include <thread>
 
 namespace StorageSys {
-	//std::thread::id mainId;
+	MDEF std::thread::id mainId;
 	using InternalLib::c_VOID;
 	
 
@@ -197,13 +197,16 @@ namespace StorageSys {
 		int max;
 		int min;
 
-		int get() const { //a getter because you are not eable to modify val!
+		int get() const {
 			return val;
 		}
 
 		void operator=(int val) {
 			if(val >= min && val <= max) {
 				this->val = val;
+			}
+			else {
+				throw InvaildInputError{};
 			}
 		}
 
@@ -214,7 +217,7 @@ namespace StorageSys {
 #undef max
 #undef min
 
-		LimitedStorage(int max, int min, int val) : max(max), min(min), val(val <= max && val >= min ? val:0) {
+		LimitedStorage(int min, int max, int val) : max(max), min(min), val(val <= max && val >= min ? val:0) {
 			
 		}
 #define max(a,b) (((a) > (b)) ? (a) : (b))

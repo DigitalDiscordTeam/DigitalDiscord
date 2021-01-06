@@ -27,7 +27,7 @@ void mac::sleep(unsigned milliseconds) {
         
 }
 
-void mac::clearScceen() {
+void mac::clearScreen() {
         
 }
 

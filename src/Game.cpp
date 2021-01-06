@@ -1,17 +1,19 @@
 #include "Game.h"
 
+#include <thread>
+
 void Game::update() {
 	ExternalPlugins::update();
 	using namespace Chars::Special;
 	System::doPaths();
 	GameUpdateEvent::trigger();
 
-	/*
+	
 	if(std::this_thread::get_id() != StorageSys::mainId) {
 		std::this_thread::sleep_for(std::chrono::duration<int>(10));
 		DEBUG_WITH_FLUSH("update_wait with id:" << std::this_thread::get_id())
 	}
-	*/
+	
 }
 
 void onExit();

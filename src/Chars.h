@@ -38,7 +38,7 @@ namespace Chars {
 
     namespace Special {
         namespace Ikarus {
-            namespace Memory {
+            namespace IMemory {
                 MDEF StorageSys::MultiStorage<int,char,std::string,float,uint32_t> IkarusStor;
 
                 MDEF StorageSys::LimitedStorage PowerCernal(0,5,0); //between 1 and 5 (0 = off)

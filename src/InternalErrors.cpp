@@ -5,7 +5,7 @@ const char* ValueNotFoundError::what() const throw() {
 }
 
 const char* MapIsNotStoragingError::what() const throw() {
-		return "The used std::map hasn't the requested item!";
+	return "The used std::map hasn't the requested item!";
 }
 
 const char* ReadFileError::what() const throw() {
@@ -37,5 +37,5 @@ const char* VecCantDeleteError::what() const throw() {
 }
 
 const char* InvaildInputError::what() const throw() {
-	return "Your paramether was incorrect!";
+	return "Your input was incorrect!";
 }
