@@ -201,6 +201,13 @@ void InternalFsys::write(std::string path, std::string key, std::string newValue
 	ofile.close();
 }
 
+void InternalFsys::writeNormal(std::string path, std::string value, bool trunc) {
+	std::ofstream ofile;
+	ofile.open(path, trunc ? std::ios::trunc : std::ios::ate);
+	ofile.write(value.c_str(),value.size());
+	ofile.close();
+}
+
 bool InternalFsys::sys::makeFile(std::string name, std::string path, std::string message) {
 	if (fs::exists(path + name)) {
 		InternalErrLog::LogMain.append(time(NULL), "FileIsAlreadyExistingError");

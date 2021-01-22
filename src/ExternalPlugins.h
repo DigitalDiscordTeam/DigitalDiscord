@@ -6,6 +6,8 @@
 #include "InternalFsys.h"
 #include "InternalSys.h"
 #include "InternalPrettyConsoleOut.h"
+#include "Terminal.h"
+#include "Cryp.h"
 
 namespace ExternalPlugins {
 

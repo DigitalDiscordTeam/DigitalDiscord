@@ -52,7 +52,9 @@ void Game::start(bool showcase, int sleepTime) {
 		});
 		mac::sleep(sleepTime);
 
-		
+		screen.next("Init main-terminal..."); //step 7
+		Terminal::InitMain();
+		mac::sleep(sleepTime);
 
 		screen.clear(false);
 	}

@@ -43,6 +43,8 @@ namespace InternalFsys { //Fsys = File system
 	std::string readNormal(std::string path);
 
 	void write(std::string path, std::string key, std::string newValue);
+
+	void writeNormal(std::string path, std::string value, bool trunc = false);
 }
 
 namespace InternalFsys {

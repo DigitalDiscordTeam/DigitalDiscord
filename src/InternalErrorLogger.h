@@ -28,4 +28,6 @@ namespace InternalErrLog {
 	MDEF ErrLog LogMain;
 }
 
+#define THROW(err) InternalErrLog::LogMain.append(time(NULL),err.toString());
+
 #endif

@@ -1,1 +1,0 @@
-std::cout << "Hello Plugin\n";

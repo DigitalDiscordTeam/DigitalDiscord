@@ -3,7 +3,6 @@
 
 #include "InternalDef.h"
 #include "InternalErrorLogger.h"
-#include "InternalPrettyConsoleOut.h"
 #include "InternalLib.h"
 
 #include <string>
@@ -15,6 +14,7 @@ namespace InternalPCO { //because InternalPrettyConsoleOut.h have to include thi
 	class HubChoice;
 	class LoadingScreen;
 }
+class Terminal;
 
 using VOIDc = InternalLib::c_VOID;
 
@@ -46,7 +46,7 @@ public:
 
 	MDEF static bool request() {return NONE;}
 
-	MDEF static void trigger(para par = para{NULL}) {
+	MDEF static void trigger(para par = para{0}) {
 		for(size_t i = 0; i < funs.size(); ++i) {
 			funs[i].fun(par);
 		}
@@ -61,7 +61,7 @@ class NothingEvent
 public:
 	MDEF static bool request() {
 		if(false /*add your statement here*/ ) {
-			trigger(NULL);
+			trigger();
 			return true;
 		}
 		return false;
@@ -109,6 +109,30 @@ class GameUpdateEvent
 
 class GameExitEvent
 	: public Event<>
+{
+
+};
+
+class TerminalInputEvent
+	: public Event<FunPoint<std::string>,std::string> 	//the input
+{
+
+};
+
+class TerminalFailEvent
+	: public Event<FunPoint<std::string>,std::string>	//the input
+{
+
+};
+
+class TerminalExitEvent
+	: public Event<FunPoint<Terminal*>,Terminal*>
+{
+
+};
+
+class TerminalStartEvent
+	: public Event<FunPoint<Terminal*>,Terminal*>
 {
 
 };
