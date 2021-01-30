@@ -30,7 +30,7 @@ using tokenType = std::vector<std::string>;
 
 namespace mac {
     const std::vector<std::string> allStdFiles = {"DD_Cryp.txt", "DD_Config.txt", "IkarusBuild.txt" /* more are comming soon */};
-    const std::vector<std::string> allStdDirs = {"Plugins" /* more are comming soon */};
+    const std::vector<std::string> allStdDirs = {"xy" /* more are comming soon */};
 }
 
 namespace mac { //defs in mac.cpp
@@ -38,6 +38,8 @@ namespace mac { //defs in mac.cpp
     void pause();
     
     void sleep(unsigned milliseconds);
+
+    void tsleep(unsigned milliseconds); 
 
     void clearScreen();
 }
@@ -58,6 +60,7 @@ namespace mac { //defs in mac.cpp
 #define MDEF inline
 #define NONE false
 #define elif else if
+#define VOIDcReturn return IL::c_VOID{};
 
 //Debugging
 #if DEBUG_LEVEL == 1 //all
@@ -94,7 +97,7 @@ namespace mac { //defs in mac.cpp
 #define ERROR_MESSAGE(message)
 #endif
 #ifndef DEBUG_MESSAGE
-#define DEBUG_MESSAGE(message)
+#define DEBUG_MESSAGE(message) 
 #endif
 #ifndef INFO_MESSAGE
 #define INFO_MESSAGE(message) 

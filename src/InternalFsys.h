@@ -51,7 +51,12 @@ namespace InternalFsys {
 	namespace sys { 
 		bool makeFile(std::string name, std::string path, std::string message = "");
 
+		void deleteFile(std::string name, std::string path);
+
 		void makeDir(std::string names);
+
+		void deleteDir(std::string path);
+
 	}
 
 	/*

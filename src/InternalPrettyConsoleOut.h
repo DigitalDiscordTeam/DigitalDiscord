@@ -13,19 +13,25 @@
 #include <stdio.h>
 
 namespace InternalPCO { //PCO = pretty console out
+
+	void waitForInput();
+
 	class SlowPrintc {
 	private:
 		int sleeptime = 0;
+		std::string id = "---";
 	public:
-		void operator<<(const char* inp);
+		std::string& getID();
 
-		void operator<<(std::string inp);
+		SlowPrintc* operator<<(const char* inp);
 
-		void operator<<(int inp);
+		SlowPrintc* operator<<(std::string inp);
 
-		void operator<<(char inp);
+		SlowPrintc* operator<<(int inp);
 
-		void operator<<(long long inp);
+		SlowPrintc* operator<<(char inp);
+
+		SlowPrintc* operator<<(long long inp);
 
 		void operator=(int time);
 
@@ -92,7 +98,7 @@ namespace InternalPCO { //PCO = pretty console out
 		void reset();
 	};
 
-	void corruptedLine(long length);
+	std::string corruptedLine(long length);
 
 	void errorMessage(std::string message, int stime = 5000);
 

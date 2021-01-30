@@ -1,33 +1,35 @@
 ﻿#define DEBUG_LEVEL 0
+#include "InternalDef.h"
 #include "CommandFile.h"
 #include "InternalPrettyConsoleOut.h"
 #include "InternalEvents.h"
 #include "storage.h"
 #include "Game.h"
+#include "InternalSys.h"
 #include "ExternalPlugins.h"
-
-#include <thread>
-
 #include "Terminal.h"
+#include "InternalSys.h"
+#include "InternalErrorLogger.h"
+#include "Storage.h"
+#include "SpeakBubbles.h"
 
 int main(/*int argc, char* argv[]*/) {
-    //TerminalFailEvent::funs.push_back(FunPoint<std::string>([](std::string str){
-    //    std::cout << "command: \"" << str << "\" failed!\n";
-    //    return IL::c_VOID();
-    //}));
-    ExternalPlugins::start();
-    StorageSys::mainId = std::this_thread::get_id();
-    Terminal::InitMain();
+    //StorageSys::mainId = std::this_thread::get_id();
+    //Game::start();
+    InternalPCO::Hub Menue("Start Screen",{InternalPCO::HubChoice([](){
 
-    Terminal::mainTerminal.addFun([](tokenType tokens,Terminal* ptr)->bool {
-        if(tokens.size() == 1) {
-            return true;
-        }
-        std::cout << tokens[1] << "\n";
-        std::cout << InternalFsys::readNormal(tokens[1]) << "\n";
-    },"read");
+    },"Start","StartChoice__01"),InternalPCO::HubChoice([](){
+        exit(0);
+    },"Exit","ExitChoice__02")});
+    Chars::init(100);
+    try {
+    SpeakBubbles::initPrint();
+    SpeakBubbles::hello();
+    SpeakBubbles::firstQuest();
+    }
+    catch(std::exception& err) {
+        std::cout << "an Error was catched: " << err.what() << "\n";
+    }
     
-        
-    Terminal::mainTerminal.run();
-    
+
 }

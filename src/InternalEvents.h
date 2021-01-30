@@ -13,6 +13,7 @@ namespace InternalPCO { //because InternalPrettyConsoleOut.h have to include thi
 	class Hub;
 	class HubChoice;
 	class LoadingScreen;
+	class SlowPrintc;
 }
 class Terminal;
 
@@ -114,13 +115,13 @@ class GameExitEvent
 };
 
 class TerminalInputEvent
-	: public Event<FunPoint<std::string>,std::string> 	//the input
+	: public Event<FunPoint<std::pair<std::string,Terminal*>>,std::pair<std::string,Terminal*>> 	//the input
 {
 
 };
 
 class TerminalFailEvent
-	: public Event<FunPoint<std::string>,std::string>	//the input
+	: public Event<FunPoint<std::pair<std::string,Terminal*>>,std::pair<std::string,Terminal*>>	//the input
 {
 
 };
@@ -137,5 +138,10 @@ class TerminalStartEvent
 
 };
 
+class SlowPrintClassPrintEvent
+	: public Event<FunPoint<std::pair<std::string, InternalPCO::SlowPrintc*>>,std::pair<std::string, InternalPCO::SlowPrintc*>>
+{
+
+};
 
 #endif

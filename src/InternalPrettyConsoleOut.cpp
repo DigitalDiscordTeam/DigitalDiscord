@@ -1,36 +1,55 @@
 #include "InternalPrettyConsoleOut.h"
 
-void InternalPCO::SlowPrintc::operator<<(const char* inp) {
+
+void InternalPCO::waitForInput() {
+	std::getchar();
+}
+
+std::string& InternalPCO::SlowPrintc::getID() {
+	return id;
+}
+
+InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(const char* inp) {
 	for (size_t i = 0; i < strlen(inp); ++i) {
 		std::cout << inp[i];
 		mac::sleep(sleeptime);
 	}
+	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(inp,this));
+	return this;
 }
 
-void InternalPCO::SlowPrintc::operator<<(std::string inp) {
+InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(std::string inp) {
 	for (size_t i = 0; i < inp.length(); ++i) {
 		std::cout << inp[i];
 		mac::sleep(sleeptime);
 	}
+	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(inp,this));
+	return this;
 }
 
-void InternalPCO::SlowPrintc::operator<<(int inp) {
+InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(int inp) {
 	for (long i = 0; i < inp; ++i) {
 		std::cout << (std::to_string(inp))[i];
 		mac::sleep(sleeptime);
 	}
+	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(std::to_string(inp),this));
+	return this;
 }
 
-void InternalPCO::SlowPrintc::operator<<(char inp) {
+InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(char inp) {
 	std::cout << inp;
 	mac::sleep(sleeptime);
+	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(std::to_string(inp),this));
+	return this;
 }
 
-void InternalPCO::SlowPrintc::operator<<(long long inp) {
+InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(long long inp) {
 	for (long i = 0; i < inp; ++i) {
 		std::cout << std::to_string(inp)[i];
 		mac::sleep(sleeptime);
 	}
+	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(std::to_string(inp),this));
+	return this;
 }
 
 void InternalPCO::SlowPrintc::operator=(int time) {
@@ -160,11 +179,14 @@ void InternalPCO::VisualTimer::reset() {
 }
 
 
-void InternalPCO::corruptedLine(long length) {
+std::string InternalPCO::corruptedLine(long length) {
+	std::string ret;
 	for (long i = 0; i < length; ++i) {
 		srand(time(NULL) + i);
-		std::cout << ((char)(rand() - i / 5));
+		char ch = (static_cast<char>(rand() - i / 5));
+		ret += ch != '\n' ? ch : (static_cast<char>(rand() - i / 5));
 	}
+	return ret;
 }
 
 void InternalPCO::errorMessage(std::string message, int stime) {
@@ -201,7 +223,7 @@ void InternalPCO::Hub::show() {
 	HubOpenEvent::trigger(this);
 
 	if(layout == "STD") {
-		std::cout << "-------------# Wellcome to " << name << " #-------------\n";		  
+		std::cout << "-------------# Welcome to " << name << " #-------------\n";		  
 	}
 	else { //not STD
 		std::string what;

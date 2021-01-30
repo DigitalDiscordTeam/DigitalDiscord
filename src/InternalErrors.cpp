@@ -7,6 +7,13 @@ const std::string ValueNotFoundError::toString() const {
 	return "ValueNotFoundError";
 }
 
+const char* OpenFileError::what() const throw() {
+	return "The programm couldn't open the requestet file!";
+}
+const std::string OpenFileError::toString() const {
+	return "OpenFileError";
+}
+
 const char* MapIsNotStoragingError::what() const throw() {
 	return "The used std::map hasn't the requested item!";
 }
@@ -68,4 +75,11 @@ const char* InvaildInputError::what() const throw() {
 }
 const std::string InvaildInputError::toString() const {
 	return "InvaildInputError";
+}
+
+const char* DeleteDirError::what() const throw() {
+	return "No such dir or no permissions to delete dictionary!";
+}
+const std::string DeleteDirError::toString() const {
+	return "DeleteDirError";
 }

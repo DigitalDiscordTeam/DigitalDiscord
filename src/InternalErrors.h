@@ -10,6 +10,12 @@ class ValueNotFoundError : public std::exception
 	const std::string toString() const;
 };
 
+class OpenFileError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
 class MapIsNotStoragingError : public std::exception
 {
 	public: virtual const char* what() const throw();
@@ -59,6 +65,12 @@ class VecCantDeleteError : public std::exception
 };
 
 class InvaildInputError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class DeleteDirError : public std::exception
 {
 	public: virtual const char* what() const throw();
 	const std::string toString() const;

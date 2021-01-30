@@ -10,11 +10,9 @@
 #include "InternalFileVec.h"
 #include "ExternalPlugins.h"
 #include "InternalRoadVal.h"
-
-//#include <pthread.h>
+#include "SpeakBubbles.h"
 
 namespace Game {
-	
 	void update();
 
 	void start(bool showcase = false, int sleepTime = 500);

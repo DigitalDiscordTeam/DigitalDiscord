@@ -26,6 +26,7 @@ namespace System {
 	MDEF bool dirPathExits;
 	MDEF std::string pathtoDir;
 	MDEF std::wstring pathtoDir_w;
+	MDEF std::string currentPath;
 
 	std::wstring string2wsstring(const std::string& str);
 

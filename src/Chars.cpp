@@ -7,7 +7,7 @@ void Chars::Sayas::sys(std::string message, std::string ext) {
 }
 
 void Chars::Sayas::ikarus(std::string message, std::string ext) {
-    std::cout << "[Ikarus] "; std::cout.flush();
+    std::cout << "[Ikarus] " << std::flush;
 	Custom::ikarus_SP << message;
     std::cout << ext;
 }
@@ -28,6 +28,7 @@ void Chars::Special::Ikarus::Do::say(std::string message, std::string ext) {
 
 void Chars::init(int customTime) {
     Custom::ikarus_SP = customTime;
+    Custom::ikarus_SP.getID() = "Ikarus_sayCHARS0";
     Custom::ikarus_SP = customTime;
     Custom::rand_SP = customTime;
 }

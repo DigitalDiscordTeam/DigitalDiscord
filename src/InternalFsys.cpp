@@ -1,7 +1,9 @@
 #include "InternalFsys.h"
 
 std::streamsize InternalFsys::get_flength(std::ifstream& file) {
-	assert(file.is_open());
+	if(!file.is_open()) {
+		throw ReadFileError{};
+	}
 	std::streampos temp_1 = file.tellg();
 	file.seekg(0, std::fstream::end);
 	std::streampos temp_2 = file.tellg();
@@ -150,22 +152,31 @@ void InternalFsys::resetFiles(bool createAsNew) {
 }
 
 std::string InternalFsys::readNormal(std::string path) {
-
 	std::ifstream ifile;
 	ifile.open(path, std::ios::binary);
+	if(!ifile.is_open()) {
+		ifile.close();
+		throw OpenFileError{};
+	}
 	if (InternalFsys::is_empty(ifile)) {
+		ifile.close();
 		return "";
 	}
 	std::streamsize len = get_flength(ifile);
 	char* dummy = new char[len];
 
-	if (dummy == nullptr) {
+	try {
+		ifile.read(dummy, len);
+	}
+	catch(std::exception& err) {
+		ifile.close();
 		throw ReadFileError{};
 	}
-	ifile.read(dummy, len);
 	if (dummy == nullptr || strlen(dummy) == 0) {
+		ifile.close();
 		throw ReadFileError{};
 	}
+	ifile.close();
 	//dummy += '\0';
 	std::string re;
 	re.assign(dummy, len);
@@ -191,6 +202,10 @@ void InternalFsys::write(std::string path, std::string key, std::string newValue
 
 	std::ofstream ofile;
 	ofile.open(path, std::ios::trunc);
+	if(!ofile.is_open()) {
+		ofile.close();
+		throw OpenFileError{};
+	}
 
 	for(size_t i = 0; i < readSplit.size(); ++i) {
 		ofile << readSplit[i];
@@ -204,6 +219,10 @@ void InternalFsys::write(std::string path, std::string key, std::string newValue
 void InternalFsys::writeNormal(std::string path, std::string value, bool trunc) {
 	std::ofstream ofile;
 	ofile.open(path, trunc ? std::ios::trunc : std::ios::ate);
+	if(!ofile.is_open()) {
+		ofile.close();
+		throw OpenFileError{};
+	}
 	ofile.write(value.c_str(),value.size());
 	ofile.close();
 }
@@ -214,7 +233,6 @@ bool InternalFsys::sys::makeFile(std::string name, std::string path, std::string
 		throw FileIsAlreadyExistingError{};
 		return false;
 	}
-
 	else {
 		std::ofstream ofile;
 		ofile.open(path + name, std::ios::trunc);
@@ -225,9 +243,21 @@ bool InternalFsys::sys::makeFile(std::string name, std::string path, std::string
 	}
 }
 
+void InternalFsys::sys::deleteFile(std::string name, std::string path) {
+	if(!fs::remove(path + name)) {
+		throw OpenFileError{};
+	}
+}
+
 void InternalFsys::sys::makeDir(std::string names) {
 	if(!fs::create_directory(System::pathtoDir + names)) {
 		throw DirMakeError{};
 	}	
+}
+
+void InternalFsys::sys::deleteDir(std::string path) {
+	if(!fs::remove(path)) {
+		throw DeleteDirError{};
+	}
 }
 

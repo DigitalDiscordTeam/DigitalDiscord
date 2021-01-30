@@ -8,13 +8,12 @@
 #include "storage.h"
 
 #include <string>
-typedef class Terminal;
 class Terminal
 {
 private:
     std::string layout;
     std::string name;
-
+    bool canRun = true;
 public:
     static Terminal ptrToInst(Terminal* ptr) {
         Terminal ret(ptr->getName(),ptr->getLayout()); 
@@ -34,6 +33,8 @@ public:
     Terminal* addFun(bool(*fun)(tokenType,Terminal*),std::string com);  
 
     void run();
+
+    void stop();
 
     static Terminal new_(std::string name, std::string layout = ">>>");
 

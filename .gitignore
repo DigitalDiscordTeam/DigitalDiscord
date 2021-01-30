@@ -3,7 +3,6 @@
 *.db
 *.db-shm
 *.opendb
-*.txt
 *.ipch
 *.obj
 *.exe
@@ -23,3 +22,5 @@
 .vs/slnx.sqlite
 *.json
 src/testidetestlol
+FileTable.txt
+comp.txt

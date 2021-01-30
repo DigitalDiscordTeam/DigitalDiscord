@@ -1,4 +1,10 @@
 #include "InternalDef.h"
+#include <thread>
+
+void mac::tsleep(unsigned time) {
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(static_cast<std::chrono::milliseconds>(time));
+}
 
 #ifdef USE_WIN_
 #include <windows.h>

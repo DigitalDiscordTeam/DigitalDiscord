@@ -21,7 +21,7 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		DWORD size = UNLEN + 1;
 		GetUserName((TCHAR*)username, &size);
 
-		std::wstring tmp(username,UNLEN + 1); //TODO: fix length of name
+		std::wstring tmp(username, size); //TODO: fix length of name
 		std::string ret = System::wstring2string(tmp);
 		return ret;
 	}
@@ -30,7 +30,7 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		TCHAR username[UNLEN + 1];
 		DWORD size = UNLEN + 1;
 		GetUserName((TCHAR*)username, &size);
-		std::wstring tmp(username,UNLEN + 1);
+		std::wstring tmp(username,size);
 		return tmp;
 	}
 
@@ -125,5 +125,13 @@ bool System::doPaths() {
 		createPath();
 		System::firstTime = true; //it might be the first time the programm run on the system
 	}
+	
+	if(fs::current_path().has_filename()) {
+		currentPath = fs::current_path().parent_path().string() + ST;
+	}
+	else {
+		currentPath = fs::current_path().string() + ST;
+	}
+
 	return firstTime;
 }

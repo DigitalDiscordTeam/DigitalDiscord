@@ -10,7 +10,8 @@ void Game::update() {
 
 	
 	if(std::this_thread::get_id() != StorageSys::mainId) {
-		std::this_thread::sleep_for(std::chrono::duration<int>(10));
+		using namespace std::chrono_literals;
+		std::this_thread::sleep_for(2000ms);
 		DEBUG_WITH_FLUSH("update_wait with id:" << std::this_thread::get_id())
 	}
 	
@@ -56,6 +57,12 @@ void Game::start(bool showcase, int sleepTime) {
 		Terminal::InitMain();
 		mac::sleep(sleepTime);
 
+		screen.next("Setup chars sleep time..."); //step 8
+		Chars::init();
+		mac::sleep(sleepTime);
+
+		screen.next("init SpeakBubbles sleap time..."); //step 9
+		SpeakBubbles::initPrint();
 		screen.clear(false);
 	}
 }

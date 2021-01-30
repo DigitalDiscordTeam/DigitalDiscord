@@ -16,17 +16,18 @@ Terminal* Terminal::addFun(bool(*fun)(tokenType,Terminal*),std::string com) {
 }
 
 void Terminal::run() {
+    this->canRun = true;
     TerminalStartEvent::trigger(this);
     bool failed = false;
     std::string tmp;
-    while(true) {
+    while(canRun) {
         std::cout << layout;
         std::getline(std::cin,tmp);
         if(tmp == "" || tmp == "\n") {
             TerminalExitEvent::trigger(this);
             break;
         }
-        TerminalInputEvent::trigger(tmp);
+        TerminalInputEvent::trigger(std::pair<std::string,Terminal*>(tmp,this));
         if(tmp == "exit") {
             TerminalExitEvent::trigger(this);
             break;
@@ -45,13 +46,17 @@ void Terminal::run() {
         }
 
         if(failed) {
-            TerminalFailEvent::trigger(tmp);
+            TerminalFailEvent::trigger(std::pair<std::string,Terminal*>(tmp,this));
             //throw error and such stuff
         }
     }
 }
 
-Terminal Terminal::new_(std::string name, std::string layout = ">>>") {
+void Terminal::stop() {
+    this->canRun = false;
+}
+
+Terminal Terminal::new_(std::string name, std::string layout) {
     return Terminal(name,layout);
 }
 
