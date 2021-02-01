@@ -1,6 +1,6 @@
 # DigitalDiscord
 
-DigitalDiscord is a text-based puzzle game in the Terminal. You have to solve some probleams by edit the config files!
+DigitalDiscord is a text-based puzzle game in the Terminal. You have to solve some problems by edit the config files!
 
 ## Story
 
