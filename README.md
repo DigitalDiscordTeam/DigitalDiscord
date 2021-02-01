@@ -9,20 +9,10 @@ Together with the AI named Ikarus the user has to find an exit and a way to appl
 But what's that? Ikarus seems like to freak out because of an internal System error?!
 Quick, you have to finish the test befor Ikarus is going to destroy your PC!
 
+- ***This program is still "work in progress". That means that you cant actually play the game yet.***
 ## Available operating systems
 
 DigitalDiscord supports Linux and Windows 10
-
-## File - Structure
-
-### 1 src
-Here are all source files
-
-### 2 executeables
-Here are all files to run the game or compile it
-
-### 3 plugins
-Here are all plugins for the game
 
 ## Compiling yourself
 
