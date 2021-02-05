@@ -214,14 +214,9 @@ namespace StorageSys {
 			return (this->val == val);
 		}
 
-#undef max
-#undef min
-
 		LimitedStorage(int min, int max, int val) : max(max), min(min), val(val <= max && val >= min ? val:0) {
 			
 		}
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-#define min(a,b) (((a) < (b)) ? (a) : (b))
 	};
 }
 

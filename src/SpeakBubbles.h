@@ -3,7 +3,7 @@
 
 #include "InternalDef.h"
 #include "Chars.h"
-#include "InternalFSys.h"
+#include "InternalFsys.h"
 #include "InternalPrettyConsoleOut.h"
 #include "Terminal.h"
 

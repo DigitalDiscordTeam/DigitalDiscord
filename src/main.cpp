@@ -10,7 +10,7 @@
 #include "Terminal.h"
 #include "InternalSys.h"
 #include "InternalErrorLogger.h"
-#include "Storage.h"
+#include "storage.h"
 #include "SpeakBubbles.h"
 
 int main(/*int argc, char* argv[]*/) {

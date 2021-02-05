@@ -13,7 +13,7 @@ namespace ExternalPlugins {
 
     MDEF void update() {
         //add includes here
-        #include "..\plugins\testPlugin.h"
+        #include "../plugins/testPlugin.h"
     }
 
     MDEF void start() {
@@ -23,7 +23,7 @@ namespace ExternalPlugins {
 
     MDEF void reset() {
         //add includes here
-        #include "..\plugins\testPlugin.h"
+        #include "../plugins/testPlugin.h"
     }
 }
 
