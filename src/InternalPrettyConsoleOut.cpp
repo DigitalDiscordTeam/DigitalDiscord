@@ -226,90 +226,16 @@ void InternalPCO::Hub::show() {
 		std::cout << "-------------# Welcome to " << name << " #-------------\n";		  
 	}
 	else { //not STD
-		std::string what;
-		for(size_t i = 0; i < layout.size(); ++i) {
-			DEBUG_MESSAGE("layout[i]: " << layout[i])
-			if(layout[i] == '{') {
-				for(size_t j = i+1; j < layout.size(); ++j) {
-					if(layout[j] == '}') {
-						i+=what.length()+1;
-						break;
-					}
-				
-					what+=layout[j];
-					DEBUG_MESSAGE("what: " << what)
-				}
-				//DEBUG_MESSAGE("what: " << what);
-					
-				if(what == "time") {
-					std::cout << time(NULL);
-				}
-				else if(what == "name") {
-					std::cout << name;
-				}
-				else if(what.substr(0,4) == "ifi:") {
-					DEBUG_MESSAGE("what is ifi, full one:" << what);
-					for(size_t k = 0; k < 4; ++k) {
-						what.erase(what.begin()); //clear the "ifi:"
-					}
-					DEBUG_MESSAGE("new what: " << what)
-					size_t index = what.find("|");
-					DEBUG_MESSAGE("index is " << index << " aka " << what[index]);
-					std::string path = what.substr(0,index);
-					std::string key = what.substr(index+1,what.size());
-
-					DEBUG_MESSAGE("path: " << path << " key: " << key)
-					DEBUG_MESSAGE("read: " << InternalFsys::read(key,path))
-					std::cout << InternalFsys::read(key,path);
-
-				}
-				else if(what == "sysusername") {
-					std::cout << System::getSysUsername_s();
-				}
-				else if(what == "flush") {
-					std::cout.flush();
-				}
-				else if(what == "newline") {
-					std::cout << std::endl;
-				}
-				else if(what == "choiceC") {
-					std::cout << choices.size();
-				}
-				else if(what.substr(0,8) == "nameofc:") {
-					for(size_t k = 0; k < 8; ++k) {
-						what.erase(what.begin()); // delete "nameof:"
-					}
-					DEBUG_MESSAGE("found \"nameofc\" and what is: " << what)
-					try {
-						std::cout << choices[std::stoi(what)].name;
-					}
-					catch(...) {
-						DEBUG_MESSAGE("Error thrown in try block!")
-					}
-				}
-				else if(what.substr(0,6) == "idofc:") {
-					for(size_t k = 0; k < 6; ++k) {
-						what.erase(what.begin()); // delete "idof:"
-					}
-					DEBUG_MESSAGE("found \"idofc\" and what is: " << what)
-					
-					try {
-						std::cout << choices[std::stoi(what)].id;
-					}
-					catch(...) {
-						DEBUG_MESSAGE("Error thrown in try block!")
-					}
-				}
-				else {
-					ERROR_IF(true);
-				}
-				what = "";
-			}
-			else {
-				std::cout << layout[i];
-			}
-		}
-		std::cout << "\n";
+		std::cout <<
+			IL::Parser()
+				.setIdents('{','}')
+				->addPlaceHolder("name",this->name)
+				->addPlaceHolder("time",std::to_string(time(NULL)))
+				->addPlaceHolder("Ccount",std::to_string(choices.size()))
+				->addPlaceHolder("nl","\n")
+				->addPlaceHolder("{","{")
+				->addPlaceHolder("}","}")
+			->parse(layout);
 	}
 
 	for(size_t i = 0; i < choices.size(); ++i) {

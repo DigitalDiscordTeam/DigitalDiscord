@@ -6,9 +6,19 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 namespace InternalLib {
 
+	class Parser {
+		std::map<std::string,std::string> args;
+		char identStart;
+		char identEnd;
+	public:
+		Parser* addPlaceHolder(std::string to_replace, std::string replace);
+		Parser* setIdents(char identStart, char identEnd);
+		std::string parse(std::string str);
+	};
 	
 	class c_VOID {
 		//void
@@ -17,8 +27,6 @@ namespace InternalLib {
 		c_VOID() {}
 
 		c_VOID(int) {}
-
-
 	};
 	
 	std::string sb(bool bool_);
