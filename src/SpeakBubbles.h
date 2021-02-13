@@ -59,7 +59,7 @@ namespace SpeakBubbles {
         using namespace Chars::Special;
         Terminal ter("Terminal0","$ ");
         TerminalInputEvent::funs.push_back(FunPoint<std::pair<std::string,Terminal*>>([](std::pair<std::string,Terminal*> inp)->IL::c_VOID {
-            if(inp.first == "echo Hello World" || inp.first == "hello world") {
+            if(inp.first == "echo Hello World" || inp.first == "echo hello world") {
                 inp.second->stop();
             }
             return {};
@@ -71,8 +71,12 @@ namespace SpeakBubbles {
             return false;
         },"echo");
         ter.run();
+        
         ter.funs.pop_back(); //TODO: more savety
-        Ikarus::Do::say("Well, done. The command \"echo\" prints out any text you want on the console\n");
+        Ikarus::Do::say("Well done. The command \"echo\" prints out any text you want on the console\n");
+        Ikarus::Do::say("Now try to open a Hub, \"hopen main\" should do that!\n");
+        
+
         
         
     }
