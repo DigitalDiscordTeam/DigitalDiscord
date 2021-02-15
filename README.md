@@ -31,7 +31,5 @@ That might be because you use MinGW64. You can use Msys2 with minGW64 instead (d
 
 **SirWolf**   : Coding and Story writing
 
-**XECortex**  : Coding and Story writing
-
 ## License
 This program is licensed under the MIT license.
