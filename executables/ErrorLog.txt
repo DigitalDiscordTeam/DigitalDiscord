@@ -5,12 +5,16 @@ SpeakBubbles.h:21:9: warning: no return statement in function returning non-void
    21 |         }));
       |         ^
 Terminal.cpp: In lambda function:
-Terminal.cpp:103:9: warning: control reaches end of non-void function [-Wreturn-type]
-  103 |         },
+Terminal.cpp:122:9: warning: control reaches end of non-void function [-Wreturn-type]
+  122 |         },
       |         ^
 In file included from Game.h:13,
-                 from main.cpp:7:
+                 from main.cpp:6:
 SpeakBubbles.h: In lambda function:
 SpeakBubbles.h:21:9: warning: no return statement in function returning non-void [-Wreturn-type]
    21 |         }));
+      |         ^
+main.cpp: In lambda function:
+main.cpp:56:9: warning: no return statement in function returning non-void [-Wreturn-type]
+   56 |         },"test")->run();
       |         ^

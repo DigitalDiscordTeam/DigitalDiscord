@@ -1,5 +1,4 @@
-﻿#define DEBUG_LEVEL 0
-#include "InternalDef.h"
+﻿#include "InternalDef.h"
 #include "CommandFile.h"
 #include "InternalPrettyConsoleOut.h"
 #include "InternalEvents.h"
@@ -13,7 +12,11 @@
 #include "storage.h"
 #include "SpeakBubbles.h"
 
-void sleepFor(time_t seconds) {
+
+//TODO: virtual.h
+//TODO: delete the "Internal" prefix (and the "external")
+
+void sleepFor(time_t seconds) { //for tests
     auto now = std::chrono::system_clock::now();
 
     while(true) {
@@ -25,7 +28,7 @@ void sleepFor(time_t seconds) {
 
 
 int main(/*int argc, char* argv[]*/) {
-    
+    /*
     StorageSys::mainId = std::this_thread::get_id();
     Game::start();
     InternalPCO::Hub Menue("Start Screen",{InternalPCO::HubChoice([](){
@@ -41,6 +44,15 @@ int main(/*int argc, char* argv[]*/) {
     }
     catch(std::exception& err) {
         std::cout << "an Error was catched: " << err.what() << "\n";
-    }
+    }*/
+    Terminal nTer("NewTerminal");
     
+    nTer.addFun([](tokenType tt, Terminal* ptr, Terminal::tstorage& dptr)->bool {
+        for(size_t i = 0; i < dptr.Datas.size(); ++i) {
+            std::cout << i << "\t\t\t" << dptr.Datas[i].string;
+            std::cout << "\n";
+        }
+        dptr.add(tt[1],std::to_string(tt.size()));
+    },"test")->run();
+        
 }

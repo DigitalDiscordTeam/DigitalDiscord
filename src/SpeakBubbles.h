@@ -64,7 +64,7 @@ namespace SpeakBubbles {
             }
             return {};
         }));
-        ter.addFun([](tokenType tokens, Terminal* terminal)->bool {
+        ter.addFun([](tokenType tokens, Terminal* terminal, Terminal::tstorage& dptr)->bool {
             for(size_t i = 1; i < tokens.size(); ++i) {
                 std::cout << tokens[i] << " ";
             }

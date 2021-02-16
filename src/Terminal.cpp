@@ -10,13 +10,21 @@ std::string Terminal::getLayout() const {
     return layout;
 }
 
-Terminal* Terminal::addFun(bool(*fun)(tokenType,Terminal*),std::string com) {
-    funs.push_back(std::pair<bool(*)(tokenType,Terminal*),std::string>(fun,com));
+Terminal* Terminal::addFun(bool(*fun)(tokenType,Terminal*,TerminalStorage&),std::string com) {
+    for(size_t i = 0; i < storage.size(); ++i) {
+        if(storage[i].get(com).tag != "FAILED") {
+            DEBUG_MESSAGE("Failed to add command")
+            return this;
+        }
+    }
+    storage.push_back(TerminalStorage(com));
+    DEBUG_MESSAGE("added to Terminal intern storage:" << com << " size: " << storage.size())
+    funs.push_back(std::pair<bool(*)(tokenType,Terminal*,TerminalStorage&),std::string>(fun,com));
     return this;
 }
 
 void Terminal::run() {
-    this->canRun = true;
+    canRun = true;
     TerminalStartEvent::trigger(this);
     bool failed = false;
     std::string tmp;
@@ -38,16 +46,27 @@ void Terminal::run() {
                 std::cout << split[i] << "\n";
             }
         DEBUG_END_
+        DEBUG_MESSAGE("size of storage:" << storage.size())
         for(size_t i = 0; i < funs.size(); ++i) {
             DEBUG_MESSAGE("keyword:" << funs[i].second << " | " << "split[0]:" << split[0])
+
             if(split[0] == funs[i].second) {
-                failed = funs[i].first(split,this);
+                DEBUG_MESSAGE("command found! : " << funs[i].second)
+                for(size_t j = 0; j < storage.size(); ++j) {
+                    DEBUG_MESSAGE("loop[" << j << "]: " << storage[i].tag << " | " << storage[i].get(funs[i].second).tag)
+                    if(storage[i].tag == funs[i].second) {
+                        failed = funs[i].first(split,this,storage[i]);
+                        DEBUG_MESSAGE("function executed with return-value: " << failed)
+                        break;
+                    }
+                }  
             }
         }
 
         if(failed) {
             TerminalFailEvent::trigger(std::pair<std::string,Terminal*>(tmp,this));
-            //throw error and such stuff
+            failed = false;
+            DEBUG_MESSAGE("command failed")
         }
     }
 }
@@ -78,7 +97,7 @@ void Terminal::operator=(std::string name) {
 Terminal Terminal::InitMain() {
     //add all std commands here
     mainTerminal = Terminal::new_("MainTerminal","<<<>").addFun(
-        [](tokenType tokens,Terminal* ptr)->bool{
+        [](tokenType tokens,Terminal* ptr,TerminalStorage& data)->bool{
             if(tokens.size() < 2) {
                 return true;
             }
@@ -95,7 +114,7 @@ Terminal Terminal::InitMain() {
         },
         "echo"
     )->addFun(
-        [](tokenType tokens, Terminal* ptr)->bool {
+        [](tokenType tokens, Terminal* ptr,TerminalStorage& data)->bool {
             if(tokens.size() > 2) {
                 return true;
             }
