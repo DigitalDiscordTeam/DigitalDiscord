@@ -16,7 +16,7 @@ DigitalDiscord supports Linux and Windows 10
 
 ## Compiling yourself
 
-If you want to compile the code yourself, you just have to execute compileLinux.sh or compileWindows.sh in the folder "executeables".
+If you want to compile the code yourself, you just have to `make` or, if you are on Windows and don't have make installed, execute `build.bat`.
 
 ## Plugins
 
