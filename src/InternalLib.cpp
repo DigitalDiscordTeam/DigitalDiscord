@@ -358,7 +358,7 @@ InternalLib::Register InternalLib::LangParser::parse(std::string str, bool main,
 		}
 	}
 	DEBUG_MESSAGE("tokens after split3: " << InternalLib::vecToStr(tokens))
-	//tokens = Handlers::stickSameChar(tokens,'\"',{' ', '\n', '\0', '\r'});
+	tokens = Handlers::stickSameChar(tokens,'\"',{' ', '\n', '\0', '\r'});
 	tokens = Handlers::stick4(tokens,'{','}', {' ', '\n', '\0', '\r'});
 	//tokens = Handlers::stick4(tokens,'"','"', {' ', '\n', '\0', '\r'});
 	tokens = Handlers::stick4(tokens,'(',')', {' ', '\n', '\0', '\r'});
@@ -900,7 +900,7 @@ tokenType InternalLib::Handlers::stick4(const tokenType& tokens, const char begi
 
 tokenType InternalLib::Handlers::stickSameChar(const tokenType& tokens, const char ch, const std::vector<char> ignore) {
 	DEBUG_MESSAGE("input: " << InternalLib::vecToStr(tokens))
-	std::stack<char> bgen;
+	bool in = false;
 	tokenType endTokens;
 	int founds = 0;
 	std::string tmp;
@@ -911,15 +911,16 @@ tokenType InternalLib::Handlers::stickSameChar(const tokenType& tokens, const ch
 			if(IL::isIn(tokens[i][j],ignore)) {
 				continue;
 			}
-			if(tokens[i][j] == ch && bgen.empty()) {
+			if(tokens[i][j] == ch && !in) {
 				DEBUG_MESSAGE("in")
-				bgen.push(ch);
+				in = true;
 			}
-			else if(tokens[i][tokens[i].size()-1] == ch && !bgen.empty()) {
+			else if(tokens[i][tokens[i].size()-1] == ch && in) {
 				DEBUG_MESSAGE("out")
-				bgen.pop();
+				in = false;
 				tmp.erase(tmp.begin());
-				endTokens.push_back(tmp);
+				DEBUG_MESSAGE("tmp:" << tmp)
+				endTokens.push_back(tmp + " " + tokens[i]);
 				tmp = "";
 				if(i+1 >= tokens.size()) {
 					DEBUG_MESSAGE("end jmp")
@@ -932,7 +933,7 @@ tokenType InternalLib::Handlers::stickSameChar(const tokenType& tokens, const ch
 			break;
 		}
 		
-		if(bgen.empty()) {
+		if(!in) {
 			endTokens.push_back(tokens[i]);
 		}
 		else {
@@ -940,7 +941,7 @@ tokenType InternalLib::Handlers::stickSameChar(const tokenType& tokens, const ch
 		}
 	}
 	END:
-	if(!bgen.empty()) {
+	if(in) {
 		//throw BracesMisMatchError{};
 	}
 	DEBUG_MESSAGE("out:" << InternalLib::vecToStr(endTokens))

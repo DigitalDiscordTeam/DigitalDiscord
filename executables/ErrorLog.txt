@@ -1,13 +1,13 @@
 InternalLib.cpp: In Elementfunktion »InternalLib::LangParser* InternalLib::LangParser::enableStandards(InternalLib::LangParser::standardFeature*)«:
-InternalLib.cpp:966:32: Warnung: »sizeof« auf Array-Funktionsparameter »features« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
-  966 |  for(size_t i = 0; i < (sizeof(features)/sizeof(standardFeature)); ++i) {
+InternalLib.cpp:967:32: Warnung: »sizeof« auf Array-Funktionsparameter »features« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
+  967 |  for(size_t i = 0; i < (sizeof(features)/sizeof(standardFeature)); ++i) {
       |                               ~^~~~~~~~~
-InternalLib.cpp:965:83: Anmerkung: hier deklariert
-  965 | InternalLib::LangParser* InternalLib::LangParser::enableStandards(standardFeature features[]) {
+InternalLib.cpp:966:83: Anmerkung: hier deklariert
+  966 | InternalLib::LangParser* InternalLib::LangParser::enableStandards(standardFeature features[]) {
       |                                                                   ~~~~~~~~~~~~~~~~^~~~~~~~~~
 In Datei, eingebunden von InternalLib.cpp:1:
 InternalLib.h: In Instanziierung von »bool InternalLib::isIn(type, type*) [with type = InternalLib::LangParser::standardFeature]«:
-InternalLib.cpp:953:27:   von hier erfordert
+InternalLib.cpp:954:27:   von hier erfordert
 InternalLib.h:39:39: Warnung: »sizeof« auf Array-Funktionsparameter »array« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
    39 |         for(size_t i = 0; i < (sizeof(array)/sizeof(type)); ++i) {
       |                                      ~^~~~~~
@@ -15,7 +15,7 @@ InternalLib.h:38:41: Anmerkung: hier deklariert
    38 |     inline bool isIn(const type t, type array[]) {
       |                                    ~~~~~^~~~~~~
 InternalLib.h: In Instanziierung von »size_t InternalLib::lastOfarray(type*, type) [with type = InternalLib::LangParser::standardFeature; size_t = long unsigned int]«:
-InternalLib.cpp:956:71:   von hier erfordert
+InternalLib.cpp:957:71:   von hier erfordert
 InternalLib.h:16:39: Warnung: »sizeof« auf Array-Funktionsparameter »array« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
    16 |         for(size_t i = 0; i < (sizeof(array)/sizeof(type)); ++i) {
       |                                      ~^~~~~~
@@ -50,5 +50,5 @@ SpeakBubbles.h: In Lambda-Funktion:
 SpeakBubbles.h:83:9: Warnung: keine return-Anweisung in nicht void zurückgebender Funktion [-Wreturn-type]
    83 |         },"hopen");
       |         ^
-/usr/bin/ld: /tmp/ccIzXQVp.o: in function `System::getSysUsername_s[abi:cxx11]()':
+/usr/bin/ld: /tmp/ccxGZbOo.o: in function `System::getSysUsername_s[abi:cxx11]()':
 /home/sirwolf/Schreibtisch/DigitalDiscord/src/InternalSys.cpp:69: warning: Using 'getpwuid' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
