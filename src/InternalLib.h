@@ -165,6 +165,7 @@ namespace InternalLib {
 
     namespace Handlers {
         tokenType stick4(const tokenType& tokens, const char begin, const char end, const std::vector<char> ignore);
+        tokenType stickSameChar(const tokenType& tokens, const char ch, const std::vector<char> ignore);
         class CommandStorage {
         public:
             std::vector<InternalLib::LangParser::Command> commands;

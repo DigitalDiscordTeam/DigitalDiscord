@@ -358,6 +358,7 @@ InternalLib::Register InternalLib::LangParser::parse(std::string str, bool main,
 		}
 	}
 	DEBUG_MESSAGE("tokens after split3: " << InternalLib::vecToStr(tokens))
+	//tokens = Handlers::stickSameChar(tokens,'\"',{' ', '\n', '\0', '\r'});
 	tokens = Handlers::stick4(tokens,'{','}', {' ', '\n', '\0', '\r'});
 	//tokens = Handlers::stick4(tokens,'"','"', {' ', '\n', '\0', '\r'});
 	tokens = Handlers::stick4(tokens,'(',')', {' ', '\n', '\0', '\r'});
@@ -895,6 +896,56 @@ tokenType InternalLib::Handlers::stick4(const tokenType& tokens, const char begi
 		throw BracesMisMatchError{};
 	}
 	return endTokens;
+}
+
+tokenType InternalLib::Handlers::stickSameChar(const tokenType& tokens, const char ch, const std::vector<char> ignore) {
+	DEBUG_MESSAGE("input: " << InternalLib::vecToStr(tokens))
+	std::stack<char> bgen;
+	tokenType endTokens;
+	int founds = 0;
+	std::string tmp;
+	for(size_t i = 0; i < tokens.size(); ++i) {
+		DEBUG_MESSAGE(i << ":" << tokens[i])
+		for(size_t j = 0; j < tokens[i].size(); ++j) {
+			DEBUG_MESSAGE("checks with \"" << tokens[i][j] << "\"")
+			if(IL::isIn(tokens[i][j],ignore)) {
+				continue;
+			}
+			if(tokens[i][j] == ch && bgen.empty()) {
+				DEBUG_MESSAGE("in")
+				bgen.push(ch);
+			}
+			else if(tokens[i][tokens[i].size()-1] == ch && !bgen.empty()) {
+				DEBUG_MESSAGE("out")
+				bgen.pop();
+				tmp.erase(tmp.begin());
+				endTokens.push_back(tmp);
+				tmp = "";
+				if(i+1 >= tokens.size()) {
+					DEBUG_MESSAGE("end jmp")
+					goto END;
+				}
+				else {
+					++i;
+				}	
+			}
+			break;
+		}
+		
+		if(bgen.empty()) {
+			endTokens.push_back(tokens[i]);
+		}
+		else {
+			tmp += " " + tokens[i];
+		}
+	}
+	END:
+	if(!bgen.empty()) {
+		//throw BracesMisMatchError{};
+	}
+	DEBUG_MESSAGE("out:" << InternalLib::vecToStr(endTokens))
+	return endTokens;
+
 }
 
 InternalLib::LangParser* InternalLib::LangParser::enableStandard(standardFeature feature) {

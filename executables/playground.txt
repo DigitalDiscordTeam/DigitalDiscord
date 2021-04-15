@@ -1,12 +1,1 @@
-set x 10
-out $x
-run ( $x ) {
-    out $__loop_val__
-    slp 1
-    con ( $__loop_val__ == 5 ) {
-        out ITS_FIVE
-    } -e {
-        out NO
-    }
-    stp
-}
+out "Hello World"
