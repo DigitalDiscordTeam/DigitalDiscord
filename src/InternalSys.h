@@ -23,7 +23,6 @@
 
 namespace System {
 	MDEF bool firstTime;
-	MDEF bool dirPathExits;
 	MDEF std::string pathtoDir;
 	MDEF std::wstring pathtoDir_w;
 	MDEF std::string currentPath;
@@ -36,13 +35,13 @@ namespace System {
 
 	std::wstring getSysUsername_w();
 
-	void checkIfPaths();
+	bool checkIfPaths();
 
 	void createPath();
 
 	bool doPaths();
 
-} //namespace InternalFSys
+}
 
 
 #endif

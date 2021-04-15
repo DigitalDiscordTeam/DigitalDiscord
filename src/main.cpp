@@ -1,5 +1,5 @@
 ﻿#include "InternalDef.h"
-#include "CommandFile.h"
+
 #include "InternalPrettyConsoleOut.h"
 #include "InternalEvents.h"
 #include "storage.h"
@@ -11,10 +11,10 @@
 #include "InternalErrorLogger.h"
 #include "storage.h"
 #include "SpeakBubbles.h"
+#include "InternalVirtual.h"
+#include "InternalStandardParserLibarary.h"
 
-
-//TODO: virtual.h
-//TODO: delete the "Internal" prefix (and the "external")
+#include <vector>
 
 void sleepFor(time_t seconds) { //for tests
     auto now = std::chrono::system_clock::now();
@@ -26,8 +26,23 @@ void sleepFor(time_t seconds) { //for tests
     }
 }
 
+static InternalLib::LangParser test = InternalLib::LangParser()
+                                .setArgPrefix('-')
+                                ->include(STDParser::io)
+                                ->include(STDParser::math)
+                                ->include(STDParser::variables)
+                                ->include(STDParser::system)
+                                //->include(STDParser::external)
+                                ->setFile("playground.txt")
+                                ->setArgPrefix('-')
+                                ->setVariableCall('$')
+                                ->toInstance();
 
-int main(/*int argc, char* argv[]*/) {
+
+int main(int argc, char* argv[]) {
+    if(argc > 1 && std::string(argv[1]) == "--debug") {
+        mac::debuglevel = std::stoi(std::string(argv[2]));
+    }
     /*
     StorageSys::mainId = std::this_thread::get_id();
     Game::start();
@@ -44,15 +59,32 @@ int main(/*int argc, char* argv[]*/) {
     }
     catch(std::exception& err) {
         std::cout << "an Error was catched: " << err.what() << "\n";
-    }*/
-    Terminal nTer("NewTerminal");
+    }
+
+    mac::pause();
+    */
+   
+    try {
+        test.addOperators({
+            STDOperators::plus,
+            STDOperators::minus,
+            STDOperators::times,
+            STDOperators::power,
+            STDOperators::div,
+            STDOperators::mod,
+            InternalLib::Handlers::Operator("==",[](int left, int right)->int {
+                return left == right;
+            })
+        });
+        //auto x = InternalFsys::splitTokens(" ","Hello World, \"Hello, World\"");
+        //InternalLib::PcompareStrings(x);
+        //std::cout << InternalLib::vecToStr(x) << "\n";
+        test.parse();
+    }
+    catch(std::exception& err) {
+       std::cout << err.what() << "\n";
+    }
     
-    nTer.addFun([](tokenType tt, Terminal* ptr, Terminal::tstorage& dptr)->bool {
-        for(size_t i = 0; i < dptr.Datas.size(); ++i) {
-            std::cout << i << "\t\t\t" << dptr.Datas[i].string;
-            std::cout << "\n";
-        }
-        dptr.add(tt[1],std::to_string(tt.size()));
-    },"test")->run();
+    mac::pause();
         
 }

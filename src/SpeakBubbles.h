@@ -75,6 +75,12 @@ namespace SpeakBubbles {
         ter.funs.pop_back(); //TODO: more savety
         Ikarus::Do::say("Well done. The command \"echo\" prints out any text you want on the console\n");
         Ikarus::Do::say("Now try to open a Hub, \"hopen main\" should do that!\n");
+
+        InternalPCO::HubChoice([](){Ikarus::Do::say("");},"test","test");
+
+        ter.addFun([](tokenType tokens, Terminal* terminal, Terminal::tstorage& stor)->bool{
+            
+        },"hopen");
         
 
         

@@ -9,7 +9,7 @@
 #include <vector>
 #include <map>
 
-namespace InternalPCO { //because InternalPrettyConsoleOut.h have to include this file, we have to do this workaround to use the stuff we need
+namespace InternalPCO { //because InternalPrettyConsoleOut.h has to include this file, we have to do this workaround to use the stuff we need
 	class Hub;
 	class HubChoice;
 	class LoadingScreen;

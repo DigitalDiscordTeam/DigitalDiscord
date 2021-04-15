@@ -1,20 +1,54 @@
-In file included from Game.h:13,
-                 from Game.cpp:1:
-SpeakBubbles.h: In lambda function:
-SpeakBubbles.h:21:9: warning: no return statement in function returning non-void [-Wreturn-type]
+InternalLib.cpp: In Elementfunktion »InternalLib::LangParser* InternalLib::LangParser::enableStandards(InternalLib::LangParser::standardFeature*)«:
+InternalLib.cpp:915:32: Warnung: »sizeof« auf Array-Funktionsparameter »features« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
+  915 |  for(size_t i = 0; i < (sizeof(features)/sizeof(standardFeature)); ++i) {
+      |                               ~^~~~~~~~~
+InternalLib.cpp:914:83: Anmerkung: hier deklariert
+  914 | InternalLib::LangParser* InternalLib::LangParser::enableStandards(standardFeature features[]) {
+      |                                                                   ~~~~~~~~~~~~~~~~^~~~~~~~~~
+In Datei, eingebunden von InternalLib.cpp:1:
+InternalLib.h: In Instanziierung von »bool InternalLib::isIn(type, type*) [with type = InternalLib::LangParser::standardFeature]«:
+InternalLib.cpp:902:27:   von hier erfordert
+InternalLib.h:39:39: Warnung: »sizeof« auf Array-Funktionsparameter »array« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
+   39 |         for(size_t i = 0; i < (sizeof(array)/sizeof(type)); ++i) {
+      |                                      ~^~~~~~
+InternalLib.h:38:41: Anmerkung: hier deklariert
+   38 |     inline bool isIn(const type t, type array[]) {
+      |                                    ~~~~~^~~~~~~
+InternalLib.h: In Instanziierung von »size_t InternalLib::lastOfarray(type*, type) [with type = InternalLib::LangParser::standardFeature; size_t = long unsigned int]«:
+InternalLib.cpp:905:71:   von hier erfordert
+InternalLib.h:16:39: Warnung: »sizeof« auf Array-Funktionsparameter »array« gibt die Größe von »InternalLib::LangParser::standardFeature*« zurück [-Wsizeof-array-argument]
+   16 |         for(size_t i = 0; i < (sizeof(array)/sizeof(type)); ++i) {
+      |                                      ~^~~~~~
+InternalLib.h:15:36: Anmerkung: hier deklariert
+   15 |     size_t inline lastOfarray(type array[],type emptySlot) {
+      |                               ~~~~~^~~~~~~
+InternalPrettyConsoleOut.cpp: In statischer Elementfunktion »static InternalPCO::Hub InternalPCO::Hub::call(std::filesystem::__cxx11::path)«:
+InternalPrettyConsoleOut.cpp:289:1: Warnung: keine return-Anweisung in nicht void zurückgebender Funktion [-Wreturn-type]
+  289 | }
+      | ^
+In Datei, eingebunden von Game.h:13,
+                 von Game.cpp:1:
+SpeakBubbles.h: In Lambda-Funktion:
+SpeakBubbles.h:21:9: Warnung: keine return-Anweisung in nicht void zurückgebender Funktion [-Wreturn-type]
    21 |         }));
       |         ^
-Terminal.cpp: In lambda function:
-Terminal.cpp:122:9: warning: control reaches end of non-void function [-Wreturn-type]
-  122 |         },
+SpeakBubbles.h: In Lambda-Funktion:
+SpeakBubbles.h:83:9: Warnung: keine return-Anweisung in nicht void zurückgebender Funktion [-Wreturn-type]
+   83 |         },"hopen");
       |         ^
-In file included from Game.h:13,
-                 from main.cpp:6:
-SpeakBubbles.h: In lambda function:
-SpeakBubbles.h:21:9: warning: no return statement in function returning non-void [-Wreturn-type]
+Terminal.cpp: In Lambda-Funktion:
+Terminal.cpp:117:9: Warnung: Kontrollfluss erreicht Ende von Nicht-void-Funktion [-Wreturn-type]
+  117 |         },
+      |         ^
+In Datei, eingebunden von Game.h:13,
+                 von main.cpp:6:
+SpeakBubbles.h: In Lambda-Funktion:
+SpeakBubbles.h:21:9: Warnung: keine return-Anweisung in nicht void zurückgebender Funktion [-Wreturn-type]
    21 |         }));
       |         ^
-main.cpp: In lambda function:
-main.cpp:56:9: warning: no return statement in function returning non-void [-Wreturn-type]
-   56 |         },"test")->run();
+SpeakBubbles.h: In Lambda-Funktion:
+SpeakBubbles.h:83:9: Warnung: keine return-Anweisung in nicht void zurückgebender Funktion [-Wreturn-type]
+   83 |         },"hopen");
       |         ^
+/usr/bin/ld: /tmp/ccILC8v6.o: in function `System::getSysUsername_s[abi:cxx11]()':
+/home/sirwolf/Schreibtisch/Programme/oldData/DigitalDiscord/src/InternalSys.cpp:69: warning: Using 'getpwuid' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking

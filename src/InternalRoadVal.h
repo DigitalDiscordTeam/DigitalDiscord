@@ -4,7 +4,7 @@
 #include "InternalDef.h"
 
 namespace InternalRV {
-    MDEF long RoadValue = 0; //this value will represent how far the user is in the adventure
+    MDEF long RoadValue = 0; //this value will represent how far the user is in the story
 }
 
 /*

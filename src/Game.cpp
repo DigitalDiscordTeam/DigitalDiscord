@@ -3,7 +3,7 @@
 #include <thread>
 
 void Game::update() {
-	ExternalPlugins::update();
+	//ExternalPlugins::update();
 	using namespace Chars::Special;
 	System::doPaths();
 	GameUpdateEvent::trigger();
@@ -36,11 +36,11 @@ void Game::start(bool showcase, int sleepTime) {
 		mac::sleep(sleepTime);
 		
 		screen.next("Check if all files are here..."); //step 3
-		InternalFileVec::update(System::pathtoDir);
+		//TODO
 		mac::sleep(sleepTime);
 
 		screen.next("Set up plugins..."); //step 4
-		ExternalPlugins::start();
+		//ExternalPlugins::start();
 		mac::sleep(sleepTime);
 
 		screen.next("Start GameStartEvent...");	//step 5

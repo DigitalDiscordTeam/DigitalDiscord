@@ -1,4 +1,5 @@
 #include "InternalSys.h"
+#include <fstream>
 
 std::wstring System::string2wsstring(const std::string& str) {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
@@ -21,7 +22,7 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		DWORD size = UNLEN + 1;
 		GetUserName((TCHAR*)username, &size);
 
-		std::wstring tmp(username, size); //TODO: fix length of name
+		std::wstring tmp(username, size-1);
 		std::string ret = System::wstring2string(tmp);
 		return ret;
 	}
@@ -30,51 +31,47 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		TCHAR username[UNLEN + 1];
 		DWORD size = UNLEN + 1;
 		GetUserName((TCHAR*)username, &size);
+
 		std::wstring tmp(username,size);
 		return tmp;
 	}
 
-	void System::checkIfPaths() {
-		if (fs::exists(L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\")) {
-			dirPathExits = true;
-			pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\LocalLow\\DigitalDiscord\\";
-			pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
+	bool System::checkIfPaths() {
+		if (fs::exists("C:\\Users\\" + getSysUsername_s() + "\\AppData\\Roaming\\DigitalDiscord\\")) {
+			pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\Roaming\\DigitalDiscord\\";
+			pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\Roaming\\DigitalDiscord\\";
+			return true;
 		}
 		else {
-			dirPathExits = false;
+			return false;
 		}
 	}
 
 	void System::createPath() {
+		System::pathtoDir_w = L"C:\\Users\\" + getSysUsername_w() + L"\\AppData\\Roaming\\DigitalDiscord\\";
+		System::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\Roaming\\DigitalDiscord\\";
 
-		std::wstring path;
-		path += L"C:\\Users\\";
-		path += getSysUsername_w();
-		path += L"\\AppData\\LocalLow\\DigitalDiscord\\";
-
-		System::pathtoDir_w = path;
-		System::pathtoDir = "C:\\Users\\" + getSysUsername_s() + "\\AppData\\LocalLow\\DigitalDiscord\\";
-
-		if (!fs::exists(path)) {
-			if (!fs::create_directory(path)) {
+		if (!fs::exists(pathtoDir)) {
+			if (!fs::create_directory(pathtoDir)) {
 				throw DirMakeError{};
 			}
-			for(size_t i = 0; i < mac::allStdDirs.size(); ++i) {
-				if(fs::create_directory(pathtoDir + mac::allStdDirs[i])) {
-					throw DirMakeError{};
-				}
-			}
 		}
-
-		dirPathExits = true;
 	}
 
 
 #endif //USE_WIN_
 
 #ifdef USE_LINUX_
+	#include <unistd.h>
+	#include <pwd.h>
 	std::string System::getSysUsername_s() {
-		return (std::string)getenv("USERNAME");
+    	uid_t uid = geteuid ();
+        passwd *pw = getpwuid (uid);
+        if (pw) {
+            return std::string(pw->pw_name);
+        }
+        return "";
+    
 	}
 
 	std::wstring System::getSysUsername_w() {
@@ -86,33 +83,25 @@ std::string System::wstring2string(const std::wstring& wstr) {
 		return ret;
 	}
 
-	void System::checkIfPaths() {
+	bool System::checkIfPaths() {
 		if (fs::exists(L"~/.config/DigitalDiscord/")) {
-			dirPathExits = true;
 			pathtoDir_w = L"~/.config/DigitalDiscord/";
 			pathtoDir = "~/.config/DigitalDiscord/";
+			return true;
 		}
 		else {
-			dirPathExits = false;
+			return false;
 		}
 	}
 
 	void System::createPath() {
 
-		std::wstring path;
-		path += L"~/.config/DigitalDiscord/";
-
-		System::pathtoDir_w = path;
+		System::pathtoDir_w = L"~/.config/DigitalDiscord/";
 		System::pathtoDir = "~/.config/DigitalDiscord/";
 
-		if (!fs::exists(path)) {
-			if (!fs::create_directory(path)) {
+		if (!fs::exists(pathtoDir)) {
+			if (!fs::create_directory(pathtoDir)) {
 				throw DirMakeError{};
-			}
-			for(size_t i = 0; i < mac::allStdDirs.size(); ++i) {
-				if(fs::create_directory(pathtoDir + mac::allStdDirs[i])) {
-					throw DirMakeError{};
-				}
 			}
 		}
 	}
@@ -121,9 +110,9 @@ std::string System::wstring2string(const std::wstring& wstr) {
 
 bool System::doPaths() {
 	checkIfPaths();
-	if(!dirPathExits) {
+	if(!checkIfPaths()) {
 		createPath();
-		System::firstTime = true; //it might be the first time the programm run on the system
+		System::firstTime = true; //it might be the first time the programm runs on the system
 	}
 	
 	if(fs::current_path().has_filename()) {
@@ -131,6 +120,16 @@ bool System::doPaths() {
 	}
 	else {
 		currentPath = fs::current_path().string() + ST;
+	}
+
+	for(size_t i = 0; i < mac::allStdDirs.size(); ++i) {
+		if(!fs::exists(pathtoDir + mac::allStdDirs[i]))
+			fs::create_directory(pathtoDir + mac::allStdDirs[i]);
+	}
+	std::ofstream ofile;
+	for(size_t i = 0; i < mac::allStdFiles.size(); ++i) {
+		ofile.open(pathtoDir + mac::allStdFiles[i]);
+		ofile.close();
 	}
 
 	return firstTime;

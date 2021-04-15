@@ -123,6 +123,10 @@ namespace InternalPCO { //PCO = pretty console out
 		Hub(std::string name, std::vector<HubChoice> choices, std::string customLayout = "STD");
 
 		void show();
+
+		void save();
+
+		static Hub call(fs::path path);
 	};
 
 	

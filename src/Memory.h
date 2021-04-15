@@ -27,7 +27,6 @@ namespace Memory {
 
 		void operator=(Data data);
 		void operator=(std::string data);
-
 		void operator=(const char* data);
 
 		void initSplit();

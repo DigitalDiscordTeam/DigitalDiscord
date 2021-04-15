@@ -44,27 +44,16 @@ void Memory::compre(Data& data) {
 	std::string tmpString = "";
 	char tmpChar = 0;
 	for (size_t i = 0; i < data.split.size(); ++i) { //works with the data.compreMap 
-		DEBUG_START_
-			if (i + 1 != data.split.size()) {
-				std::cout << i << ":" << (std::string(1, data.split[i]) + (std::string(1, data.split[i + 1]))) << "\n";
-			}
-		DEBUG_END_
 		if (i + 1 != data.split.size() && data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] != "") { //known
-			DEBUG_START_
-				std::cout << "[DEBUG] one thing found! (i:" << i << "); data:" << (std::string(1, data.split[i]) + (std::string(1, data.split[i + 1]))) << "\n";
-			DEBUG_END_
 			tmpString = data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))];
 			data.split.erase(data.split.begin() + i);
-			data.split[i] = tmpString[0]; ///only one char to avoid bugs
-			--i; //set i back because the index behind i is changed
+			data.split[i] = tmpString[0]; //only one char to avoid bugs
+			--i; //set i back because the index behind i has changed
 		}
 		if (i+1 != data.split.size() && data.compreMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] > 1) {
-			DEBUG_START_
-				std::cout << "[DEBUG] compre found, (i:" << i << "); data:" << (std::string(1,data.split[i]) + (std::string(1, data.split[i+1]))) << "\n";
-			DEBUG_END_
 			
 			
-			while(INFINITY_LOOP) {
+			while(0) {
 				srand(time(NULL) + (rand() % time(NULL)));
 				tmpChar = static_cast<char>(((rand() % 255) + 126)); //only special keys
 				if(tmpChar == ' ' || tmpChar == '\n' || tmpChar == '\r' || tmpChar == '\t' || tmpChar == '\b') {
@@ -81,23 +70,13 @@ void Memory::compre(Data& data) {
 					continue;
 				}
 			
-			
-				DEBUG_START_
-					std::cout << "tmpChar:" << tmpChar << "\n";
-				DEBUG_END_
 				if (data.decodeMap2[std::string(1,tmpChar)] != "") { //this key is already in the map
-					DEBUG_START_
-						std::cout << "[DEBUG] compre, key is in the map, key:" << tmpChar << "\n";
-					DEBUG_END_
 					continue;
 				}
 				break;
 			}
 		data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] = std::string(1,tmpChar);
 		data.decodeMap2[std::string(1,tmpChar)] = (std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])));
-		DEBUG_START_
-			std::cout << "[DEBUG] compre, key:" << tmpChar << " map: " << data.decodeMap[(std::string(1, data.split[i]) + (std::string(1, data.split[i + 1])))] << "\n";
-		DEBUG_END_
 			
 		
 		data.split.erase(data.split.begin() + i);
@@ -123,9 +102,7 @@ void Memory::recompre(Data& data) {
 	data.initSplit();
 
 	for (size_t i = 0; i < data.split.size(); ++i) {
-		DEBUG_START_
-			std::cout << "[DEBUG] loop (recompre) i:" << i << " | thing:" << data.split[i] << " | map:" << data.decodeMap[(std::string(1,data.split[i]))] << " | map2:" << data.decodeMap2[std::string(1,data.split[i])] << " | len of both: " << data.decodeMap2[std::string(1,data.split[i])].length() + data.decodeMap[std::string(1,data.split[i])].length() << "\n";
-		DEBUG_END_
+
 		ERROR_IF(data.decodeMap2[std::string(1,data.split[i])] == "");
 		if (data.decodeMap2[std::string(1,data.split[i])] != "") { //a thing to encryp has been found
 			ERROR_IF(data.decodeMap2[std::string(1,data.split[i])] == "");

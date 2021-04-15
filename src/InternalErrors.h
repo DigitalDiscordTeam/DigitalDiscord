@@ -76,4 +76,70 @@ class DeleteDirError : public std::exception
 	const std::string toString() const;
 };
 
+class NoMatchingVirtualPathError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class SyntaxError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class ParserTagCantHaveAGetFunctionError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class ExpressionSyntaxError : public SyntaxError
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class VariableAccessError : public SyntaxError
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class CommandNotFoundError : public SyntaxError
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class BracesMisMatchError : public SyntaxError
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class TypeMissmatchError : public SyntaxError
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class StringToIntCastError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+
+class ArrayOutOfRangeError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
+
+class ParametherMissmatchError : public std::exception
+{
+	public: virtual const char* what() const throw();
+	const std::string toString() const;
+};
 #endif

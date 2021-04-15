@@ -48,9 +48,27 @@ std::string InternalFsys::read(std::string key, std::string path) {
 		
 	std::vector<std::string> vec;
 	std::string tmp;
-
-	for (size_t i = 0; i < re.length() - 1; ++i) {
-		if (re[i] == ' ' || re[i] == '\n' || re[i] == '\0') {
+	bool inLstr; //search for a multiline string called with ""
+	for (size_t i = 0; i < re.length(); ++i) {
+		if(re[i] == '\"') {
+			inLstr = !inLstr;
+			++i;
+		}
+		if(re[i] == '/') {
+			try {
+				if(key.substr(key.size()-6,key.size()) != "NO_REP") {
+					tmp += "\n";
+					continue;
+				}
+			}
+			catch(std::exception& err) {
+				tmp += "\n";
+				InternalErrLog::LogMain.append(time(NULL),err.what());
+				continue;
+			}
+			
+		}
+		if (!inLstr && (re[i] == ' ' || re[i] == '\n' || re[i] == '\0' || re[i] == ';')) {
 			vec.push_back(tmp);
 			tmp = "";
 		}
@@ -76,7 +94,14 @@ std::string InternalFsys::read(std::string key, std::string path) {
 		DEBUG_MESSAGE("(read()) loop failed, i:" << i << " value:" << vec[i] << " key: " << key)
 		counter += 1;
 	}
-
+	try {
+		std::string ret;
+		ret = read(key + "NO_REP",path);
+		return ret;
+	}
+	catch(ValueNotFoundError& err) {
+		InternalErrLog::LogMain.append(time(NULL),err.toString());
+	}
 	throw ValueNotFoundError{}; //the value is not in the file
 }
 
@@ -89,7 +114,7 @@ void InternalFsys::delStor(std::string value) {
 	}
 }
 
-tokenType InternalFsys::splitTokens(const std::string splitKey, const std::string string) {
+tokenType InternalFsys::splitTokens(const std::string splitKey, const std::string string, void(*fun)(const char& i, std::string& str)) {
 	/* usage:
 		---  splitTokens("key|key2|key3|...",string);
 
@@ -101,7 +126,7 @@ tokenType InternalFsys::splitTokens(const std::string splitKey, const std::strin
 	}
 
 	std::vector<char> keys;
-	if (splitKey.length() != 0) {
+	if (splitKey.length() != 1) {
 		std::string splitKey2 = (splitKey[splitKey.length()] == '|' ? splitKey:(splitKey + "|"));
 		int check = 0;
 		for (size_t i = 0; i < splitKey2.length(); ++i) {
@@ -124,6 +149,7 @@ tokenType InternalFsys::splitTokens(const std::string splitKey, const std::strin
 	bool tmp_bool = true;
 	for (size_t i = 0; i < string.length(); ++i) {
 		tmp_bool = true;
+		fun(string[i],tmp);
 		for (size_t j = 0; j < keys.size(); ++j) {
 			if (string[i] == keys[j]) {
 				retVec.push_back(tmp);
@@ -193,11 +219,6 @@ void InternalFsys::write(std::string path, std::string key, std::string newValue
 	tokenType readSplit = InternalFsys::splitTokens(" |\n|",read);
 	size_t index = InternalLib::searchForVal_i(readSplit,key);
 	DEBUG_MESSAGE("index: " << index << ";");
-	DEBUG_START_
-		for(size_t i = 0; i < readSplit.size(); ++i) {
-			DEBUG_MESSAGE("loop," << i << "; index: " << readSplit[i]);
-		}
-	DEBUG_END_
 	readSplit[index] = newValue;
 
 	std::ofstream ofile;
@@ -261,3 +282,43 @@ void InternalFsys::sys::deleteDir(std::string path) {
 	}
 }
 
+tokenType InternalFsys::readVec(std::string path, std::string key) {
+	std::string re = read(key,path);
+	re.erase(re.begin());
+	re.erase(re.begin()+re.size()-1);
+	DEBUG_MESSAGE("re = " << re)
+	tokenType tokens = splitTokens(",",re);
+	DEBUG_MESSAGE("size: " << tokens.size())
+	
+	if(key.substr(key.size()-6,key.size()) != "_NOREM") {
+		for(size_t i = 0; i < tokens.size(); ++i) {
+			if(tokens[i] == "") {
+				tokens.erase(tokens.begin()+i);
+			}
+		}
+	}
+	return tokens;
+}
+
+void InternalFsys::writeVec(std::vector<std::string> vec,std::string path, std::string key) {
+	std::string ret = "{";
+	for(auto& i : vec) {
+		if(key.substr(key.size()-6,key.size()) != "_NOREM" && i == "") {
+			continue;
+		}
+		ret += i + ",";
+	}
+	ret.erase(ret.find_last_of(',')); //delete the last ","
+	ret += "}";
+	write(path,key,ret);	
+}
+
+void InternalFsys::addToVec(std::string path, std::string key, std::string val) {
+	tokenType tokens = readVec(path,key);
+	tokens.push_back(val);
+	writeVec(tokens,path,key);
+}
+
+std::string InternalFsys::readLine(std::string path, size_t line) {
+	return splitTokens("\n|/|",readNormal(path))[line];
+}

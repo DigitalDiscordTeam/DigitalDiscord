@@ -18,7 +18,7 @@ namespace Chars {
     /// - using namespace <namespace-part>
     ///
     /// why?
-    /// if you do this, you wont need to type very::long::shit::you::dont::need
+    /// if you do this, you wont have to type very::long::shit::you::dont::need
     ///
 
     MDEF int globalInitSleeptime = 300;

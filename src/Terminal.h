@@ -27,34 +27,17 @@ private:
             Data(std::string string, std::string tag): string(string), tag(tag)
             {};
 
-            Data* getPtr() {
-                return this;
-            }
+            Data* getPtr();
         };
 
         std::string tag;
         std::vector<Data> Datas;
 
-        MDEF TerminalStorage* add(std::string str, std::string tag) {
-            Datas.push_back(Data(str,tag));
-            return this;
-        }
+        TerminalStorage* add(std::string str, std::string tag);
 
-        MDEF Data get(std::string tag) {
-            DEBUG_MESSAGE("lenght of Datas: " << Datas.size())
-            for(size_t i = 0; i < Datas.size(); ++i) {
-                DEBUG_MESSAGE("loop in TerminalStor get(string): " << i << ": " << Datas[i].tag << " == " << tag << "?")
-                if(Datas[i].tag == tag) {
-                    return Datas[i];
-                }
-            }
-            DEBUG_MESSAGE("Failed to get data (terminalstor: " << this->tag << ")")
-            return Data("FAILED","FAILED");
-        }
+        Data get(std::string tag);
 
-        MDEF Data get(size_t index) {
-            return Datas[index];
-        }
+        Data get(size_t index);
 
         TerminalStorage(std::string tag): tag(tag) 
         {}
@@ -64,13 +47,13 @@ private:
             this->tag = tag;
         }
 
-        MDEF Terminal::TerminalStorage* getPtr() {
-            return this;
-        }
+        Terminal::TerminalStorage* getPtr();
     };
+
 public:
     std::vector<TerminalStorage> storage;
     using tstorage = Terminal::TerminalStorage;
+
     static Terminal ptrToInst(Terminal* ptr) {
         Terminal ret(ptr->getName(),ptr->getLayout()); 
         ret.funs = ptr->funs;

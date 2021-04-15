@@ -12,7 +12,7 @@ std::string& InternalPCO::SlowPrintc::getID() {
 InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(const char* inp) {
 	for (size_t i = 0; i < strlen(inp); ++i) {
 		std::cout << inp[i];
-		mac::sleep(sleeptime);
+		mac::tsleep(sleeptime);
 	}
 	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(inp,this));
 	return this;
@@ -21,7 +21,7 @@ InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(const char* inp) {
 InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(std::string inp) {
 	for (size_t i = 0; i < inp.length(); ++i) {
 		std::cout << inp[i];
-		mac::sleep(sleeptime);
+		mac::tsleep(sleeptime);
 	}
 	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(inp,this));
 	return this;
@@ -30,7 +30,7 @@ InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(std::string inp) {
 InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(int inp) {
 	for (long i = 0; i < inp; ++i) {
 		std::cout << (std::to_string(inp))[i];
-		mac::sleep(sleeptime);
+		mac::tsleep(sleeptime);
 	}
 	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(std::to_string(inp),this));
 	return this;
@@ -38,7 +38,7 @@ InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(int inp) {
 
 InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(char inp) {
 	std::cout << inp;
-	mac::sleep(sleeptime);
+	mac::tsleep(sleeptime);
 	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(std::to_string(inp),this));
 	return this;
 }
@@ -46,7 +46,7 @@ InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(char inp) {
 InternalPCO::SlowPrintc* InternalPCO::SlowPrintc::operator<<(long long inp) {
 	for (long i = 0; i < inp; ++i) {
 		std::cout << std::to_string(inp)[i];
-		mac::sleep(sleeptime);
+		mac::tsleep(sleeptime);
 	}
 	SlowPrintClassPrintEvent::trigger(std::pair<std::string,SlowPrintc*>(std::to_string(inp),this));
 	return this;
@@ -266,4 +266,24 @@ void InternalPCO::Hub::show() {
 	}
 				
 	hiding = true;
+}
+
+void InternalPCO::Hub::save() {
+	std::string layout =
+	"name = <name>					"
+	"Ccount = <Ccount>				"
+	"layout_NO_REP = \"<layout>\"	";
+
+	layout = InternalLib::Parser()
+		.addPlaceHolder("name",this->name)
+		->addPlaceHolder("Ccount",std::to_string(this->choices.size()))
+		->addPlaceHolder("layout",this->layout)
+		->setIdents('<','>')
+		->parse(layout);
+	
+	layout += "\n";
+}
+
+InternalPCO::Hub InternalPCO::Hub::call(fs::path path) {
+
 }

@@ -41,11 +41,6 @@ void Terminal::run() {
             break;
         }
         tokenType split = InternalFsys::splitTokens(" |",tmp);
-        DEBUG_START_
-            for(size_t i = 0; i < split.size(); ++i) {
-                std::cout << split[i] << "\n";
-            }
-        DEBUG_END_
         DEBUG_MESSAGE("size of storage:" << storage.size())
         for(size_t i = 0; i < funs.size(); ++i) {
             DEBUG_MESSAGE("keyword:" << funs[i].second << " | " << "split[0]:" << split[0])
@@ -101,7 +96,7 @@ Terminal Terminal::InitMain() {
             if(tokens.size() < 2) {
                 return true;
             }
-            elif(tokens.size() < 4) {
+            else if(tokens.size() < 4) {
                 if(tokens[2] == ">") {
                     InternalFsys::writeNormal(tokens[3],tokens[1],true);
                 }
@@ -123,4 +118,33 @@ Terminal Terminal::InitMain() {
         "whoami"
     );
     return mainTerminal;
+}
+
+Terminal::TerminalStorage* Terminal::TerminalStorage::add(std::string str, std::string tag) {
+    Datas.push_back(Data(str,tag));
+    return this;
+}
+
+Terminal::TerminalStorage::Data Terminal::TerminalStorage::get(std::string tag) {
+    DEBUG_MESSAGE("lenght of Datas: " << Datas.size())
+    for(size_t i = 0; i < Datas.size(); ++i) {
+        DEBUG_MESSAGE("loop in TerminalStor get(string): " << i << ": " << Datas[i].tag << " == " << tag << "?")
+        if(Datas[i].tag == tag) {
+            return Datas[i];
+        }
+    }
+    DEBUG_MESSAGE("Failed to get data (terminalstor: " << this->tag << ")")
+    return Data("FAILED","FAILED");
+}
+
+Terminal::TerminalStorage::Data Terminal::TerminalStorage::get(size_t index) {
+    return Datas[index];
+}
+
+MDEF Terminal::TerminalStorage* Terminal::TerminalStorage::getPtr() {
+    return this;
+}
+
+Terminal::TerminalStorage::Data* Terminal::TerminalStorage::Data::getPtr() {
+    return this;
 }
